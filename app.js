@@ -1,3 +1,4 @@
+let searchText = "";
 let currentLang = "en";
 let currentBrand = "all";
 let currentCategory = "all";
