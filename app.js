@@ -58,14 +58,17 @@ function renderFast(){
     if(sortType==="priceHigh") list.sort((a,b)=>b.price-a.price);
     if(sortType==="name") list.sort((a,b)=>a.name_en.localeCompare(b.name_en));
 
-    let html="";
+    let html = "";
     for(const p of list){
-      const name = currentLang==="en"?p.name_en:p.name_hi;
-      const price = p.price>0?"₹"+p.price:"Price on Request";
-      const msg = currentLang==="en"?`I want ${p.name_en}`:`मुझे ${p.name_hi} चाहिए`;
+      const name = currentLang==="en" ? p.name_en : p.name_hi;
+      const price = p.price>0 ? "₹"+p.price : "Price on Request";
+      const msg = currentLang==="en"
+        ? `I want ${p.name_en}`
+        : `मुझे ${p.name_hi} चाहिए`;
 
-      html+=`
+      html += `
       <div class="card">
+        ${p.badge ? `<span class="badge">${p.badge}</span>` : ""}
         <img src="${p.image}" loading="lazy"
              onerror="this.src='no-image.png'">
         <h3>${name}</h3>
@@ -74,16 +77,19 @@ function renderFast(){
         <a class="wa"
            href="https://wa.me/918279557998?text=${encodeURIComponent(msg)}"
            target="_blank">
-           ${currentLang==="en"?"Ask on WhatsApp":"व्हाट्सएप पर पूछें"}
+           ${currentLang==="en" ? "Ask on WhatsApp" : "व्हाट्सएप पर पूछें"}
         </a>
       </div>`;
     }
+
     box.innerHTML = html;
   });
 }
 
+// initial render
 renderFast();
 
+// Battery capacity finder
 function calculateAh(){
   const load = document.getElementById("load").value;
   const hours = document.getElementById("hours").value;
@@ -96,8 +102,7 @@ function calculateAh(){
         target="_blank">Ask on WhatsApp</a>`;
 }
 
-${p.badge ? `<span class="badge">${p.badge}</span>` : ""}
-
+// price list
 function downloadPrice(){
   window.print();
 }
