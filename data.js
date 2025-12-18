@@ -3,6 +3,7 @@ const products = [
     id: 1,
     category: "inverter",
     brand: "Exide",
+    badge: "Best Seller",
     name_en: "Exide Inva Plus Tubular 1500 (IPST1500) 12V 150Ah",
     name_hi: "एक्साइड इन्वा प्लस ट्यूबुलर 1500 (IPST1500) 12V 150Ah",
     price: 11899,
@@ -12,6 +13,7 @@ const products = [
     id: 2,
     category: "inverter",
     brand: "Exide",
+    badge: "Popular",
     name_en: "EXIDE INVAMASTER (IMST1500)",
     name_hi: "एक्साइड इन्वामास्टर (IMST1500)",
     price: 19313,
@@ -39,6 +41,7 @@ const products = [
     id: 5,
     category: "inverter",
     brand: "Amaron",
+    badge: "Best Value",
     name_en: "Amaron Current CR-CRTT180 180Ah Tall Tubular Inverter Battery",
     name_hi: "अमरॉन करंट CR-CRTT180 180Ah टॉल ट्यूबुलर इन्वर्टर बैटरी",
     price: 18140,
@@ -111,10 +114,3 @@ const products = [
     };
   })
 ];
-
-{
-  id: 1,
-  brand: "Exide",
-  badge: "Best Seller",
-  ...
-}
