@@ -9,54 +9,37 @@
 
 <body>
 
-<header>
-  <h1>Naman Battery Trading Co</h1>
+<header class="top">
+  <div class="logo">Naman Battery</div>
+
+  <nav>
+    <button onclick="setCategory('all')">All</button>
+    <button onclick="setCategory('inverter')">Inverter</button>
+    <button onclick="setCategory('car')">Car</button>
+    <button onclick="setCategory('bike')">Bike</button>
+  </nav>
+
   <div class="lang">
-    <button onclick="setLang('en')">English</button>
-    <button onclick="setLang('hi')">हिंदी</button>
+    <button onclick="setLang('en')">EN</button>
+    <button onclick="setLang('hi')">हिं</button>
   </div>
 </header>
 
-<div class="products" id="products"></div>
+<section class="filters">
+  <button onclick="setBrand('all')">All Brands</button>
+  <button onclick="setBrand('Exide')">Exide</button>
+  <button onclick="setBrand('Amaron')">Amaron</button>
+  <button onclick="setBrand('Su-Kam')">Su-Kam</button>
+</section>
+
+<div id="products" class="products"></div>
+
+<!-- Floating WhatsApp -->
+<a class="wa-float"
+   href="https://wa.me/918279557998"
+   target="_blank">💬</a>
 
 <script src="data.js"></script>
-<script>
-let currentLang = "en";
-
-function setLang(lang){
-  currentLang = lang;
-  renderProducts();
-}
-
-function renderProducts(){
-  const box = document.getElementById("products");
-  box.innerHTML = "";
-
-  products.forEach(p => {
-    const name = currentLang === "en" ? p.name_en : p.name_hi;
-    const msg = currentLang === "en"
-      ? `I want ${p.name_en} Battery`
-      : `मुझे ${p.name_hi} बैटरी चाहिए`;
-
-    box.innerHTML += `
-      <div class="card">
-        <img src="${p.image}">
-        <h3>${name}</h3>
-        <p class="price">
-  ${p.price > 0 ? "₹" + p.price : "Price on Request"}
-</p>
-        <a class="wa"
-          href="https://wa.me/918279557998?text=${encodeURIComponent(msg)}"
-          target="_blank">
-          ${currentLang === "en" ? "Ask on WhatsApp" : "व्हाट्सएप पर पूछें"}
-        </a>
-      </div>
-    `;
-  });
-}
-
-renderProducts();
-</script>
-
+<script src="app.js"></script>
 </body>
 </html>
