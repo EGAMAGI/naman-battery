@@ -83,3 +83,15 @@ function renderFast(){
 }
 
 renderFast();
+
+function calculateAh(){
+  const load = document.getElementById("load").value;
+  const hours = document.getElementById("hours").value;
+  const ah = Math.ceil((load * hours) / 12 / 0.8);
+
+  const msg = `I need a ${ah}Ah battery. Please suggest best option.`;
+  document.getElementById("result").innerHTML =
+    `✅ Recommended: <b>${ah}Ah Battery</b><br>
+     <a href="https://wa.me/918279557998?text=${encodeURIComponent(msg)}"
+        target="_blank">Ask on WhatsApp</a>`;
+}
