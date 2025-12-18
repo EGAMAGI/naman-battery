@@ -107,3 +107,13 @@ nav button,
 .footer h3{
   margin-top:0;
 }
+.sort-box{
+  background:#fff;
+  padding:10px;
+  text-align:center;
+}
+.sort-box select{
+  padding:8px;
+  font-size:15px;
+  border-radius:6px;
+}
