@@ -1,4 +1,4 @@
-const products = [
+var products = [
   {
     id: 1,
     category: "inverter",
@@ -49,16 +49,17 @@ const products = [
   }
 ];
 
-// ---------- PRICE ON REQUEST (MANUAL & SAFE) ----------
-for (let i = 6; i <= 50; i++) {
-  const brands = ["Exide", "Su-Kam", "Amaron"];
-  const brand = brands[i % 3];
+// PRICE ON REQUEST PRODUCTS
+var brands = ["Exide", "Su-Kam", "Amaron"];
+
+for (var i = 6; i <= 50; i++) {
+  var brand = brands[i % 3];
 
   products.push({
     id: i,
     category: "inverter",
     brand: brand,
-    name_en: `${brand} [Model] [Ah]`,
+    name_en: brand + " [Model] [Ah]",
     name_hi:
       brand === "Exide"
         ? "एक्साइड [मॉडल] [Ah]"
@@ -66,6 +67,6 @@ for (let i = 6; i <= 50; i++) {
         ? "सु-कम [मॉडल] [Ah]"
         : "अमरॉन [मॉडल] [Ah]",
     price: 0,
-    image: `${brand.toLowerCase()}_${i}.jpg`
+    image: brand.toLowerCase() + "_" + i + ".jpg"
   });
 }
