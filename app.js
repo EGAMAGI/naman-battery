@@ -42,5 +42,23 @@ function render(){
       `;
     });
 }
+function setSearch(text){
+  searchText = text.toLowerCase();
+  render();
+}
 
-render();
+products
+  .filter(p => currentBrand === "all" || p.brand === currentBrand)
+  .filter(p => currentCategory === "all" || p.category === currentCategory)
+  .filter(p => {
+    const en = p.name_en.toLowerCase();
+    const hi = p.name_hi.toLowerCase();
+    const brand = p.brand.toLowerCase();
+    return (
+      en.includes(searchText) ||
+      hi.includes(searchText) ||
+      brand.includes(searchText)
+    );
+  })
+  .forEach(p => {
+
