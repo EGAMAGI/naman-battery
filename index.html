@@ -4,28 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Naman Battery Trading Co</title>
+
 <link rel="stylesheet" href="style.css">
+
+<!-- SEO -->
+<meta name="description" content="Naman Battery Trading Co – Exide, Amaron, Su-Kam inverter batteries at best price. Call or WhatsApp for enquiry.">
+<meta name="keywords" content="battery shop, inverter battery, exide battery, amaron battery, uttar pradesh battery">
+<meta name="author" content="Naman Battery Trading Co">
 </head>
-
-  <footer class="footer">
-  <h3>Visit Our Shop</h3>
-
-  <p>
-    <strong>Naman Battery Trading Co</strong><br>
-    Naya Bazar, Baraut, Uttar Pradesh 250611<br>
-    📞 <a href="tel:8279557998">8279557998</a><br>
-    💬 <a href="https://wa.me/918279557998" target="_blank">WhatsApp</a>
-  </p>
-
-  <iframe
-    src="https://www.google.com/maps?q=Naman+Battery+Trading+Co+Rohtak&output=embed"
-    width="100%"
-    height="300"
-    style="border:0;"
-    allowfullscreen=""
-    loading="lazy">
-  </iframe>
-</footer>
 
 <body>
 
@@ -45,10 +31,14 @@
   </div>
 </header>
 
-<meta name="description" content="Naman Battery Trading Co – Exide, Amaron, Su-Kam inverter batteries at best price. Call or WhatsApp for enquiry.">
-<meta name="keywords" content="battery shop, inverter battery, exide battery, amaron battery, rohtak battery">
-<meta name="author" content="Naman Battery Trading Co">
+<!-- SEARCH -->
+<div class="search-box">
+  <input type="text"
+         placeholder="Search battery, brand or Ah..."
+         onkeyup="setSearch(this.value)">
+</div>
 
+<!-- BRAND FILTER -->
 <section class="filters">
   <button onclick="setBrand('all')">All Brands</button>
   <button onclick="setBrand('Exide')">Exide</button>
@@ -56,21 +46,36 @@
   <button onclick="setBrand('Su-Kam')">Su-Kam</button>
 </section>
 
+<!-- PRODUCTS -->
 <div id="products" class="products"></div>
 
-<!-- Floating WhatsApp -->
+<!-- FOOTER -->
+<footer class="footer">
+  <h3>Visit Our Shop</h3>
+  <p>
+    <strong>Naman Battery Trading Co</strong><br>
+    Naya Bazar, Baraut, Uttar Pradesh 250611<br>
+    📞 <a href="tel:8279557998">8279557998</a><br>
+    💬 <a href="https://wa.me/918279557998" target="_blank">WhatsApp</a>
+  </p>
+
+  <iframe
+    src="https://www.google.com/maps?q=Naman+Battery+Trading+Co+Baraut&output=embed"
+    width="100%"
+    height="300"
+    style="border:0;"
+    loading="lazy">
+  </iframe>
+</footer>
+
+<!-- FLOATING WHATSAPP -->
 <a class="wa-float"
    href="https://wa.me/918279557998"
    target="_blank">💬</a>
 
+<!-- SCRIPTS (ORDER MATTERS) -->
 <script src="data.js"></script>
 <script src="app.js"></script>
+
 </body>
 </html>
-<div class="search-box">
-  <input type="text"
-         id="searchInput"
-         placeholder="Search battery, brand or Ah..."
-         onkeyup="setSearch(this.value)">
-</div>
-
