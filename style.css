@@ -135,3 +135,15 @@ nav button,
     display:none;
   }
 }
+
+.badge{
+  background:#ff5722;
+  color:#fff;
+  padding:4px 6px;
+  font-size:12px;
+  position:absolute;
+  top:10px;
+  left:10px;
+  border-radius:4px;
+}
+.card{ position:relative; }
