@@ -1,200 +1,4 @@
-/* ========== BATTERY FINDER ========== */
-.finder{
-  background:#fff;
-  padding:20px;
-  margin:15px;
-  border-radius:6px;
-}
-.finder h3{
-  margin-top:0;
-}
-.finder select,
-.finder button{
-  width:100%;
-  max-width:320px;
-  padding:10px;
-  margin:6px 0;
-  font-size:15px;
-}
-.finder button{
-  background:#2874f0;
-  color:#fff;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
-}
-.finder button:hover{
-  opacity:0.9;
-}
-
-/* ========== QUICK WHATSAPP ========== */
-.quick{
-  display:flex;
-  gap:10px;
-  padding:15px;
-}
-.quick a{
-  flex:1;
-  background:#25D366;
-  color:#fff;
-  text-align:center;
-  padding:10px;
-  border-radius:6px;
-  text-decoration:none;
-  font-size:14px;
-}
-
-/* ========== HEADER BUTTON STYLE ========== */
-nav button{
-  background:#fff;
-  color:#2874f0;
-  font-weight:bold;
-}
-
-/* ========== BUTTON HOVER EFFECT ========== */
-button{
-  transition:0.2s;
-}
-button:hover{
-  opacity:0.85;
-}
-
-/* ========== DARK MODE COMPLETE FIX ========== */
-.dark{
-  background:#121212;
-  color:#fff;
-}
-.dark .top{
-  background:#1e1e1e;
-}
-.dark .filters,
-.dark .search-box,
-.dark .sort-box,
-.dark .finder,
-.dark .services,
-.dark .footer{
-  background:#1e1e1e;
-  color:#fff;
-}
-.dark input,
-.dark select{
-  background:#2a2a2a;
-  color:#fff;
-  border:1px solid #444;
-}
-.dark .card{
-  background:#1e1e1e;
-}
-
-/* ========== MOBILE IMPROVEMENTS ========== */
-@media(max-width:600px){
-  .finder,
-  .services,
-  .footer{
-    margin:10px;
-  }
-  .quick{
-    flex-direction:column;
-  }
-}
-/* ================= BATTERY FINDER ================= */
-.finder{
-  background:#fff;
-  padding:20px;
-  margin:15px;
-  border-radius:8px;
-  box-shadow:0 1px 6px rgba(0,0,0,0.08);
-}
-.finder h3{
-  margin-top:0;
-}
-.finder select,
-.finder button{
-  width:100%;
-  max-width:320px;
-  padding:10px;
-  margin:6px 0;
-  font-size:15px;
-}
-.finder button{
-  background:#2874f0;
-  color:#fff;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
-}
-
-/* ================= QUICK WHATSAPP ================= */
-.quick{
-  display:flex;
-  gap:10px;
-  padding:15px;
-}
-.quick a{
-  flex:1;
-  background:#25D366;
-  color:#fff;
-  text-align:center;
-  padding:10px;
-  border-radius:6px;
-  text-decoration:none;
-  font-size:14px;
-}
-
-/* ================= HEADER BUTTON LOOK ================= */
-nav button{
-  background:#fff;
-  color:#2874f0;
-  font-weight:bold;
-}
-
-/* ================= BUTTON HOVER ================= */
-button{
-  transition:0.2s;
-}
-button:hover{
-  opacity:0.85;
-}
-
-/* ================= DARK MODE FULL ================= */
-.dark{
-  background:#121212;
-  color:#fff;
-}
-.dark .top{
-  background:#1e1e1e;
-}
-.dark .filters,
-.dark .search-box,
-.dark .sort-box,
-.dark .finder,
-.dark .services,
-.dark .footer{
-  background:#1e1e1e;
-  color:#fff;
-}
-.dark input,
-.dark select{
-  background:#2a2a2a;
-  color:#fff;
-  border:1px solid #444;
-}
-.dark .card{
-  background:#1e1e1e;
-}
-
-/* ================= MOBILE POLISH ================= */
-@media(max-width:600px){
-  .finder,
-  .services,
-  .footer{
-    margin:10px;
-  }
-  .quick{
-    flex-direction:column;
-  }
-}
-/* ===== FINAL UI POLISH ===== */
+/* ===== UI POLISH (FINAL & CLEAN) ===== */
 
 /* Battery Finder */
 .finder{
@@ -221,7 +25,7 @@ button:hover{
   cursor:pointer;
 }
 
-/* Quick WhatsApp buttons */
+/* Quick WhatsApp */
 .quick{
   display:flex;
   gap:10px;
@@ -246,11 +50,21 @@ nav button{
 }
 
 /* Button hover */
-button{ transition:0.2s; }
-button:hover{ opacity:0.85; }
+button{
+  transition:0.2s;
+}
+button:hover{
+  opacity:0.85;
+}
 
-/* Dark mode full */
-.dark .top{ background:#1e1e1e; }
+/* Dark mode (complete) */
+.dark{
+  background:#121212;
+  color:#fff;
+}
+.dark .top{
+  background:#1e1e1e;
+}
 .dark .filters,
 .dark .search-box,
 .dark .sort-box,
@@ -266,11 +80,18 @@ button:hover{ opacity:0.85; }
   color:#fff;
   border:1px solid #444;
 }
+.dark .card{
+  background:#1e1e1e;
+}
 
 /* Mobile polish */
 @media(max-width:600px){
   .finder,
   .services,
-  .footer{ margin:10px; }
-  .quick{ flex-direction:column; }
+  .footer{
+    margin:10px;
+  }
+  .quick{
+    flex-direction:column;
+  }
 }
