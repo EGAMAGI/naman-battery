@@ -37,6 +37,14 @@
          placeholder="Search battery, brand or Ah..."
          onkeyup="setSearch(this.value)">
 </div>
+  <div class="sort-box">
+  <select onchange="setSort(this.value)">
+    <option value="">Sort</option>
+    <option value="priceLow">Price: Low to High</option>
+    <option value="priceHigh">Price: High to Low</option>
+    <option value="name">Name: A–Z</option>
+  </select>
+</div>
 
 <!-- BRAND FILTER -->
 <section class="filters">
