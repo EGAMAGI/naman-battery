@@ -2,84 +2,84 @@ let currentLang = "en";
 let currentBrand = "all";
 let currentCategory = "all";
 let searchText = "";
+let sortType = "";
 
-// cache products once
+// 🔁 GOOGLE SHEET SWITCH (USE LATER)
+const USE_GOOGLE_SHEET = false;
+// const SHEET_URL = "PASTE_SHEET_JSON_URL_HERE";
+
 const allProducts = products;
 
-// language
-function setLang(l) {
-  currentLang = l;
+// sorting
+function setSort(v){
+  sortType = v;
   renderFast();
 }
 
-// brand
-function setBrand(b) {
-  currentBrand = b;
-  renderFast();
-}
-
-// category
-function setCategory(c) {
-  currentCategory = c;
-  renderFast();
-}
+// filters
+function setLang(l){ currentLang = l; renderFast(); }
+function setBrand(b){ currentBrand = b; renderFast(); }
+function setCategory(c){ currentCategory = c; renderFast(); }
 
 // debounce search
-let searchTimer;
-function setSearch(text) {
-  clearTimeout(searchTimer);
-  searchTimer = setTimeout(() => {
-    searchText = text.toLowerCase();
+let timer;
+function setSearch(t){
+  clearTimeout(timer);
+  timer = setTimeout(()=>{
+    searchText = t.toLowerCase();
     renderFast();
-  }, 300);
+  },300);
 }
 
-function renderFast() {
+// skeleton
+function showSkeleton(){
   const box = document.getElementById("products");
-  if (!box) return;
+  box.innerHTML = "<div class='skeleton'></div>".repeat(6);
+}
 
-  let html = "";
+function renderFast(){
+  const box = document.getElementById("products");
+  if(!box) return;
 
-  for (let i = 0; i < allProducts.length; i++) {
-    const p = allProducts[i];
+  showSkeleton();
 
-    if (currentBrand !== "all" && p.brand !== currentBrand) continue;
-    if (currentCategory !== "all" && p.category !== currentCategory) continue;
+  requestAnimationFrame(()=>{
+    let list = allProducts.filter(p=>{
+      if(currentBrand!=="all" && p.brand!==currentBrand) return false;
+      if(currentCategory!=="all" && p.category!==currentCategory) return false;
+      if(searchText &&
+        !p.name_en.toLowerCase().includes(searchText) &&
+        !p.name_hi.toLowerCase().includes(searchText) &&
+        !p.brand.toLowerCase().includes(searchText)) return false;
+      return true;
+    });
 
-    if (
-      searchText &&
-      !p.name_en.toLowerCase().includes(searchText) &&
-      !p.name_hi.toLowerCase().includes(searchText) &&
-      !p.brand.toLowerCase().includes(searchText)
-    ) {
-      continue;
-    }
+    if(sortType==="priceLow") list.sort((a,b)=>a.price-b.price);
+    if(sortType==="priceHigh") list.sort((a,b)=>b.price-a.price);
+    if(sortType==="name") list.sort((a,b)=>a.name_en.localeCompare(b.name_en));
 
-    const name = currentLang === "en" ? p.name_en : p.name_hi;
-    const priceText = p.price > 0 ? "₹" + p.price : "Price on Request";
-    const msg =
-      currentLang === "en"
-        ? `I want ${p.name_en}`
-        : `मुझे ${p.name_hi} चाहिए`;
+    let html="";
+    for(const p of list){
+      const name = currentLang==="en"?p.name_en:p.name_hi;
+      const price = p.price>0?"₹"+p.price:"Price on Request";
+      const msg = currentLang==="en"?`I want ${p.name_en}`:`मुझे ${p.name_hi} चाहिए`;
 
-    html += `
+      html+=`
       <div class="card">
         <img src="${p.image}" loading="lazy"
              onerror="this.src='no-image.png'">
         <h3>${name}</h3>
         <p>${p.brand}</p>
-        <p class="price">${priceText}</p>
+        <p class="price">${price}</p>
         <a class="wa"
            href="https://wa.me/918279557998?text=${encodeURIComponent(msg)}"
            target="_blank">
-          ${currentLang === "en" ? "Ask on WhatsApp" : "व्हाट्सएप पर पूछें"}
+           ${currentLang==="en"?"Ask on WhatsApp":"व्हाट्सएप पर पूछें"}
         </a>
-      </div>
-    `;
-  }
-
-  box.innerHTML = html;
+      </div>`;
+    }
+    box.innerHTML = html;
+  });
 }
 
-// initial render
 renderFast();
