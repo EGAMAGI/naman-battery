@@ -42,7 +42,9 @@ function renderProducts(){
       <div class="card">
         <img src="${p.image}">
         <h3>${name}</h3>
-        <p class="price">₹${p.price}</p>
+        <p class="price">
+  ${p.price > 0 ? "₹" + p.price : "Price on Request"}
+</p>
         <a class="wa"
           href="https://wa.me/918279557998?text=${encodeURIComponent(msg)}"
           target="_blank">
