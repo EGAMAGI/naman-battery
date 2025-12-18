@@ -194,3 +194,83 @@ button:hover{
     flex-direction:column;
   }
 }
+/* ===== FINAL UI POLISH ===== */
+
+/* Battery Finder */
+.finder{
+  background:#fff;
+  padding:20px;
+  margin:15px;
+  border-radius:8px;
+  box-shadow:0 1px 6px rgba(0,0,0,0.08);
+}
+.finder h3{ margin-top:0; }
+.finder select,
+.finder button{
+  width:100%;
+  max-width:320px;
+  padding:10px;
+  margin:6px 0;
+  font-size:15px;
+}
+.finder button{
+  background:#2874f0;
+  color:#fff;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+/* Quick WhatsApp buttons */
+.quick{
+  display:flex;
+  gap:10px;
+  padding:15px;
+}
+.quick a{
+  flex:1;
+  background:#25D366;
+  color:#fff;
+  text-align:center;
+  padding:10px;
+  border-radius:6px;
+  text-decoration:none;
+  font-size:14px;
+}
+
+/* Header buttons */
+nav button{
+  background:#fff;
+  color:#2874f0;
+  font-weight:bold;
+}
+
+/* Button hover */
+button{ transition:0.2s; }
+button:hover{ opacity:0.85; }
+
+/* Dark mode full */
+.dark .top{ background:#1e1e1e; }
+.dark .filters,
+.dark .search-box,
+.dark .sort-box,
+.dark .finder,
+.dark .services,
+.dark .footer{
+  background:#1e1e1e;
+  color:#fff;
+}
+.dark input,
+.dark select{
+  background:#2a2a2a;
+  color:#fff;
+  border:1px solid #444;
+}
+
+/* Mobile polish */
+@media(max-width:600px){
+  .finder,
+  .services,
+  .footer{ margin:10px; }
+  .quick{ flex-direction:column; }
+}
