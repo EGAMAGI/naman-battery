@@ -46,71 +46,26 @@ const products = [
     name_hi: "अमरॉन करंट CR-CRTT180 180Ah टॉल ट्यूबुलर इन्वर्टर बैटरी",
     price: 18140,
     image: "amaron_crcrtt180_180ah.jpg"
-  },
-  {
-    id: 6,
-    category: "inverter",
-    brand: "Amaron",
-    name_en: "Amaron Current DP150TT42 150Ah Tall Tubular Battery",
-    name_hi: "अमरॉन करंट DP150TT42 150Ah टॉल ट्यूबुलर बैटरी",
-    price: 14870,
-    image: "amaron_dp150tt42_150ah.jpg"
-  },
-  {
-    id: 7,
-    category: "inverter",
-    brand: "Amaron",
-    name_en: "Amaron Current AR125ST36 125Ah Tubular Battery",
-    name_hi: "अमरॉन करंट AR125ST36 125Ah ट्यूबुलर बैटरी",
-    price: 11806,
-    image: "amaron_ar125st36_125ah.jpg"
-  },
-  {
-    id: 8,
-    category: "inverter",
-    brand: "Amaron",
-    name_en: "Amaron Current AR135ST36 135Ah Tubular Battery",
-    name_hi: "अमरॉन करंट AR135ST36 135Ah ट्यूबुलर बैटरी",
-    price: 11010,
-    image: "amaron_ar135st36_135ah.jpg"
-  },
-  {
-    id: 9,
-    category: "inverter",
-    brand: "Amaron",
-    name_en: "Amaron Current AR145ST36 145Ah Tubular Battery",
-    name_hi: "अमरॉन करंट AR145ST36 145Ah ट्यूबुलर बैटरी",
-    price: 13330,
-    image: "amaron_ar145st36_145ah.jpg"
-  },
-  {
-    id: 10,
-    category: "inverter",
-    brand: "Amaron",
-    name_en: "Amaron Current AR165ST36 165Ah Tubular Battery",
-    name_hi: "अमरॉन करंट AR165ST36 165Ah ट्यूबुलर बैटरी",
-    price: 14552,
-    image: "amaron_ar165st36_165ah.jpg"
-  },
-
-  // ---------- PRICE ON REQUEST PRODUCTS ----------
-  ...Array.from({ length: 40 }, (_, i) => {
-    const id = i + 11;
-    const brands = ["Exide", "Su-Kam", "Amaron"];
-    const brand = brands[i % 3];
-    return {
-      id,
-      category: "inverter",
-      brand,
-      name_en: `${brand} [Model] [Ah]`,
-      name_hi:
-        brand === "Exide"
-          ? "एक्साइड [मॉडल] [Ah]"
-          : brand === "Su-Kam"
-          ? "सु-कम [मॉडल] [Ah]"
-          : "अमरॉन [मॉडल] [Ah]",
-      price: 0,
-      image: `${brand.toLowerCase()}_${id}.jpg`
-    };
-  })
+  }
 ];
+
+// ---------- PRICE ON REQUEST (MANUAL & SAFE) ----------
+for (let i = 6; i <= 50; i++) {
+  const brands = ["Exide", "Su-Kam", "Amaron"];
+  const brand = brands[i % 3];
+
+  products.push({
+    id: i,
+    category: "inverter",
+    brand: brand,
+    name_en: `${brand} [Model] [Ah]`,
+    name_hi:
+      brand === "Exide"
+        ? "एक्साइड [मॉडल] [Ah]"
+        : brand === "Su-Kam"
+        ? "सु-कम [मॉडल] [Ah]"
+        : "अमरॉन [मॉडल] [Ah]",
+    price: 0,
+    image: `${brand.toLowerCase()}_${i}.jpg`
+  });
+}
