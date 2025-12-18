@@ -95,3 +95,5 @@ function calculateAh(){
      <a href="https://wa.me/918279557998?text=${encodeURIComponent(msg)}"
         target="_blank">Ask on WhatsApp</a>`;
 }
+
+${p.badge ? `<span class="badge">${p.badge}</span>` : ""}
