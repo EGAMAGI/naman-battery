@@ -171,3 +171,9 @@ nav button,
   padding:12px;
   border-radius:50%;
 }
+
+.dark{
+  background:#121212;
+  color:#fff;
+}
+.dark .card{ background:#1e1e1e; }
