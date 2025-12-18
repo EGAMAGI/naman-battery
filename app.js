@@ -97,3 +97,7 @@ function calculateAh(){
 }
 
 ${p.badge ? `<span class="badge">${p.badge}</span>` : ""}
+
+function downloadPrice(){
+  window.print();
+}
