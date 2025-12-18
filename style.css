@@ -98,3 +98,12 @@ nav button,
   border:1px solid #ccc;
   border-radius:6px;
 }
+.footer{
+  background:#fff;
+  padding:20px;
+  margin-top:20px;
+}
+
+.footer h3{
+  margin-top:0;
+}
