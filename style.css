@@ -95,3 +95,37 @@ button:hover{
     flex-direction:column;
   }
 }
+/* ===== HERO SECTION ===== */
+.hero{
+  background:linear-gradient(135deg,#2874f0,#1b4fbf);
+  color:#fff;
+  padding:40px 20px;
+  text-align:center;
+}
+.hero h1{
+  font-size:28px;
+  margin-bottom:10px;
+}
+.hero p{
+  font-size:16px;
+  opacity:0.95;
+}
+.hero-actions{
+  margin-top:20px;
+}
+.btn{
+  display:inline-block;
+  padding:12px 20px;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:bold;
+  margin:5px;
+}
+.btn.primary{
+  background:#fff;
+  color:#2874f0;
+}
+.btn.whatsapp{
+  background:#25D366;
+  color:#fff;
+}
