@@ -15,6 +15,7 @@
 
 <body>
 
+<!-- HEADER -->
 <header class="top">
   <div class="logo">Naman Battery</div>
 
@@ -24,7 +25,6 @@
     <button onclick="setCategory('car')">Car</button>
     <button onclick="setCategory('bike')">Bike</button>
     <button onclick="downloadPrice()">📄 Price List</button>
-
   </nav>
 
   <div class="lang">
@@ -36,10 +36,12 @@
 <!-- SEARCH -->
 <div class="search-box">
   <input type="text"
-         placeholder="Search battery, brand or Ah..."
-         onkeyup="setSearch(this.value)">
+    placeholder="Search battery, brand or Ah..."
+    onkeyup="setSearch(this.value)">
 </div>
-  <div class="sort-box">
+
+<!-- SORT -->
+<div class="sort-box">
   <select onchange="setSort(this.value)">
     <option value="">Sort</option>
     <option value="priceLow">Price: Low to High</option>
@@ -56,8 +58,41 @@
   <button onclick="setBrand('Su-Kam')">Su-Kam</button>
 </section>
 
+<!-- BATTERY FINDER -->
+<section class="finder">
+  <h3>Battery Capacity Finder</h3>
+
+  <select id="load">
+    <option value="300">Small Home (Fans + Lights)</option>
+    <option value="600">Medium Home (TV + Fans)</option>
+    <option value="1000">Shop / Large Home</option>
+  </select>
+
+  <select id="hours">
+    <option value="2">2 Hours</option>
+    <option value="4">4 Hours</option>
+    <option value="6">6 Hours</option>
+  </select>
+
+  <button onclick="calculateAh()">Find Battery</button>
+  <p id="result"></p>
+</section>
+
 <!-- PRODUCTS -->
 <div id="products" class="products"></div>
+
+<!-- SERVICES -->
+<section class="services">
+  <div>🔧 Installation</div>
+  <div>♻ Old Battery Exchange</div>
+  <div>🧪 Free Battery Check</div>
+  <div>🚚 Home Delivery</div>
+</section>
+
+<!-- SERVICE AREAS -->
+<p style="padding:15px">
+  <b>Service Areas:</b> Baraut, Baghpat, Meerut, Khekra, Shamli
+</p>
 
 <!-- FOOTER -->
 <footer class="footer">
@@ -78,55 +113,27 @@
   </iframe>
 </footer>
 
-<!-- FLOATING WHATSAPP -->
-<a class="wa-float"
-   href="https://wa.me/918279557998"
-   target="_blank">💬</a>
-
-<!-- SCRIPTS (ORDER MATTERS) -->
-<script src="data.js"></script>
-<script src="app.js"></script>
-
-</body>
-</html>
-<section class="finder">
-  <h3>Battery Capacity Finder</h3>
-  <select id="load">
-    <option value="300">Small Home (Fans + Lights)</option>
-    <option value="600">Medium Home (TV + Fans)</option>
-    <option value="1000">Shop / Large Home</option>
-  </select>
-
-  <select id="hours">
-    <option value="2">2 Hours</option>
-    <option value="4">4 Hours</option>
-    <option value="6">6 Hours</option>
-  </select>
-
-  <button onclick="calculateAh()">Find Battery</button>
-
-  <p id="result"></p>
-</section>
-
-<section class="services">
-  <div>🔧 Installation</div>
-  <div>♻ Old Battery Exchange</div>
-  <div>🧪 Free Battery Check</div>
-  <div>🚚 Home Delivery</div>
-</section>
-
+<!-- FLOATING BUTTONS -->
+<a class="wa-float" href="https://wa.me/918279557998" target="_blank">💬</a>
 <a href="tel:8279557998" class="call-float">📞</a>
 
-<button onclick="alert('Exide: 36-60 months warranty\nAmaron: 36-48 months')">
-Warranty Info
-</button>
-
-<button onclick="document.body.classList.toggle('dark')">🌙</button>
-
-<p><b>Service Areas:</b> Baraut, Baghpat, Meerut, Khekra, Shamli</p>
-
+<!-- QUICK WHATSAPP -->
 <div class="quick">
   <a href="https://wa.me/918279557998?text=Price enquiry">Price</a>
   <a href="https://wa.me/918279557998?text=Installation available?">Installation</a>
   <a href="https://wa.me/918279557998?text=Exchange available?">Exchange</a>
 </div>
+
+<!-- ACTION BUTTONS -->
+<button onclick="alert('Exide: 36–60 months warranty\nAmaron: 36–48 months')">
+Warranty Info
+</button>
+
+<button onclick="document.body.classList.toggle('dark')">🌙</button>
+
+<!-- SCRIPTS -->
+<script src="data.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
