@@ -111,3 +111,10 @@ const products = [
     };
   })
 ];
+
+{
+  id: 1,
+  brand: "Exide",
+  badge: "Best Seller",
+  ...
+}
