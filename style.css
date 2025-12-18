@@ -1,184 +1,4 @@
-body{
-  margin:0;
-  font-family:Arial, sans-serif;
-  background:#f1f3f6;
-}
-
-.top{
-  position:sticky;
-  top:0;
-  z-index:10;
-  background:#2874f0;
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:10px;
-}
-
-.logo{
-  font-size:20px;
-  font-weight:bold;
-}
-
-nav button,
-.lang button,
-.filters button{
-  margin:3px;
-  padding:6px 10px;
-  border:none;
-  cursor:pointer;
-  border-radius:4px;
-}
-
-.filters{
-  padding:10px;
-  background:#fff;
-  text-align:center;
-}
-
-.products{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:20px;
-  padding:20px;
-}
-
-.card{
-  background:#fff;
-  padding:15px;
-  border-radius:6px;
-  box-shadow:0 2px 8px rgba(0,0,0,0.1);
-  text-align:center;
-}
-
-.card img{
-  width:100%;
-  height:180px;
-  object-fit:contain;
-}
-
-.price{
-  color:green;
-  font-weight:bold;
-  margin:8px 0;
-}
-
-.wa{
-  display:block;
-  background:#25D366;
-  color:#fff;
-  padding:10px;
-  text-decoration:none;
-  border-radius:4px;
-}
-
-.wa-float{
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  background:#25D366;
-  color:#fff;
-  font-size:26px;
-  padding:12px 16px;
-  border-radius:50%;
-  text-decoration:none;
-}
-.search-box{
-  background:#fff;
-  padding:10px;
-  text-align:center;
-}
-
-.search-box input{
-  width:90%;
-  max-width:500px;
-  padding:10px;
-  font-size:16px;
-  border:1px solid #ccc;
-  border-radius:6px;
-}
-.footer{
-  background:#fff;
-  padding:20px;
-  margin-top:20px;
-}
-
-.footer h3{
-  margin-top:0;
-}
-.sort-box{
-  background:#fff;
-  padding:10px;
-  text-align:center;
-}
-.sort-box select{
-  padding:8px;
-  font-size:15px;
-  border-radius:6px;
-}
-.skeleton{
-  height:280px;
-  background:linear-gradient(90deg,#eee,#f5f5f5,#eee);
-  animation:shimmer 1.5s infinite;
-  border-radius:6px;
-}
-@keyframes shimmer{
-  0%{background-position:-300px}
-  100%{background-position:300px}
-}
-@media(max-width:600px){
-  .products{
-    grid-template-columns:repeat(2,1fr);
-  }
-  header nav{
-    display:none;
-  }
-}
-
-.badge{
-  background:#ff5722;
-  color:#fff;
-  padding:4px 6px;
-  font-size:12px;
-  position:absolute;
-  top:10px;
-  left:10px;
-  border-radius:4px;
-}
-.card{ position:relative; }
-
-.services{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-  padding:20px;
-  background:#fff;
-}
-.services div{
-  padding:15px;
-  background:#f5f5f5;
-  border-radius:6px;
-  text-align:center;
-}
-
-.call-float{
-  position:fixed;
-  bottom:80px;
-  right:20px;
-  background:#2196f3;
-  color:#fff;
-  padding:12px;
-  border-radius:50%;
-}
-
-.dark{
-  background:#121212;
-  color:#fff;
-}
-.dark .card{ background:#1e1e1e; }
-
-/* ---------- BATTERY FINDER ---------- */
+/* ========== BATTERY FINDER ========== */
 .finder{
   background:#fff;
   padding:20px;
@@ -191,9 +11,9 @@ nav button,
 .finder select,
 .finder button{
   width:100%;
-  max-width:300px;
+  max-width:320px;
   padding:10px;
-  margin:5px 0;
+  margin:6px 0;
   font-size:15px;
 }
 .finder button{
@@ -207,7 +27,7 @@ nav button,
   opacity:0.9;
 }
 
-/* ---------- QUICK WHATSAPP ---------- */
+/* ========== QUICK WHATSAPP ========== */
 .quick{
   display:flex;
   gap:10px;
@@ -224,7 +44,14 @@ nav button,
   font-size:14px;
 }
 
-/* ---------- BUTTON HOVER ---------- */
+/* ========== HEADER BUTTON STYLE ========== */
+nav button{
+  background:#fff;
+  color:#2874f0;
+  font-weight:bold;
+}
+
+/* ========== BUTTON HOVER EFFECT ========== */
 button{
   transition:0.2s;
 }
@@ -232,14 +59,11 @@ button:hover{
   opacity:0.85;
 }
 
-/* ---------- NAV BUTTON FIX ---------- */
-nav button{
-  background:#fff;
-  color:#2874f0;
-  font-weight:bold;
+/* ========== DARK MODE COMPLETE FIX ========== */
+.dark{
+  background:#121212;
+  color:#fff;
 }
-
-/* ---------- DARK MODE FIXES ---------- */
 .dark .top{
   background:#1e1e1e;
 }
@@ -258,8 +82,11 @@ nav button{
   color:#fff;
   border:1px solid #444;
 }
+.dark .card{
+  background:#1e1e1e;
+}
 
-/* ---------- MOBILE SPACING ---------- */
+/* ========== MOBILE IMPROVEMENTS ========== */
 @media(max-width:600px){
   .finder,
   .services,
