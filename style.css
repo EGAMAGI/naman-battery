@@ -339,3 +339,49 @@ nav button{
 .whatsapp-float:hover {
   background: #1ebe5d;
 }
+
+/* Filters */
+.filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 15px 0;
+}
+
+.filters input,
+.filters select {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* Category Tabs */
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.tab {
+  padding: 8px 16px;
+  border: none;
+  background: #eee;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: #2874f0;
+  color: white;
+}
+
+/* Mobile Fix */
+@media (max-width: 768px) {
+  .filters {
+    flex-direction: column;
+  }
+
+  .tabs {
+    overflow-x: auto;
+  }
+}
