@@ -4,207 +4,89 @@ let currentCategory = "all";
 let searchText = "";
 let sortType = "";
 
-// 🔁 GOOGLE SHEET SWITCH (USE LATER)
+/* ===== GOOGLE SHEET CONFIG ===== */
 const USE_GOOGLE_SHEET = true;
-// const SHEET_URL = "https://opensheet.elk.sh/1QZ9mV6Zd1G5tRCPl0OnFpKXIwNSS9FVRF0C41BUarpA/Sheet1";
+const SHEET_URL =
+  "https://opensheet.elk.sh/1QZ9mV6Zd1G5tRCPl0OnFpKXIwNSS9FVRF0C41BUarpA/Sheet1";
 
-const allProducts = products;
+/* ===== DATA HOLDER ===== */
+let allProducts = [];
 
-// sorting
-function setSort(v){
-  sortType = v;
-  renderFast();
-}
+/* ===== FILTER CONTROLS ===== */
+function setLang(l) { currentLang = l; renderFast(); }
+function setBrand(b) { currentBrand = b; renderFast(); }
+function setCategory(c) { currentCategory = c; renderFast(); }
+function setSort(v) { sortType = v; renderFast(); }
 
-// filters
-function setLang(l){ currentLang = l; renderFast(); }
-function setBrand(b){ currentBrand = b; renderFast(); }
-function setCategory(c){ currentCategory = c; renderFast(); }
-
-// debounce search
+/* ===== SEARCH (DEBOUNCED) ===== */
 let timer;
-function setSearch(t){
+function setSearch(t) {
   clearTimeout(timer);
-  timer = setTimeout(()=>{
+  timer = setTimeout(() => {
     searchText = t.toLowerCase();
     renderFast();
-  },300);
+  }, 300);
 }
 
-// skeleton
-function showSkeleton(){
+/* ===== SKELETON ===== */
+function showSkeleton() {
   const box = document.getElementById("products");
+  if (!box) return;
   box.innerHTML = "<div class='skeleton'></div>".repeat(6);
 }
 
-function renderFast(){
+/* ===== MAIN RENDER ===== */
+function renderFast() {
   const box = document.getElementById("products");
-  if(!box) return;
+  if (!box) return;
 
   showSkeleton();
 
-  requestAnimationFrame(()=>{
-    let list = allProducts.filter(p=>{
-      if(currentBrand!=="all" && p.brand!==currentBrand) return false;
-      if(currentCategory!=="all" && p.category!==currentCategory) return false;
-      if(searchText &&
+  requestAnimationFrame(() => {
+    let list = allProducts.filter(p => {
+      if (currentBrand !== "all" && p.brand !== currentBrand) return false;
+      if (currentCategory !== "all" && p.category !== currentCategory) return false;
+      if (
+        searchText &&
         !p.name_en.toLowerCase().includes(searchText) &&
         !p.name_hi.toLowerCase().includes(searchText) &&
-        !p.brand.toLowerCase().includes(searchText)) return false;
+        !p.brand.toLowerCase().includes(searchText)
+      ) return false;
       return true;
     });
 
-    if(sortType==="priceLow") list.sort((a,b)=>a.price-b.price);
-    if(sortType==="priceHigh") list.sort((a,b)=>b.price-a.price);
-    if(sortType==="name") list.sort((a,b)=>a.name_en.localeCompare(b.name_en));
+    if (sortType === "priceLow") list.sort((a, b) => a.price - b.price);
+    if (sortType === "priceHigh") list.sort((a, b) => b.price - a.price);
+    if (sortType === "name") list.sort((a, b) => a.name_en.localeCompare(b.name_en));
 
     let html = "";
-    for(const p of list){
-      const name = currentLang==="en" ? p.name_en : p.name_hi;
-      const price = p.price>0 ? "₹"+p.price : "Price on Request";
-      const msg = currentLang==="en"
-        ? `I want ${p.name_en}`
-        : `मुझे ${p.name_hi} चाहिए`;
+    for (const p of list) {
+      const name = currentLang === "en" ? p.name_en : p.name_hi;
+      const isRequest = p.price <= 0;
+      const priceText = isRequest ? "Price on Request" : `₹${p.price}`;
 
       html += `
       <div class="card">
         ${p.badge ? `<span class="badge">${p.badge}</span>` : ""}
-        <img src="${p.image}" loading="lazy"
-             onerror="this.src='no-image.png'">
+        <img src="${p.image}" loading="lazy" onerror="this.src='no-image.png'">
         <h3>${name}</h3>
         <p>${p.brand}</p>
-        <p class="price">${price}</p>
+        <p class="price ${isRequest ? "request" : ""}">${priceText}</p>
         <a class="wa"
-           href="https://wa.me/918279557998?text=${encodeURIComponent(msg)}"
+           href="https://wa.me/918279557998?text=${encodeURIComponent(
+             `I want ${p.name_en}`
+           )}"
            target="_blank">
-           ${currentLang==="en" ? "Ask on WhatsApp" : "व्हाट्सएप पर पूछें"}
+           Ask on WhatsApp
         </a>
       </div>`;
     }
 
-    box.innerHTML = html;
+    box.innerHTML = html || "<p>No products found</p>";
   });
 }
 
-// initial render
-renderFast();
-
-// Battery capacity finder
-function calculateAh(){
-  const load = document.getElementById("load").value;
-  const hours = document.getElementById("hours").value;
-  const ah = Math.ceil((load * hours) / 12 / 0.8);
-
-  const msg = `I need a ${ah}Ah battery. Please suggest best option.`;
-  document.getElementById("result").innerHTML =
-    `✅ Recommended: <b>${ah}Ah Battery</b><br>
-     <a href="https://wa.me/918279557998?text=${encodeURIComponent(msg)}"
-        target="_blank">Ask on WhatsApp</a>`;
-}
-
-// price list
-function downloadPrice(){
-  window.print();
-}
-
-function renderProducts(list) {
-  const container = document.getElementById("product-list");
-  container.innerHTML = "";
-
-  list.forEach(p => {
-    const priceText = p.price > 0 ? `₹${p.price}` : "Price on Request";
-
-    container.innerHTML += `
-      <div class="product-card">
-        ${p.badge ? `<span class="badge">${p.badge}</span>` : ""}
-        <img src="images/${p.image}" alt="${p.name_en}">
-        <h3>${p.name_en}</h3>
-        <p class="hi">${p.name_hi}</p>
-        <div class="price">${priceText}</div>
-        <a 
-          href="https://wa.me/918279557998?text=I%20want%20${encodeURIComponent(p.name_en)}"
-          target="_blank"
-          class="btn">
-          Ask on WhatsApp
-        </a>
-      </div>
-    `;
-  });
-}
-
-renderProducts(products);
-
-document.getElementById("search").addEventListener("input", e => {
-  const value = e.target.value.toLowerCase();
-  const filtered = products.filter(p =>
-    p.name_en.toLowerCase().includes(value) ||
-    p.brand.toLowerCase().includes(value)
-  );
-  renderProducts(filtered);
-});
-
-document.getElementById("brandFilter").addEventListener("change", e => {
-  const brand = e.target.value;
-  const list = brand ? products.filter(p => p.brand === brand) : products;
-  renderProducts(list);
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  let currentCategory = "all";
-
-  function applyFilters() {
-    const search = document.getElementById("search").value.toLowerCase();
-    const brand = document.getElementById("brandFilter").value;
-    const price = document.getElementById("priceFilter").value;
-
-    let filtered = products.filter(p => {
-      // category
-      if (currentCategory !== "all" && p.category !== currentCategory)
-        return false;
-
-      // search
-      if (
-        search &&
-        !p.name_en.toLowerCase().includes(search) &&
-        !p.brand.toLowerCase().includes(search)
-      )
-        return false;
-
-      // brand
-      if (brand && p.brand !== brand) return false;
-
-      // price
-      if (price && p.price > 0) {
-        const [min, max] = price.split("-").map(Number);
-        if (p.price < min || p.price > max) return false;
-      }
-
-      return true;
-    });
-
-    renderProducts(filtered);
-  }
-
-  // Events
-  document.getElementById("search").addEventListener("input", applyFilters);
-  document.getElementById("brandFilter").addEventListener("change", applyFilters);
-  document.getElementById("priceFilter").addEventListener("change", applyFilters);
-
-  // Category tabs
-  document.querySelectorAll(".tab").forEach(tab => {
-    tab.addEventListener("click", () => {
-      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-      tab.classList.add("active");
-      currentCategory = tab.dataset.category;
-      applyFilters();
-    });
-  });
-
-  renderProducts(products);
-});
-
-let allProducts = [];
-
+/* ===== LOAD DATA ===== */
 if (USE_GOOGLE_SHEET) {
   fetch(SHEET_URL)
     .then(res => res.json())
@@ -222,10 +104,29 @@ if (USE_GOOGLE_SHEET) {
       }));
       renderFast();
     })
-    .catch(() => {
-      allProducts = products; // backup
+    .catch(err => {
+      console.error("Sheet error, using backup", err);
+      allProducts = products;
       renderFast();
     });
 } else {
   allProducts = products;
+  renderFast();
+}
+
+/* ===== BATTERY FINDER ===== */
+function calculateAh() {
+  const load = document.getElementById("load").value;
+  const hours = document.getElementById("hours").value;
+  const ah = Math.ceil((load * hours) / 12 / 0.8);
+
+  document.getElementById("result").innerHTML =
+    `Recommended: <b>${ah}Ah Battery</b><br>
+     <a href="https://wa.me/918279557998?text=I%20need%20${ah}Ah%20battery"
+        target="_blank">Ask on WhatsApp</a>`;
+}
+
+/* ===== PRICE LIST ===== */
+function downloadPrice() {
+  window.print();
 }
