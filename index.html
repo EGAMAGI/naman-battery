@@ -76,12 +76,12 @@ frame-src https://www.google.com;
 </div>
 
 <!-- BRAND FILTER -->
-<section class="filters">
-  <button onclick="setBrand('all')">All Brands</button>
-  <button onclick="setBrand('Exide')">Exide</button>
-  <button onclick="setBrand('Amaron')">Amaron</button>
-  <button onclick="setBrand('Su-Kam')">Su-Kam</button>
-</section>
+<select id="brandFilter">
+  <option value="">All Brands</option>
+  <option value="Exide">Exide</option>
+  <option value="Amaron">Amaron</option>
+  <option value="Su-Kam">Su-Kam</option>
+</select>
 
 <!-- BATTERY FINDER -->
 <section class="finder">
