@@ -4,6 +4,8 @@ let currentCategory = "all";
 let searchText = "";
 let sortType = "";
 
+
+
 /* ===== GOOGLE SHEET CONFIG ===== */
 const USE_GOOGLE_SHEET = true;
 const SHEET_URL =
@@ -34,6 +36,29 @@ function showSkeleton() {
   if (!box) return;
   box.innerHTML = "<div class='skeleton'></div>".repeat(6);
 }
+
+/* ===== IMAGE HELPER (PUT HERE) ===== */
+function productImage(name) {
+  const exts = ["jpg", "jpeg", "png", "webp"];
+  let i = 0;
+
+  const img = document.createElement("img");
+  img.loading = "lazy";
+
+  function tryNext() {
+    if (i >= exts.length) {
+      img.src = "images/no-image.png";
+      return;
+    }
+    img.src = `images/${name}.${exts[i++]}`;
+  }
+
+  img.onerror = tryNext;
+  tryNext();
+
+  return img;
+}
+
 
 /* ===== MAIN RENDER ===== */
 function renderFast() {
