@@ -7,185 +7,7 @@ body{
   color:#222;
 }
 
-/* ===== UI POLISH (FINAL & CLEAN) ===== */
-
-/* Battery Finder */
-.finder{
-  background:#fff;
-  padding:20px;
-  margin:15px;
-  border-radius:8px;
-  box-shadow:0 1px 6px rgba(0,0,0,0.08);
-}
-.finder h3{ margin-top:0; }
-.finder select,
-.finder button{
-  width:100%;
-  max-width:320px;
-  padding:10px;
-  margin:6px 0;
-  font-size:15px;
-}
-.finder button{
-  background:#2874f0;
-  color:#fff;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
-}
-
-/* Quick WhatsApp */
-.quick{
-  display:flex;
-  gap:10px;
-  padding:15px;
-}
-.quick a{
-  flex:1;
-  background:#25D366;
-  color:#fff;
-  text-align:center;
-  padding:10px;
-  border-radius:6px;
-  text-decoration:none;
-  font-size:14px;
-}
-
-/* Header buttons */
-nav button{
-  background:#fff;
-  color:#2874f0;
-  font-weight:bold;
-}
-
-/* Button hover */
-button{
-  transition:0.2s;
-}
-button:hover{
-  opacity:0.85;
-}
-
-/* Dark mode (complete) */
-.dark{
-  background:#121212;
-  color:#fff;
-}
-.dark .top{
-  background:#1e1e1e;
-}
-.dark .filters,
-.dark .search-box,
-.dark .sort-box,
-.dark .finder,
-.dark .services,
-.dark .footer{
-  background:#1e1e1e;
-  color:#fff;
-}
-.dark input,
-.dark select{
-  background:#2a2a2a;
-  color:#fff;
-  border:1px solid #444;
-}
-.dark .card{
-  background:#1e1e1e;
-}
-
-/* Mobile polish */
-@media(max-width:600px){
-  .finder,
-  .services,
-  .footer{
-    margin:10px;
-  }
-  .quick{
-    flex-direction:column;
-  }
-}
-/* ===== HERO SECTION ===== */
-.hero{
-  background:linear-gradient(135deg,#2874f0,#1b4fbf);
-  color:#fff;
-  padding:40px 20px;
-  text-align:center;
-}
-.hero h1{
-  font-size:28px;
-  margin-bottom:10px;
-}
-.hero p{
-  font-size:16px;
-  opacity:0.95;
-}
-.hero-actions{
-  margin-top:20px;
-}
-.btn{
-  display:inline-block;
-  padding:12px 20px;
-  border-radius:8px;
-  text-decoration:none;
-  font-weight:bold;
-  margin:5px;
-}
-.btn.primary{
-  background:#fff;
-  color:#2874f0;
-}
-.btn.whatsapp{
-  background:#25D366;
-  color:#fff;
-}
-.card{
-  background:#fff;
-  padding:15px;
-  border-radius:14px;
-  box-shadow:0 10px 25px rgba(0,0,0,0.08);
-  text-align:center;
-  transition:0.3s ease;
-}
-.card:hover{
-  transform:translateY(-6px);
-}
-.card img{
-  width:100%;
-  height:170px;
-  object-fit:contain;
-  margin-bottom:10px;
-}
-.card h3{
-  font-size:15px;
-  min-height:42px;
-}
-.price{
-  font-size:18px;
-  font-weight:700;
-  color:#1a8f3c;
-}
-.panel{
-  background:#fff;
-  margin:16px;
-  padding:16px;
-  border-radius:14px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.06);
-}
-
-.services div{
-  padding:20px;
-  background:#f8f9fb;
-  border-radius:14px;
-  font-weight:600;
-  box-shadow:0 6px 14px rgba(0,0,0,0.06);
-}
-
-@media(max-width:600px){
-  .hero h1{ font-size:22px; }
-  .products{ gap:12px; padding:12px; }
-  .card img{ height:140px; }
-}
-
+/* ===== HEADER ===== */
 .top{
   position:sticky;
   top:0;
@@ -201,6 +23,21 @@ button:hover{
   font-size:22px;
   font-weight:700;
 }
+nav button,
+.lang button{
+  margin:4px;
+  padding:8px 12px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:600;
+}
+nav button{
+  background:#fff;
+  color:#0f4dd8;
+}
+
+/* ===== HERO ===== */
 .hero{
   background:linear-gradient(135deg,#0f4dd8,#093a9c);
   color:#fff;
@@ -233,4 +70,192 @@ button:hover{
 .btn.whatsapp{
   background:#25D366;
   color:#fff;
+}
+
+/* ===== PANELS (SEARCH / FILTER) ===== */
+.panel{
+  background:#fff;
+  margin:16px;
+  padding:16px;
+  border-radius:14px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.06);
+}
+.search-box,
+.sort-box,
+.filters{
+  text-align:center;
+  margin-bottom:10px;
+}
+.search-box input{
+  width:90%;
+  max-width:500px;
+  padding:10px;
+  font-size:15px;
+  border-radius:8px;
+  border:1px solid #ccc;
+}
+.filters button{
+  margin:4px;
+  padding:8px 12px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+/* ===== PRODUCTS ===== */
+.products{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:16px;
+  padding:16px;
+}
+.card{
+  background:#fff;
+  padding:15px;
+  border-radius:14px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+  text-align:center;
+  transition:0.3s ease;
+  position:relative;
+}
+.card:hover{
+  transform:translateY(-6px);
+}
+.card img{
+  width:100%;
+  height:170px;
+  object-fit:contain;
+  margin-bottom:10px;
+}
+.card h3{
+  font-size:15px;
+  min-height:42px;
+}
+.price{
+  font-size:18px;
+  font-weight:700;
+  color:#1a8f3c;
+}
+.wa{
+  display:block;
+  background:#25D366;
+  color:#fff;
+  padding:10px;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:600;
+}
+.badge{
+  position:absolute;
+  top:10px;
+  left:10px;
+  background:#ff5722;
+  color:#fff;
+  padding:4px 8px;
+  font-size:12px;
+  border-radius:6px;
+}
+
+/* ===== BATTERY FINDER ===== */
+.finder{
+  background:#fff;
+  padding:20px;
+  margin:16px;
+  border-radius:14px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.06);
+}
+.finder select,
+.finder button{
+  width:100%;
+  max-width:320px;
+  padding:10px;
+  margin:6px 0;
+}
+.finder button{
+  background:#0f4dd8;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+}
+
+/* ===== SERVICES ===== */
+.services{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  padding:16px;
+}
+.services div{
+  background:#f8f9fb;
+  padding:20px;
+  border-radius:14px;
+  text-align:center;
+  font-weight:600;
+  box-shadow:0 6px 14px rgba(0,0,0,0.06);
+}
+
+/* ===== QUICK WHATSAPP ===== */
+.quick{
+  display:flex;
+  gap:10px;
+  padding:16px;
+}
+.quick a{
+  flex:1;
+  background:#25D366;
+  color:#fff;
+  text-align:center;
+  padding:10px;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:600;
+}
+
+/* ===== FLOAT BUTTONS ===== */
+.wa-float{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:#25D366;
+  color:#fff;
+  font-size:26px;
+  padding:12px 16px;
+  border-radius:50%;
+}
+.call-float{
+  position:fixed;
+  bottom:80px;
+  right:20px;
+  background:#0f4dd8;
+  color:#fff;
+  padding:12px;
+  border-radius:50%;
+}
+
+/* ===== DARK MODE ===== */
+.dark{
+  background:#121212;
+  color:#fff;
+}
+.dark .top,
+.dark .panel,
+.dark .finder,
+.dark .services div,
+.dark .card,
+.dark .footer{
+  background:#1e1e1e;
+  color:#fff;
+}
+
+/* ===== MOBILE ===== */
+@media(max-width:600px){
+  .hero h1{ font-size:22px; }
+  .products{
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    padding:12px;
+  }
+  .card img{ height:140px; }
+  .quick{ flex-direction:column; }
 }
