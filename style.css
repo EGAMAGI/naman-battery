@@ -385,3 +385,14 @@ nav button{
     overflow-x: auto;
   }
 }
+
+/* ===== SECTION HEADING STYLE ===== */
+.section-title{
+  font-size:22px;
+  margin:20px 20px 5px;
+}
+
+.section-sub{
+  margin:0 20px 15px;
+  color:#666;
+}
