@@ -142,3 +142,9 @@ document.getElementById("search").addEventListener("input", e => {
   );
   renderProducts(filtered);
 });
+
+document.getElementById("brandFilter").addEventListener("change", e => {
+  const brand = e.target.value;
+  const list = brand ? products.filter(p => p.brand === brand) : products;
+  renderProducts(list);
+});
