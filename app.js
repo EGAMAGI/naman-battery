@@ -4,7 +4,6 @@ let currentCategory = "all";
 let searchText = "";
 let sortType = "";
 
-const USE_GOOGLE_SHEET = true;
 const SHEET_URL =
   "https://opensheet.elk.sh/1QZ9mV6Zd1G5tRCPl0OnFpKXIwNSS9FVRF0C41BUarpA/Sheet1";
 
@@ -45,7 +44,6 @@ function renderFast(){
       if(
         searchText &&
         !p.name_en.toLowerCase().includes(searchText) &&
-        !p.name_hi.toLowerCase().includes(searchText) &&
         !p.brand.toLowerCase().includes(searchText)
       ) return false;
       return true;
@@ -58,18 +56,16 @@ function renderFast(){
     let html = "";
 
     for(const p of list){
-      const name = currentLang==="en"?p.name_en:p.name_hi;
-      const priceText = p.price>0 ? "₹"+p.price : "Price on Request";
+      const price = p.price > 0 ? "₹"+p.price : "Price on Request";
       const msg = "I want " + p.name_en;
 
       html += `
         <div class="card">
           <img src="images/${p.image}"
-               loading="lazy"
                onerror="this.src='images/no-image.png'">
-          <h3>${name}</h3>
+          <h3>${p.name_en}</h3>
           <p>${p.brand}</p>
-          <p class="price">${priceText}</p>
+          <p class="price">${price}</p>
           <a class="wa"
              href="https://wa.me/918279557998?text=${encodeURIComponent(msg)}"
              target="_blank">
@@ -88,27 +84,14 @@ fetch(SHEET_URL)
   .then(r=>r.json())
   .then(data=>{
     allProducts = data.map(p=>({
-      id:Number(p.id),
-      category:(p.category||"").toLowerCase().includes("inverter")?"inverter":"other",
       brand:p.brand||"",
       name_en:p.name_en||"",
-      name_hi:p.name_hi||p.name_en||"",
       price:Number(p.price)||0,
-      image:p.image||"no-image.png"
+      image:p.image||"no-image.png",
+      category:"inverter"
     }));
     renderFast();
-  })
-  .catch(()=>{
-    renderFast();
   });
-
-function calculateAh(){
-  const load = document.getElementById("load").value;
-  const hours = document.getElementById("hours").value;
-  const ah = Math.ceil((load*hours)/12/0.8);
-  document.getElementById("result").innerHTML =
-    `Recommended: <b>${ah}Ah Battery</b>`;
-}
 
 function downloadPrice(){
   window.print();
