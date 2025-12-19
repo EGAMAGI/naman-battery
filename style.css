@@ -259,3 +259,9 @@ nav button{
   .card img{ height:140px; }
   .quick{ flex-direction:column; }
 }
+
+.section-title{
+  margin:20px 16px 0;
+  font-size:20px;
+  font-weight:700;
+}
