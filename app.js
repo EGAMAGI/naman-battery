@@ -106,3 +106,30 @@ function calculateAh(){
 function downloadPrice(){
   window.print();
 }
+
+function renderProducts(list) {
+  const container = document.getElementById("product-list");
+  container.innerHTML = "";
+
+  list.forEach(p => {
+    const priceText = p.price > 0 ? `₹${p.price}` : "Price on Request";
+
+    container.innerHTML += `
+      <div class="product-card">
+        ${p.badge ? `<span class="badge">${p.badge}</span>` : ""}
+        <img src="images/${p.image}" alt="${p.name_en}">
+        <h3>${p.name_en}</h3>
+        <p class="hi">${p.name_hi}</p>
+        <div class="price">${priceText}</div>
+        <a 
+          href="https://wa.me/918279557998?text=I%20want%20${encodeURIComponent(p.name_en)}"
+          target="_blank"
+          class="btn">
+          Ask on WhatsApp
+        </a>
+      </div>
+    `;
+  });
+}
+
+renderProducts(products);
