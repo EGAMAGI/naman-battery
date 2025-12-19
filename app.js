@@ -6,7 +6,7 @@ let sortType = "";
 
 // 🔁 GOOGLE SHEET SWITCH (USE LATER)
 const USE_GOOGLE_SHEET = true;
-// const SHEET_URL = "PASTE_SHEET_JSON_URL_HERE";
+// const SHEET_URL = "https://opensheet.elk.sh/1QZ9mV6Zd1G5tRCPl0OnFpKXIwNSS9FVRF0C41BUarpA/Sheet1";
 
 const allProducts = products;
 
