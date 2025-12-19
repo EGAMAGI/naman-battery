@@ -193,3 +193,36 @@ button:hover{
   font-size:22px;
   font-weight:700;
 }
+.hero{
+  background:linear-gradient(135deg,#0f4dd8,#093a9c);
+  color:#fff;
+  padding:50px 20px;
+  text-align:center;
+}
+.hero h1{
+  font-size:30px;
+  margin-bottom:10px;
+}
+.hero p{
+  font-size:16px;
+  opacity:0.95;
+}
+.hero-actions{
+  margin-top:22px;
+}
+.btn{
+  display:inline-block;
+  padding:12px 22px;
+  border-radius:10px;
+  font-weight:600;
+  text-decoration:none;
+  margin:6px;
+}
+.btn.primary{
+  background:#fff;
+  color:#0f4dd8;
+}
+.btn.whatsapp{
+  background:#25D366;
+  color:#fff;
+}
