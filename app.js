@@ -59,20 +59,35 @@ function renderFast(){
       const price = p.price > 0 ? "₹"+p.price : "Price on Request";
       const msg = "I want " + p.name_en;
 
-      html += `
-        <div class="card">
-          <img src="images/${p.image}"
-               onerror="this.src='images/no-image.png'">
-          <h3>${p.name_en}</h3>
-          <p>${p.brand}</p>
-          <p class="price">${price}</p>
-          <a class="wa"
-             href="https://wa.me/918279557998?text=${encodeURIComponent(msg)}"
-             target="_blank">
-             Ask on WhatsApp
-          </a>
-        </div>
-      `;
+     html += `
+  <div class="card product-card">
+    <div class="img-box">
+      <img src="images/${p.image}"
+           loading="lazy"
+           onerror="this.src='images/no-image.png'">
+    </div>
+
+    <h3 class="title">${name}</h3>
+
+    <p class="meta">
+      <span class="brand">${p.brand}</span>
+      ${p.warranty ? `• ${p.warranty}` : ""}
+    </p>
+
+    <p class="price ${p.price <= 0 ? "request" : ""}">
+      ${p.price > 0 ? "₹" + p.price : "Price on Request"}
+    </p>
+
+    <a class="wa-btn"
+       href="https://wa.me/918279557998?text=${encodeURIComponent(
+         "I want " + p.name_en
+       )}"
+       target="_blank">
+       Ask on WhatsApp
+    </a>
+  </div>
+`;
+
     }
 
     box.innerHTML = html || "<p>No products found</p>";
