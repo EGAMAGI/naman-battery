@@ -148,3 +148,57 @@ document.getElementById("brandFilter").addEventListener("change", e => {
   const list = brand ? products.filter(p => p.brand === brand) : products;
   renderProducts(list);
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  let currentCategory = "all";
+
+  function applyFilters() {
+    const search = document.getElementById("search").value.toLowerCase();
+    const brand = document.getElementById("brandFilter").value;
+    const price = document.getElementById("priceFilter").value;
+
+    let filtered = products.filter(p => {
+      // category
+      if (currentCategory !== "all" && p.category !== currentCategory)
+        return false;
+
+      // search
+      if (
+        search &&
+        !p.name_en.toLowerCase().includes(search) &&
+        !p.brand.toLowerCase().includes(search)
+      )
+        return false;
+
+      // brand
+      if (brand && p.brand !== brand) return false;
+
+      // price
+      if (price && p.price > 0) {
+        const [min, max] = price.split("-").map(Number);
+        if (p.price < min || p.price > max) return false;
+      }
+
+      return true;
+    });
+
+    renderProducts(filtered);
+  }
+
+  // Events
+  document.getElementById("search").addEventListener("input", applyFilters);
+  document.getElementById("brandFilter").addEventListener("change", applyFilters);
+  document.getElementById("priceFilter").addEventListener("change", applyFilters);
+
+  // Category tabs
+  document.querySelectorAll(".tab").forEach(tab => {
+    tab.addEventListener("click", () => {
+      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+      tab.classList.add("active");
+      currentCategory = tab.dataset.category;
+      applyFilters();
+    });
+  });
+
+  renderProducts(products);
+});
