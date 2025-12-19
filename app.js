@@ -86,25 +86,27 @@ function renderFast() {
 
     let html = "";
     for (const p of list) {
-      const name = currentLang === "en" ? p.name_en : p.name_hi;
-      const isRequest = p.price <= 0;
-      const priceText = isRequest ? "Price on Request" : `₹${p.price}`;
-      const msg = "I want " + p.name_en;
+  const name = currentLang === "en" ? p.name_en : p.name_hi;
+  const isRequest = p.price <= 0;
+  const priceText = isRequest ? "Price on Request" : "₹" + p.price;
+  const msg = "I want " + p.name_en;
 
-html += `
-  <div class="card">
-    <img src="images/${p.image}" loading="lazy" onerror="this.src='images/no-image.png'">
-    <h3>${name}</h3>
-    <p>${p.brand}</p>
-    <p class="price ${isRequest ? "request" : ""}">${priceText}</p>
-    <a class="wa"
-       href="https://wa.me/918279557998?text=${encodeURIComponent(msg)}"
-       target="_blank">
-       Ask on WhatsApp
-    </a>
-  </div>
-`;
-    }
+  html += `
+    <div class="card">
+      <img src="images/${p.image}" loading="lazy"
+           onerror="this.src='images/no-image.png'">
+      <h3>${name}</h3>
+      <p>${p.brand}</p>
+      <p class="price ${isRequest ? "request" : ""}">${priceText}</p>
+      <a class="wa"
+         href="https://wa.me/918279557998?text=${encodeURIComponent(msg)}"
+         target="_blank">
+         Ask on WhatsApp
+      </a>
+    </div>
+  `;
+}
+
 
     box.innerHTML = html || "<p>No products found</p>";
   
