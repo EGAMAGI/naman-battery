@@ -110,7 +110,7 @@ function renderFast() {
     }
 
     box.innerHTML = html || "<p>No products found</p>";
-  }); // ✅ THIS WAS MISSING
+  });
 }
     
   
