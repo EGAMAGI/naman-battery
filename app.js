@@ -133,3 +133,12 @@ function renderProducts(list) {
 }
 
 renderProducts(products);
+
+document.getElementById("search").addEventListener("input", e => {
+  const value = e.target.value.toLowerCase();
+  const filtered = products.filter(p =>
+    p.name_en.toLowerCase().includes(value) ||
+    p.brand.toLowerCase().includes(value)
+  );
+  renderProducts(filtered);
+});
