@@ -68,7 +68,7 @@ function renderFast() {
       html += `
       <div class="card">
         ${p.badge ? `<span class="badge">${p.badge}</span>` : ""}
-        <img src="${p.image}" loading="lazy" onerror="this.src='no-image.png'">
+        <img src="images/${p.image}" loading="lazy" onerror="this.src='images/no-image.png'">
         <h3>${name}</h3>
         <p>${p.brand}</p>
         <p class="price ${isRequest ? "request" : ""}">${priceText}</p>
