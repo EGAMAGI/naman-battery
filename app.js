@@ -85,7 +85,7 @@ function renderFast() {
     if (sortType === "name") list.sort((a, b) => a.name_en.localeCompare(b.name_en));
 
     let html = "";
-    for (const p of list) {
+  for (const p of list) {
   const name = currentLang === "en" ? p.name_en : p.name_hi;
   const isRequest = p.price <= 0;
   const priceText = isRequest ? "Price on Request" : "₹" + p.price;
@@ -106,6 +106,7 @@ function renderFast() {
     </div>
   `;
 }
+
 
 
     box.innerHTML = html || "<p>No products found</p>";
