@@ -105,6 +105,32 @@ frame-src https://www.google.com;
 
   <h2 class="section-title">Inverter Batteries</h2>
 
+  <!-- Filters -->
+<div class="filters">
+  <input type="text" id="search" placeholder="Search product">
+
+  <select id="brandFilter">
+    <option value="">All Brands</option>
+    <option value="Exide">Exide</option>
+    <option value="Amaron">Amaron</option>
+    <option value="Su-Kam">Su-Kam</option>
+  </select>
+
+  <select id="priceFilter">
+    <option value="">All Prices</option>
+    <option value="0-15000">Below ₹15,000</option>
+    <option value="15000-25000">₹15,000 – ₹25,000</option>
+    <option value="25000-999999">Above ₹25,000</option>
+  </select>
+</div>
+
+<!-- Category Tabs -->
+<div class="tabs">
+  <button class="tab active" data-category="all">All</button>
+  <button class="tab" data-category="inverter">Inverter</button>
+  <button class="tab" data-category="battery">Battery</button>
+</div>
+
 <!-- PRODUCTS -->
 <div id="products" class="products"></div>
 
@@ -170,8 +196,7 @@ Warranty Info
 
  <!-- Floating WhatsApp Button -->
   <a href="https://wa.me/918279557998" class="whatsapp-float" target="_blank">💬</a>
-</body>
-</html>
+
 
 </body>
 </html>
