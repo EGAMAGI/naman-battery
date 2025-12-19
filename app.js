@@ -202,3 +202,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
   renderProducts(products);
 });
+
+let allProducts = [];
+
+if (USE_GOOGLE_SHEET) {
+  fetch(SHEET_URL)
+    .then(res => res.json())
+    .then(data => {
+      allProducts = data.map(p => ({
+        id: Number(p.id),
+        category: (p.category || "").toLowerCase().includes("inverter")
+          ? "inverter"
+          : "other",
+        brand: p.brand,
+        name_en: p.name_en,
+        name_hi: p.name_hi || p.name_en,
+        price: Number(p.price),
+        image: p.image
+      }));
+      renderFast();
+    })
+    .catch(() => {
+      allProducts = products; // backup
+      renderFast();
+    });
+} else {
+  allProducts = products;
+}
