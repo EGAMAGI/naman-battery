@@ -108,6 +108,12 @@ function renderFast() {
     }
 
     box.innerHTML = html || "<p>No products found</p>";
+  
+    // ✅ PUT IMAGE CODE HERE
+  document.querySelectorAll(".img-wrap").forEach(div => {
+    const name = div.dataset.img;
+    const img = productImage(name);
+    div.appendChild(img);
   });
 }
 
