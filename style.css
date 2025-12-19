@@ -132,11 +132,14 @@ nav button{
   font-size:15px;
   min-height:42px;
 }
-.price{
-  font-size:18px;
-  font-weight:700;
-  color:#1a8f3c;
+.price.request{
+  color:#ff5722;
+  background:#fff3e0;
+  padding:6px 10px;
+  border-radius:8px;
+  display:inline-block;
 }
+
 .wa{
   display:block;
   background:#25D366;
