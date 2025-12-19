@@ -5,7 +5,7 @@ let searchText = "";
 let sortType = "";
 
 // 🔁 GOOGLE SHEET SWITCH (USE LATER)
-const USE_GOOGLE_SHEET = false;
+const USE_GOOGLE_SHEET = true;
 // const SHEET_URL = "PASTE_SHEET_JSON_URL_HERE";
 
 const allProducts = products;
