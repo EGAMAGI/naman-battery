@@ -4,6 +4,10 @@ const SHEET_URL =
 let products = [];
 let filteredProducts = [];
 
+function normalizeBrand(value) {
+  return String(value || "").trim().replace(/\s+/g, " ").toLowerCase();
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
   initQuoteModal();
@@ -16,11 +20,13 @@ document.addEventListener("DOMContentLoaded", () => {
   loadProducts()
     .then(list => {
       products = list;
+      populateBrandOptions(products);
       applyFilters();
     })
     .catch(() => {
       const fallback = getFallbackProducts();
       products = fallback;
+      populateBrandOptions(products);
       applyFilters();
     });
 });
@@ -48,12 +54,12 @@ function filterList(list, query = "", brand = "", priceBucket = "") {
   const q = (query || "").trim().toLowerCase();
   return list.filter(p => {
     const name = String(p.name_en || p.name || "").toLowerCase();
-    const brandName = String(p.brand || "");
+    const brandName = String(p.brand || "").trim();
     const brandLower = brandName.toLowerCase();
     const priceValue = normalizePrice(p.price);
 
     if (q && !name.includes(q) && !brandLower.includes(q)) return false;
-    if (brand && brandName !== brand) return false;
+    if (brand && normalizeBrand(brandName) !== normalizeBrand(brand)) return false;
 
     if (priceBucket) {
       if (priceValue === null) return false;
@@ -174,6 +180,43 @@ function initFilters() {
       if (controls.sortFilter) controls.sortFilter.value = "recommended";
       applyFilters();
     });
+  }
+}
+
+function populateBrandOptions(list) {
+  const select = controls?.brandFilter || document.getElementById("brandFilter");
+  if (!select) return;
+
+  const currentValue = select.value || "";
+
+  const unique = new Map();
+  (Array.isArray(list) ? list : []).forEach(p => {
+    const raw = String(p?.brand || "").trim();
+    if (!raw) return;
+    const key = normalizeBrand(raw);
+    if (!unique.has(key)) unique.set(key, raw);
+  });
+
+  const brands = Array.from(unique.values()).sort((a, b) => a.localeCompare(b));
+
+  // Rebuild options (keep a stable first option).
+  select.innerHTML = "";
+  const optAll = document.createElement("option");
+  optAll.value = "";
+  optAll.textContent = "All Brands";
+  select.appendChild(optAll);
+
+  brands.forEach(b => {
+    const opt = document.createElement("option");
+    opt.value = b;
+    opt.textContent = b;
+    select.appendChild(opt);
+  });
+
+  // Restore selection if still available.
+  if (currentValue) {
+    const match = Array.from(select.options).find(o => normalizeBrand(o.value) === normalizeBrand(currentValue));
+    select.value = match ? match.value : "";
   }
 }
 
