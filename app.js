@@ -243,18 +243,24 @@ function getPriceParts(product) {
   return { effective, offer, mrp: mrpValue, base: price };
 }
 
-function filterList(list, query = "", category = "", brand = "", priceBucket = "") {
+function filterList(list, query = "", category = "", brand = "", priceBucket = "", offersOnly = false) {
   const q = (query || "").trim().toLowerCase();
   return list.filter(p => {
     const name = String(p.name_en || p.name || "").toLowerCase();
     const brandName = String(p.brand || "").trim();
     const brandLower = brandName.toLowerCase();
     const categoryName = String(p.category || "").trim();
-    const priceValue = getPriceParts(p).effective;
+    const priceParts = getPriceParts(p);
+    const priceValue = priceParts.effective;
 
     if (q && !name.includes(q) && !brandLower.includes(q)) return false;
     if (category && normalizeCategory(categoryName) !== normalizeCategory(category)) return false;
     if (brand && normalizeBrand(brandName) !== normalizeBrand(brand)) return false;
+
+    if (offersOnly) {
+      const hasDiscount = Boolean(priceParts?.offer && priceParts?.mrp && priceParts.mrp > priceParts.offer);
+      if (!hasDiscount) return false;
+    }
 
     if (priceBucket) {
       if (priceValue === null) return false;
@@ -352,6 +358,7 @@ function renderProducts(list) {
     const mrpValue = priceParts.mrp;
     const priceText = priceValue ? `₹${priceValue.toLocaleString("en-IN")}` : "Price on Request";
     const badge = p.badge ? String(p.badge) : "";
+    const hasOffer = Boolean(mrpValue && offerValue && mrpValue > offerValue);
     const rating = p.rating ? Number(p.rating) : null;
     const warranty = p.warranty_months ? Number(p.warranty_months) : null;
     const stockNum = Number(p.stock);
@@ -384,6 +391,7 @@ function renderProducts(list) {
 
     card.innerHTML = `
       ${badge ? `<div class=\"badge\">${escapeHtml(badge)}</div>` : ""}
+      ${hasOffer ? `<div class=\"badge offer\">Offer</div>` : ""}
       ${hasStock ? `<div class=\"stock-badge ${inStock ? "in" : "out"}\">${inStock ? "In Stock" : "Out of Stock"}</div>` : ""}
       <img loading="lazy" decoding="async" src="images/${escapeAttr(p.image || "")}" alt="${escapeAttr(p.name_en || "Battery")}" onerror="this.onerror=null;this.src='images/logo.png'">
       <h3>${escapeHtml(p.name_en || "")}</h3>
@@ -421,6 +429,7 @@ function initFilters() {
     brandFilter: document.getElementById("brandFilter"),
     priceFilter: document.getElementById("priceFilter"),
     sortFilter: document.getElementById("sortFilter"),
+    offersOnly: document.getElementById("offersOnly"),
     clearFilters: document.getElementById("clearFilters"),
   };
 
@@ -429,6 +438,7 @@ function initFilters() {
   if (controls.brandFilter) controls.brandFilter.addEventListener("change", applyFilters);
   if (controls.priceFilter) controls.priceFilter.addEventListener("change", applyFilters);
   if (controls.sortFilter) controls.sortFilter.addEventListener("change", applyFilters);
+  if (controls.offersOnly) controls.offersOnly.addEventListener("change", applyFilters);
   if (controls.clearFilters) {
     controls.clearFilters.addEventListener("click", () => {
       if (controls.searchInput) controls.searchInput.value = "";
@@ -436,6 +446,7 @@ function initFilters() {
       if (controls.brandFilter) controls.brandFilter.value = "";
       if (controls.priceFilter) controls.priceFilter.value = "";
       if (controls.sortFilter) controls.sortFilter.value = "recommended";
+      if (controls.offersOnly) controls.offersOnly.checked = false;
       applyFilters();
     });
   }
@@ -586,8 +597,9 @@ function applyFilters() {
   const brand = controls?.brandFilter?.value || "";
   const priceBucket = controls?.priceFilter?.value || "";
   const sortKey = controls?.sortFilter?.value || "recommended";
+  const offersOnly = Boolean(controls?.offersOnly?.checked);
 
-  filteredProducts = filterList(products, query, category, brand, priceBucket);
+  filteredProducts = filterList(products, query, category, brand, priceBucket, offersOnly);
   filteredProducts = sortList(filteredProducts, sortKey);
   renderProducts(filteredProducts);
 }

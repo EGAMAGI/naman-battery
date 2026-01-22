@@ -345,6 +345,32 @@ h3 {
   transition: border 0.2s, box-shadow 0.2s;
 }
 
+.offers-only {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(40,116,240,0.18);
+  background: rgba(40,116,240,0.06);
+  font-size: 14px;
+  font-weight: 700;
+  color: #0e0303;
+  user-select: none;
+}
+
+html[data-theme="dark"] .offers-only {
+  background: rgba(99,160,255,0.12);
+  border-color: rgba(99,160,255,0.18);
+  color: var(--text);
+}
+
+.offers-only input {
+  width: 16px;
+  height: 16px;
+  accent-color: #2874f0;
+}
+
 .filters input:focus,
 .filters select:focus {
   border-color: #2874f0;
@@ -406,6 +432,16 @@ html[data-theme="dark"] .hero p {
   background: rgba(255, 179, 0, 0.18);
   color: #7a5200;
   margin-bottom: 10px;
+}
+
+.badge.offer {
+  background: rgba(16, 185, 129, 0.16);
+  color: #065f46;
+}
+
+html[data-theme="dark"] .badge.offer {
+  background: rgba(16, 185, 129, 0.14);
+  color: #a7f3d0;
 }
 
 .stock-badge {
