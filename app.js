@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
       products = list;
       populateCategoryOptions(products);
       populateBrandOptions(products);
+      populatePriceOptions(products);
       applyFilters();
     })
     .catch(() => {
@@ -33,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
       products = fallback;
       populateCategoryOptions(products);
       populateBrandOptions(products);
+      populatePriceOptions(products);
       applyFilters();
     });
 });
@@ -71,9 +73,23 @@ function filterList(list, query = "", category = "", brand = "", priceBucket = "
 
     if (priceBucket) {
       if (priceValue === null) return false;
-      if (priceBucket === "below15000" && priceValue >= 15000) return false;
-      if (priceBucket === "15000-25000" && (priceValue < 15000 || priceValue > 25000)) return false;
-      if (priceBucket === "above25000" && priceValue <= 25000) return false;
+
+      // Dynamic range: "range:<min>:<max>" where min/max are numbers or empty.
+      if (String(priceBucket).startsWith("range:")) {
+        const parts = String(priceBucket).split(":");
+        const minRaw = parts[1] ?? "";
+        const maxRaw = parts[2] ?? "";
+        const min = minRaw === "" ? null : Number(minRaw);
+        const max = maxRaw === "" ? null : Number(maxRaw);
+
+        if (min !== null && Number.isFinite(min) && priceValue < min) return false;
+        if (max !== null && Number.isFinite(max) && priceValue > max) return false;
+      } else {
+        // Backward compatible fixed buckets.
+        if (priceBucket === "below15000" && priceValue >= 15000) return false;
+        if (priceBucket === "15000-25000" && (priceValue < 15000 || priceValue > 25000)) return false;
+        if (priceBucket === "above25000" && priceValue <= 25000) return false;
+      }
     }
 
     return true;
@@ -262,6 +278,73 @@ function populateBrandOptions(list) {
   // Restore selection if still available.
   if (currentValue) {
     const match = Array.from(select.options).find(o => normalizeBrand(o.value) === normalizeBrand(currentValue));
+    select.value = match ? match.value : "";
+  }
+}
+
+function roundBucket(value, step) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return null;
+  const s = Number(step) || 1000;
+  return Math.max(s, Math.round(n / s) * s);
+}
+
+function percentile(sorted, p) {
+  if (!sorted.length) return null;
+  const idx = Math.min(sorted.length - 1, Math.max(0, Math.floor(p * (sorted.length - 1))));
+  return sorted[idx];
+}
+
+function populatePriceOptions(list) {
+  const select = controls?.priceFilter || document.getElementById("priceFilter");
+  if (!select) return;
+
+  const currentValue = select.value || "";
+  const prices = (Array.isArray(list) ? list : [])
+    .map(p => normalizePrice(p?.price))
+    .filter(v => typeof v === "number" && Number.isFinite(v) && v > 0)
+    .sort((a, b) => a - b);
+
+  // If we don't have enough prices, keep whatever is in HTML.
+  if (prices.length < 3) return;
+
+  const step = prices.some(v => v >= 50000) ? 5000 : 1000;
+  let t1 = roundBucket(percentile(prices, 0.33), step);
+  let t2 = roundBucket(percentile(prices, 0.67), step);
+
+  if (t1 === null || t2 === null) return;
+  if (t2 <= t1) {
+    // Fallback to median split if quantiles collapse.
+    t1 = roundBucket(percentile(prices, 0.5), step);
+    t2 = t1 ? t1 + step : null;
+  }
+  if (t1 === null || t2 === null) return;
+
+  // Rebuild options.
+  select.innerHTML = "";
+  const optAll = document.createElement("option");
+  optAll.value = "";
+  optAll.textContent = "All Prices";
+  select.appendChild(optAll);
+
+  const opt1 = document.createElement("option");
+  opt1.value = `range::${t1 - 1}`;
+  opt1.textContent = `Below ₹${(t1).toLocaleString("en-IN")}`;
+  select.appendChild(opt1);
+
+  const opt2 = document.createElement("option");
+  opt2.value = `range:${t1}:${t2}`;
+  opt2.textContent = `₹${t1.toLocaleString("en-IN")} – ₹${t2.toLocaleString("en-IN")}`;
+  select.appendChild(opt2);
+
+  const opt3 = document.createElement("option");
+  opt3.value = `range:${t2 + 1}:`;
+  opt3.textContent = `Above ₹${t2.toLocaleString("en-IN")}`;
+  select.appendChild(opt3);
+
+  // Restore selection if still relevant.
+  if (currentValue) {
+    const match = Array.from(select.options).find(o => o.value === currentValue);
     select.value = match ? match.value : "";
   }
 }
