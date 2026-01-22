@@ -66,8 +66,8 @@ function randomRating() {
   return +(Math.random() * 2 + 3).toFixed(1); // 3.0 to 5.0
 }
 
-// Main products array
-const products = [
+// Main fallback products array (kept out of global name collisions)
+const fallbackProducts = [
   {
     id: 1,
     category: "inverter",
@@ -149,7 +149,7 @@ for (let i = 6; i <= 50; i++) {
   const description = randomDescription(brand, model, ah, category);
   const rating = randomRating();
 
-  products.push({
+  fallbackProducts.push({
     id: i,
     category,
     brand,
@@ -172,12 +172,12 @@ for (let i = 6; i <= 50; i++) {
 
 // Export for use in other modules (if using Node.js or ES Modules)
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { products, BRANDS, CATEGORIES };
+  module.exports = { products: fallbackProducts, BRANDS, CATEGORIES };
 }
 
 // Expose to browser (fallback data when Sheet is unavailable)
 if (typeof window !== "undefined") {
-  window.NAMAN_PRODUCTS = products;
+  window.NAMAN_PRODUCTS = fallbackProducts;
   window.NAMAN_BRANDS = BRANDS;
   window.NAMAN_CATEGORIES = CATEGORIES;
 }
