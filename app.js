@@ -98,7 +98,30 @@ function filterList(list, query = "", category = "", brand = "", priceBucket = "
 
 function sortList(list, sortKey) {
   const copy = [...list];
-  if (sortKey === "priceAsc") {
+
+  if (sortKey === "recommended") {
+    copy.sort((a, b) => {
+      const ra = Number(a?.rating);
+      const rb = Number(b?.rating);
+      const ratingA = Number.isFinite(ra) ? ra : 0;
+      const ratingB = Number.isFinite(rb) ? rb : 0;
+      if (ratingB !== ratingA) return ratingB - ratingA;
+
+      const sa = Number(a?.stock);
+      const sb = Number(b?.stock);
+      const stockA = Number.isFinite(sa) ? sa : 0;
+      const stockB = Number.isFinite(sb) ? sb : 0;
+      if (stockB !== stockA) return stockB - stockA;
+
+      const pa = normalizePrice(a?.price);
+      const pb = normalizePrice(b?.price);
+      const priceA = pa ?? 9e15;
+      const priceB = pb ?? 9e15;
+      if (priceA !== priceB) return priceA - priceB;
+
+      return String(a?.name_en || a?.name || "").localeCompare(String(b?.name_en || b?.name || ""));
+    });
+  } else if (sortKey === "priceAsc") {
     copy.sort((a, b) => (normalizePrice(a.price) ?? 9e15) - (normalizePrice(b.price) ?? 9e15));
   } else if (sortKey === "priceDesc") {
     copy.sort((a, b) => (normalizePrice(b.price) ?? -1) - (normalizePrice(a.price) ?? -1));
