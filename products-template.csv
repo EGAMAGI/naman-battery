@@ -1,0 +1,4 @@
+sku,name,brand,category,price,sale_price,stock_qty,warranty_months,capacity_ah,voltage,description,image_url,city_available
+EX-150AH-01,Exide Inverter Battery 150Ah,Exide,inverter,15500,14999,5,36,150,12V,"Tubular inverter battery. Includes installation support (as per availability).","https://example.com/images/exide-150ah.jpg","Baraut|Ghaziabad"
+LUM-150AH-01,Luminous Inverter Battery 150Ah,Luminous,inverter,15200,,3,36,150,12V,"Reliable inverter battery for home backup.","https://example.com/images/luminous-150ah.jpg","Baraut|Ghaziabad"
+AMR-200AH-01,Amaron Inverter Battery 200Ah,Amaron,inverter,18900,,2,48,200,12V,"High capacity battery for longer backup.","https://example.com/images/amaron-200ah.jpg","Baraut"
