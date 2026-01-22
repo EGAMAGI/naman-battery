@@ -1042,6 +1042,11 @@ html[data-theme="dark"] .back-to-top {
   margin: 1rem 0;
 }
 
+/* Footer GST */
+.footer-gst {
+  margin: 0.75rem 0;
+}
+
 /* Copyright Text */
 .copyright {
   font-size: 0.95em;
