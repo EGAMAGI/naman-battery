@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initQuoteModal();
   initBackToTop();
   initFilters();
+  initFaqHelper();
 
   const grid = document.getElementById("productsGrid") || document.querySelector(".products-grid");
   if (grid) renderSkeleton(grid, 8);
@@ -38,6 +39,88 @@ document.addEventListener("DOMContentLoaded", () => {
       applyFilters();
     });
 });
+
+function initFaqHelper() {
+  const input = document.getElementById("faqQuestion");
+  const btn = document.getElementById("faqAskBtn");
+  const out = document.getElementById("faqAnswer");
+  const faqRoot = document.querySelector("#faq .faq-list");
+
+  if (!input || !btn || !out || !faqRoot) return;
+
+  const entries = Array.from(faqRoot.querySelectorAll("details")).map(d => {
+    const q = d.querySelector("summary")?.textContent?.trim() || "";
+    const a = d.querySelector("p")?.textContent?.trim() || "";
+    return { q, a };
+  }).filter(e => e.q && e.a);
+
+  const tokenize = text => {
+    const t = String(text || "")
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (!t) return [];
+    const stop = new Set(["the","a","an","and","or","to","for","of","in","on","is","are","do","does","you","we","i","it","with","our","your","provide","available"]);
+    return t.split(" ").filter(w => w.length >= 2 && !stop.has(w));
+  };
+
+  const score = (query, candidate) => {
+    const qTokens = tokenize(query);
+    const cTokens = tokenize(candidate);
+    if (!qTokens.length || !cTokens.length) return 0;
+    const cSet = new Set(cTokens);
+    let overlap = 0;
+    qTokens.forEach(w => { if (cSet.has(w)) overlap += 1; });
+    return overlap / Math.sqrt(qTokens.length * cTokens.length);
+  };
+
+  const render = html => { out.innerHTML = html; };
+  render('<span class="muted">Ask a question above to get an instant answer.</span>');
+
+  const findBest = question => {
+    let best = null;
+    let bestScore = 0;
+    entries.forEach(e => {
+      const s = Math.max(score(question, e.q), score(question, e.a));
+      if (s > bestScore) { bestScore = s; best = e; }
+    });
+    return { best, bestScore };
+  };
+
+  const ask = () => {
+    const question = String(input.value || "").trim();
+    if (!question) {
+      render('<span class="muted">Please type your question.</span>');
+      return;
+    }
+
+    const { best, bestScore } = findBest(question);
+
+    // Threshold tuned for small FAQ set.
+    if (best && bestScore >= 0.25) {
+      render(`
+        <div><strong>${escapeHtml(best.q)}</strong></div>
+        <div style="margin-top:6px;">${escapeHtml(best.a)}</div>
+        <div class="muted" style="margin-top:8px;">Not what you needed? Ask on <a href="https://wa.me/918279557998?text=${encodeURIComponent("Hi, I have a question: " + question)}" target="_blank" rel="noopener">WhatsApp</a>.</div>
+      `);
+      return;
+    }
+
+    render(`
+      <div><strong>We couldn’t find this in our FAQ.</strong></div>
+      <div class="muted" style="margin-top:6px;">Send your question on <a href="https://wa.me/918279557998?text=${encodeURIComponent("Hi, I have a question: " + question)}" target="_blank" rel="noopener">WhatsApp</a> and we will reply quickly.</div>
+    `);
+  };
+
+  btn.addEventListener("click", ask);
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      ask();
+    }
+  });
+}
 
 function getFallbackProducts() {
   const local = typeof window !== "undefined" ? window.NAMAN_PRODUCTS : null;
