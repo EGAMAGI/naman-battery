@@ -215,6 +215,34 @@ function normalizePrice(raw) {
   return Number.isFinite(num) && num > 0 ? num : null;
 }
 
+function getPriceParts(product) {
+  const price = normalizePrice(product?.price);
+  const sale = normalizePrice(
+    product?.sale_price ?? product?.offer_price ?? product?.salePrice ?? product?.offerPrice
+  );
+  const mrp = normalizePrice(
+    product?.mrp ??
+      product?.mrp_price ??
+      product?.regular_price ??
+      product?.list_price ??
+      product?.mrpPrice ??
+      product?.regularPrice ??
+      product?.listPrice
+  );
+
+  let offer = sale;
+  let mrpValue = mrp;
+
+  // Common sheet pattern: price=MRP and sale_price=Offer.
+  if (offer && !mrpValue && price && price > offer) mrpValue = price;
+
+  // Alternate pattern: mrp present and price is the offer.
+  if (mrpValue && !offer && price && price < mrpValue) offer = price;
+
+  const effective = offer ?? price ?? null;
+  return { effective, offer, mrp: mrpValue, base: price };
+}
+
 function filterList(list, query = "", category = "", brand = "", priceBucket = "") {
   const q = (query || "").trim().toLowerCase();
   return list.filter(p => {
@@ -222,7 +250,7 @@ function filterList(list, query = "", category = "", brand = "", priceBucket = "
     const brandName = String(p.brand || "").trim();
     const brandLower = brandName.toLowerCase();
     const categoryName = String(p.category || "").trim();
-    const priceValue = normalizePrice(p.price);
+    const priceValue = getPriceParts(p).effective;
 
     if (q && !name.includes(q) && !brandLower.includes(q)) return false;
     if (category && normalizeCategory(categoryName) !== normalizeCategory(category)) return false;
@@ -270,8 +298,8 @@ function sortList(list, sortKey) {
       const stockB = Number.isFinite(sb) ? sb : 0;
       if (stockB !== stockA) return stockB - stockA;
 
-      const pa = normalizePrice(a?.price);
-      const pb = normalizePrice(b?.price);
+      const pa = getPriceParts(a).effective;
+      const pb = getPriceParts(b).effective;
       const priceA = pa ?? 9e15;
       const priceB = pb ?? 9e15;
       if (priceA !== priceB) return priceA - priceB;
@@ -279,9 +307,9 @@ function sortList(list, sortKey) {
       return String(a?.name_en || a?.name || "").localeCompare(String(b?.name_en || b?.name || ""));
     });
   } else if (sortKey === "priceAsc") {
-    copy.sort((a, b) => (normalizePrice(a.price) ?? 9e15) - (normalizePrice(b.price) ?? 9e15));
+    copy.sort((a, b) => (getPriceParts(a).effective ?? 9e15) - (getPriceParts(b).effective ?? 9e15));
   } else if (sortKey === "priceDesc") {
-    copy.sort((a, b) => (normalizePrice(b.price) ?? -1) - (normalizePrice(a.price) ?? -1));
+    copy.sort((a, b) => (getPriceParts(b).effective ?? -1) - (getPriceParts(a).effective ?? -1));
   } else if (sortKey === "nameAsc") {
     copy.sort((a, b) => String(a.name_en || "").localeCompare(String(b.name_en || "")));
   }
@@ -318,7 +346,10 @@ function renderProducts(list) {
   const fragment = document.createDocumentFragment();
 
   list.forEach(p => {
-    const priceValue = normalizePrice(p.price);
+    const priceParts = getPriceParts(p);
+    const priceValue = priceParts.effective;
+    const offerValue = priceParts.offer;
+    const mrpValue = priceParts.mrp;
     const priceText = priceValue ? `₹${priceValue.toLocaleString("en-IN")}` : "Price on Request";
     const badge = p.badge ? String(p.badge) : "";
     const rating = p.rating ? Number(p.rating) : null;
@@ -335,6 +366,22 @@ function renderProducts(list) {
 
     const waText = encodeURIComponent(`Hi, I want ${p.name_en || "this battery"}. Please share price, warranty, and installation details.`);
 
+    let priceHtml = `<p class="price request">Price on Request</p>`;
+    if (priceValue) {
+      if (mrpValue && offerValue && mrpValue > offerValue) {
+        const offPct = Math.round(((mrpValue - offerValue) / mrpValue) * 100);
+        priceHtml = `
+          <div class="price-row">
+            <span class="price">₹${offerValue.toLocaleString("en-IN")}</span>
+            <span class="price-mrp">₹${mrpValue.toLocaleString("en-IN")}</span>
+            ${Number.isFinite(offPct) && offPct > 0 ? `<span class="price-off">${offPct}% OFF</span>` : ""}
+          </div>
+        `;
+      } else {
+        priceHtml = `<p class="price">${priceText}</p>`;
+      }
+    }
+
     card.innerHTML = `
       ${badge ? `<div class=\"badge\">${escapeHtml(badge)}</div>` : ""}
       ${hasStock ? `<div class=\"stock-badge ${inStock ? "in" : "out"}\">${inStock ? "In Stock" : "Out of Stock"}</div>` : ""}
@@ -342,7 +389,7 @@ function renderProducts(list) {
       <h3>${escapeHtml(p.name_en || "")}</h3>
       <p class="brand">${escapeHtml(p.brand || "")}${warranty ? ` • ${warranty} mo warranty` : ""}</p>
       ${rating ? `<div class=\"rating\" aria-label=\"Rating\">⭐ ${rating.toFixed(1)}</div>` : ""}
-      <p class="price ${priceValue ? "" : "request"}">${priceText}</p>
+      ${priceHtml}
       <a class="btn whatsapp full" href="https://wa.me/918279557998?text=${waText}" target="_blank" rel="noopener">Ask on WhatsApp</a>
     `;
 

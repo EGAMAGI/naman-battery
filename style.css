@@ -839,6 +839,33 @@ html[data-theme="dark"] .back-to-top {
   color: #ff5722;
 }
 
+.price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 8px 0;
+  flex-wrap: wrap;
+}
+
+.price-row .price {
+  margin: 0;
+}
+
+.price-mrp {
+  font-size: 14px;
+  color: rgba(14, 3, 3, 0.65);
+  text-decoration: line-through;
+}
+
+.price-off {
+  font-size: 12px;
+  font-weight: 700;
+  color: #1b7f3a;
+  background: rgba(27, 127, 58, 0.12);
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+
 /* SERVICES */
 .services {
   background: #130a0a;
