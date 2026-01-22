@@ -364,6 +364,7 @@ h3 {
   border-radius: 16px;
   padding: 18px;
   text-align: center;
+  position: relative;
   box-shadow: 0 6px 18px rgba(0,0,0,0.08);
   transition: transform 0.25s, box-shadow 0.25s, border 0.2s;
   border: 1px solid #f0f0f0;
@@ -405,6 +406,37 @@ html[data-theme="dark"] .hero p {
   background: rgba(255, 179, 0, 0.18);
   color: #7a5200;
   margin-bottom: 10px;
+}
+
+.stock-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(16, 185, 129, 0.28);
+  background: rgba(16, 185, 129, 0.14);
+  color: #065f46;
+}
+
+.stock-badge.out {
+  border-color: rgba(239, 68, 68, 0.28);
+  background: rgba(239, 68, 68, 0.12);
+  color: #991b1b;
+}
+
+html[data-theme="dark"] .stock-badge {
+  border-color: rgba(16, 185, 129, 0.35);
+  background: rgba(16, 185, 129, 0.14);
+  color: #a7f3d0;
+}
+
+html[data-theme="dark"] .stock-badge.out {
+  border-color: rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.14);
+  color: #fecaca;
 }
 
 .rating {

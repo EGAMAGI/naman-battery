@@ -166,6 +166,9 @@ function renderProducts(list) {
     const badge = p.badge ? String(p.badge) : "";
     const rating = p.rating ? Number(p.rating) : null;
     const warranty = p.warranty_months ? Number(p.warranty_months) : null;
+    const stockNum = Number(p.stock);
+    const hasStock = Number.isFinite(stockNum);
+    const inStock = hasStock ? stockNum > 0 : null;
 
     const card = document.createElement("div");
     card.className = "product-card";
@@ -177,6 +180,7 @@ function renderProducts(list) {
 
     card.innerHTML = `
       ${badge ? `<div class=\"badge\">${escapeHtml(badge)}</div>` : ""}
+      ${hasStock ? `<div class=\"stock-badge ${inStock ? "in" : "out"}\">${inStock ? "In Stock" : "Out of Stock"}</div>` : ""}
       <img src="images/${escapeAttr(p.image || "")}" alt="${escapeAttr(p.name_en || "Battery")}" onerror="this.onerror=null;this.src='images/logo.png'">
       <h3>${escapeHtml(p.name_en || "")}</h3>
       <p class="brand">${escapeHtml(p.brand || "")}${warranty ? ` • ${warranty} mo warranty` : ""}</p>
