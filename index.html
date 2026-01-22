@@ -18,179 +18,36 @@
 
   <!-- Favicon -->
   <link rel="icon" href="images/favicon.ico" type="image/x-icon">
-  <style>
-    .header {
-      background: linear-gradient(90deg, #2874f0 60%, #00c6fb 100%);
-      box-shadow: 0 4px 24px rgba(40,116,240,0.13);
-      padding: 0;
-    }
-    .header-flex {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      padding: 0 2vw;
-      min-height: 64px;
-    }
-    .logo {
-      font-weight: bold;
-      font-size: 2rem;
-      color: #e5da0c;
-      letter-spacing: 2px;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.10);
-    }
-    .nav {
-      display: flex;
-      gap: 32px;
-    }
-    .nav-link {
-      color: #fff;
-      font-weight: 600;
-      font-size: 1.1rem;
-      text-decoration: none;
-      padding: 6px 18px;
-      border-radius: 20px;
-      transition: background 0.2s, color 0.2s;
-    }
-    .nav-link:hover {
-      background: rgba(255,255,255,0.13);
-      color: #fff;
-    }
-    .header-actions {
-      display: flex;
-      gap: 12px;
-    }
-    .btn.call {
-      background: #1565c0;
-      color: #fff;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 1rem;
-      padding: 10px 22px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border: none;
-      box-shadow: 0 2px 8px rgba(21,101,192,0.10);
-      transition: background 0.2s, box-shadow 0.2s;
-    }
-    .btn.call:hover {
-      background: #003c8f;
-      box-shadow: 0 4px 16px rgba(21,101,192,0.18);
-    }
-    .btn.whatsapp {
-      background: #25D366;
-      color: #fff;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 1rem;
-      padding: 10px 22px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border: none;
-      box-shadow: 0 2px 8px rgba(37,211,102,0.10);
-      transition: background 0.2s, box-shadow 0.2s;
-    }
-    .btn.whatsapp:hover {
-      background: #1ebe57;
-      box-shadow: 0 4px 16px rgba(37,211,102,0.18);
-    }
-    .hero {
-      background: linear-gradient(120deg, #e3eafc 0%, #f5f7fa 100%);
-      padding: 80px 0 70px 0;
-      text-align: center;
-      position: relative;
-      border-radius: 0 0 32px 32px;
-      box-shadow: 0 8px 32px rgba(40,116,240,0.10);
-      overflow: hidden;
-    }
-    .hero::before {
-      content: '';
-      position: absolute;
-      left: 0; right: 0; top: 0; bottom: 0;
-      background: linear-gradient(120deg,rgba(40,116,240,0.08) 0%,rgba(255,255,255,0.0) 100%);
-      z-index: 0;
-    }
-    .hero h1 {
-      font-size: 2.8rem;
-      font-weight: 800;
-      color: #fff;
-      margin-bottom: 16px;
-      text-shadow: 0 4px 24px rgba(40,116,240,0.13);
-      position: relative;
-      z-index: 1;
-    }
-    .hero p {
-      font-size: 1.3rem;
-      color: #f5f7fa;
-      margin-bottom: 32px;
-      position: relative;
-      z-index: 1;
-    }
-    .btn.primary {
-      background: #ffb300;
-      color: #222;
-      border: none;
-      font-size: 1.2rem;
-      font-weight: 700;
-      border-radius: 12px;
-      padding: 16px 38px;
-      box-shadow: 0 4px 16px rgba(255,179,0,0.13);
-      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-      position: relative;
-      z-index: 1;
-      animation: pulse 2.5s infinite;
-    }
-    .btn.primary:hover {
-      background: #ffa000;
-      transform: scale(1.05);
-      box-shadow: 0 8px 32px rgba(255,179,0,0.18);
-    }
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(255,179,0,0.18); }
-      70% { box-shadow: 0 0 0 16px rgba(255,179,0,0.01); }
-      100% { box-shadow: 0 0 0 0 rgba(255,179,0,0.18); }
-    }
-    /* Responsive adjustments */
-    @media (max-width: 900px) {
-      .header-flex, .nav, .header-actions { flex-direction: column; gap: 8px; }
-      .logo { font-size: 1.5rem; }
-      .hero h1 { font-size: 2rem; }
-      .btn.primary { font-size: 1rem; padding: 12px 24px; }
-    }
-    @media (max-width: 600px) {
-      .header-flex { flex-direction: column; gap: 8px; padding: 8px 0; }
-      .hero { padding: 40px 0 30px 0; border-radius: 0 0 16px 16px; }
-      .hero h1 { font-size: 1.2rem; }
-      .btn.primary { padding: 10px 16px; }
-    }
-  </style>
 </head>
 <body>
 
 <!-- HEADER -->
 <header class="header">
-  <div class="container header-flex" style="display:flex;justify-content:space-between;align-items:center;gap:16px;">
-    <div class="logo" style="font-weight:bold;font-size:1.3rem;">Naman Battery</div>
-    <nav class="nav" style="display:flex;gap:16px;">
+  <div class="container header-flex">
+    <div class="logo">Naman Battery</div>
+    <nav class="nav">
       <a href="#products" class="nav-link">Products</a>
       <a href="#services" class="nav-link">Services</a>
+      <a href="#faq" class="nav-link">FAQ</a>
       <a href="#contact" class="nav-link">Contact</a>
     </nav>
-    <div class="header-actions" style="display:flex;gap:8px;">
-      <a href="tel:8279557998" class="btn call" style="background:#1976d2;color:#fff;padding:8px 14px;border-radius:4px;text-decoration:none;">📞 Call</a>
-      <a href="https://wa.me/918279557998" class="btn whatsapp" style="background:#25d366;color:#fff;padding:8px 14px;border-radius:4px;text-decoration:none;">💬 WhatsApp</a>
+    <div class="header-actions">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">🌙</button>
+      <a href="tel:8279557998" class="btn call">📞 Call</a>
+      <a href="https://wa.me/918279557998" class="btn whatsapp">💬 WhatsApp</a>
     </div>
   </div>
 </header>
 
 <!-- HERO -->
-<section class="hero" style="background: linear-gradient(120deg, #1565c0 0%, #f5f7fa 100%);">
+<section class="hero">
   <div class="container">
     <h1>Trusted Battery Store in Baraut</h1>
     <p>Exide • Luminous • Amaron | Best Prices | Installation | Exchange</p>
-    <a href="#products" class="btn primary">View Products</a>
+    <div class="hero-actions">
+      <a href="#products" class="btn primary">View Products</a>
+      <button class="btn secondary" type="button" id="openQuote">Get Quote</button>
+    </div>
   </div>
 </section>
 
@@ -212,6 +69,15 @@
       <option value="15000-25000">₹15,000 – ₹25,000</option>
       <option value="above25000">Above ₹25,000</option>
     </select>
+
+    <select id="sortFilter">
+      <option value="recommended">Sort: Recommended</option>
+      <option value="priceAsc">Price: Low to High</option>
+      <option value="priceDesc">Price: High to Low</option>
+      <option value="nameAsc">Name: A to Z</option>
+    </select>
+
+    <button class="btn small" type="button" id="clearFilters">Clear</button>
   </div>
 </section>
 
@@ -220,9 +86,74 @@
   <div class="container">
     <h2>Inverter Batteries</h2>
 
+    <p class="section-subtitle">Tap any product to get details and WhatsApp us instantly.</p>
+
     <div class="products-grid" id="productsGrid">
 
 
+    </div>
+  </div>
+</section>
+
+<!-- BRANDS / TRUST -->
+<section class="trust" id="trust">
+  <div class="container">
+    <h2>Trusted Brands</h2>
+    <p class="section-subtitle">We deal in genuine batteries with warranty support.</p>
+    <div class="brand-strip" aria-label="Brands">
+      <span class="brand-pill">Exide</span>
+      <span class="brand-pill">Luminous</span>
+      <span class="brand-pill">Amaron</span>
+      <span class="brand-pill">Su-Kam</span>
+      <span class="brand-pill">Microtek</span>
+    </div>
+
+    <div class="highlights">
+      <div class="highlight-card">
+        <h3>✅ Genuine Products</h3>
+        <p>Original batteries with proper bill and warranty.</p>
+      </div>
+      <div class="highlight-card">
+        <h3>⚡ Fast Installation</h3>
+        <p>Quick installation with guidance for best backup.</p>
+      </div>
+      <div class="highlight-card">
+        <h3>♻ Exchange Available</h3>
+        <p>Best exchange value on old batteries (conditions apply).</p>
+      </div>
+    </div>
+
+    <div class="reviews-card">
+      <div>
+        <h3>Customer Reviews</h3>
+        <p>See our Google reviews and ratings.</p>
+      </div>
+      <a class="btn primary" href="https://www.google.com/search?q=NAMAN%20BATTERY%20TRADING%20CO" target="_blank" rel="noopener">View on Google</a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ (SEO Friendly) -->
+<section class="faq" id="faq">
+  <div class="container">
+    <h2>FAQ</h2>
+    <div class="faq-list">
+      <details>
+        <summary>Which inverter battery is best for home?</summary>
+        <p>It depends on your load and backup requirement. Share your load (fans/lights/TV) and we’ll suggest the right Ah.</p>
+      </details>
+      <details>
+        <summary>Do you provide installation and home delivery?</summary>
+        <p>Yes. We provide installation and can arrange home delivery in nearby areas.</p>
+      </details>
+      <details>
+        <summary>Is old battery exchange available?</summary>
+        <p>Yes, exchange is available depending on battery condition and model.</p>
+      </details>
+      <details>
+        <summary>What warranty do you provide?</summary>
+        <p>Warranty depends on brand/model. We provide proper bill and warranty support.</p>
+      </details>
     </div>
   </div>
 </section>
@@ -301,11 +232,11 @@
     <p>
       <strong>Address:</strong> Naya Bazar, Baraut, Uttar Pradesh<br>
       <img src="images/phone.svg" alt="Phone" width="18" class="inline-icon" onerror="this.style.display='none'">
-      <a href="tel:8279557998" style="color:#fff;">8279557998</a>
+      <a href="tel:8279557998">8279557998</a>
     </p>
     <p>
       <img src="images/email.svg" alt="Email" width="18" class="inline-icon" onerror="this.style.display='none'">
-      <a href="mailto:namanshop@gmail.com" style="color:#fff;">namanshop@gmail.com</a>
+      <a href="mailto:namanshop@gmail.com">namanshop@gmail.com</a>
     </p>
     <div class="social-links">
       <a href="https://wa.me/918279557998" aria-label="WhatsApp" class="social-link">
@@ -330,6 +261,62 @@
   </div>
 </footer>
 
+<!-- Quote Modal -->
+<div class="modal" id="quoteModal" aria-hidden="true">
+  <div class="modal-backdrop" data-close-modal></div>
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="quoteTitle">
+    <button class="modal-close" type="button" aria-label="Close" data-close-modal>×</button>
+    <h2 id="quoteTitle">Get a Quick Quote</h2>
+    <p class="section-subtitle">Fill details and we’ll reply on WhatsApp.</p>
+
+    <form id="quoteForm" class="quote-form">
+      <div class="form-row">
+        <label>
+          Name
+          <input type="text" name="name" required placeholder="Your name">
+        </label>
+        <label>
+          Phone
+          <input type="tel" name="phone" required placeholder="Your number">
+        </label>
+      </div>
+      <div class="form-row">
+        <label>
+          City
+          <input type="text" name="city" placeholder="Baraut / Ghaziabad">
+        </label>
+        <label>
+          Brand Preference
+          <select name="brand">
+            <option value="">Any</option>
+            <option>Exide</option>
+            <option>Luminous</option>
+            <option>Amaron</option>
+            <option>Su-Kam</option>
+          </select>
+        </label>
+      </div>
+      <label>
+        Requirement
+        <textarea name="message" rows="3" placeholder="Example: Need 150Ah inverter battery with installation + exchange"></textarea>
+      </label>
+      <button class="btn primary full" type="submit">Send on WhatsApp</button>
+      <p class="fineprint">By submitting, you agree to be contacted on WhatsApp/call.</p>
+    </form>
+  </div>
+</div>
+
+<!-- Sticky Mobile Actions -->
+<div class="sticky-actions" role="navigation" aria-label="Quick actions">
+  <a class="sticky-btn" href="tel:8279557998">📞 Call</a>
+  <a class="sticky-btn" href="https://wa.me/918279557998" target="_blank" rel="noopener">💬 WhatsApp</a>
+  <button class="sticky-btn" type="button" id="openQuoteSticky">🧾 Quote</button>
+  <a class="sticky-btn" href="https://www.google.com/maps/dir/?api=1&destination=29.099242075413045,77.25415557511089" target="_blank" rel="noopener">📍 Map</a>
+</div>
+
+<button class="back-to-top" type="button" id="backToTop" aria-label="Back to top">↑</button>
+
+<script src="data.js"></script>
 <script src="app.js"></script>
 
 <!-- Floating WhatsApp Button -->

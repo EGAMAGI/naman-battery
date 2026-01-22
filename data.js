@@ -139,3 +139,10 @@ for (let i = 6; i <= 50; i++) {
 if (typeof module !== "undefined" && module.exports) {
   module.exports = { products, BRANDS, CATEGORIES };
 }
+
+// Expose to browser (fallback data when Sheet is unavailable)
+if (typeof window !== "undefined") {
+  window.NAMAN_PRODUCTS = products;
+  window.NAMAN_BRANDS = BRANDS;
+  window.NAMAN_CATEGORIES = CATEGORIES;
+}
