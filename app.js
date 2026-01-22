@@ -338,7 +338,7 @@ function renderProducts(list) {
     card.innerHTML = `
       ${badge ? `<div class=\"badge\">${escapeHtml(badge)}</div>` : ""}
       ${hasStock ? `<div class=\"stock-badge ${inStock ? "in" : "out"}\">${inStock ? "In Stock" : "Out of Stock"}</div>` : ""}
-      <img src="images/${escapeAttr(p.image || "")}" alt="${escapeAttr(p.name_en || "Battery")}" onerror="this.onerror=null;this.src='images/logo.png'">
+      <img loading="lazy" decoding="async" src="images/${escapeAttr(p.image || "")}" alt="${escapeAttr(p.name_en || "Battery")}" onerror="this.onerror=null;this.src='images/logo.png'">
       <h3>${escapeHtml(p.name_en || "")}</h3>
       <p class="brand">${escapeHtml(p.brand || "")}${warranty ? ` • ${warranty} mo warranty` : ""}</p>
       ${rating ? `<div class=\"rating\" aria-label=\"Rating\">⭐ ${rating.toFixed(1)}</div>` : ""}
