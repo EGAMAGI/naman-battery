@@ -19,49 +19,151 @@
   <!-- Favicon -->
   <link rel="icon" href="images/favicon.ico" type="image/x-icon">
   <style>
-    /* Simple enhancements for demonstration */
-    .header { box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-    .nav-link:hover, .btn:hover { background: #e0e0e0; transition: background 0.2s; }
-    .hero { background: linear-gradient(90deg, #f5f7fa 0%, #c3cfe2 100%); padding: 60px 0; text-align: center; }
-    .hero h1 { font-size: 2.5rem; margin-bottom: 10px; }
-    .hero p { font-size: 1.2rem; margin-bottom: 20px; }
-    .btn.primary { background: #ffb300; color: #222; border: none; }
-    .btn.primary:hover { background: #ffa000; }
-    .products-grid { display: flex; gap: 24px; flex-wrap: wrap; }
-    .product-card { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); padding: 18px; width: 280px; text-align: center; }
-    .product-card img { width: 100%; height: 140px; object-fit: cover; border-radius: 6px; }
-    .product-card .brand { color: #888; font-size: 0.95em; }
-    .product-card .price { font-weight: bold; color: #388e3c; }
-    .product-card .price.request { color: #d84315; }
-    .btn.full { width: 100%; margin-top: 10px; }
-    .filters { background: #f9f9f9; padding: 18px 0; }
-    .filter-grid { display: flex; gap: 16px; justify-content: center; }
-    .filter-grid input, .filter-grid select { padding: 8px; border-radius: 4px; border: 1px solid #ccc; }
-    .services-grid { display: flex; gap: 24px; justify-content: center; margin: 32px 0; }
-    .location-grid { display: flex; gap: 32px; flex-wrap: wrap; }
-    .location-card { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); padding: 18px; width: 350px; }
-    .direction-btn { background: #1976d2; color: #fff; margin-top: 10px; }
-    .direction-btn:hover { background: #1565c0; }
-    .footer { background: #222; color: #fff; padding: 40px 0; text-align: center; }
-    .footer-logo { margin-bottom: 10px; }
-    .social-links { margin: 16px 0; }
-    .social-link { margin: 0 8px; color: #fff; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
-    .footer-hours { margin: 12px 0; }
-    .whatsapp-float {
-      position: fixed; bottom: 24px; right: 24px; background: #25d366; color: #fff;
-      border-radius: 50%; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center;
-      font-size: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.15); z-index: 999;
-      text-decoration: none;
+    .header {
+      background: linear-gradient(90deg, #2874f0 60%, #00c6fb 100%);
+      box-shadow: 0 4px 24px rgba(40,116,240,0.13);
+      padding: 0;
     }
-    .whatsapp-float:hover { background: #128c7e; }
+    .header-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 0 2vw;
+      min-height: 64px;
+    }
+    .logo {
+      font-weight: bold;
+      font-size: 2rem;
+      color: #fff;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    }
+    .nav {
+      display: flex;
+      gap: 32px;
+    }
+    .nav-link {
+      color: #fff;
+      font-weight: 600;
+      font-size: 1.1rem;
+      text-decoration: none;
+      padding: 6px 18px;
+      border-radius: 20px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-link:hover {
+      background: rgba(255,255,255,0.13);
+      color: #fff;
+    }
+    .header-actions {
+      display: flex;
+      gap: 12px;
+    }
+    .btn.call {
+      background: #1565c0;
+      color: #fff;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 10px 22px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      box-shadow: 0 2px 8px rgba(21,101,192,0.10);
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    .btn.call:hover {
+      background: #003c8f;
+      box-shadow: 0 4px 16px rgba(21,101,192,0.18);
+    }
+    .btn.whatsapp {
+      background: #25D366;
+      color: #fff;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 10px 22px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      box-shadow: 0 2px 8px rgba(37,211,102,0.10);
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    .btn.whatsapp:hover {
+      background: #1ebe57;
+      box-shadow: 0 4px 16px rgba(37,211,102,0.18);
+    }
+    .hero {
+      background: linear-gradient(120deg, #e3eafc 0%, #f5f7fa 100%);
+      padding: 80px 0 70px 0;
+      text-align: center;
+      position: relative;
+      border-radius: 0 0 32px 32px;
+      box-shadow: 0 8px 32px rgba(40,116,240,0.10);
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      left: 0; right: 0; top: 0; bottom: 0;
+      background: linear-gradient(120deg,rgba(40,116,240,0.08) 0%,rgba(255,255,255,0.0) 100%);
+      z-index: 0;
+    }
+    .hero h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 16px;
+      text-shadow: 0 4px 24px rgba(40,116,240,0.13);
+      position: relative;
+      z-index: 1;
+    }
+    .hero p {
+      font-size: 1.3rem;
+      color: #f5f7fa;
+      margin-bottom: 32px;
+      position: relative;
+      z-index: 1;
+    }
+    .btn.primary {
+      background: #ffb300;
+      color: #222;
+      border: none;
+      font-size: 1.2rem;
+      font-weight: 700;
+      border-radius: 12px;
+      padding: 16px 38px;
+      box-shadow: 0 4px 16px rgba(255,179,0,0.13);
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      position: relative;
+      z-index: 1;
+      animation: pulse 2.5s infinite;
+    }
+    .btn.primary:hover {
+      background: #ffa000;
+      transform: scale(1.05);
+      box-shadow: 0 8px 32px rgba(255,179,0,0.18);
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255,179,0,0.18); }
+      70% { box-shadow: 0 0 0 16px rgba(255,179,0,0.01); }
+      100% { box-shadow: 0 0 0 0 rgba(255,179,0,0.18); }
+    }
+    /* Responsive adjustments */
     @media (max-width: 900px) {
-      .products-grid, .location-grid, .services-grid { flex-direction: column; align-items: center; }
-      .product-card, .location-card { width: 90%; }
+      .header-flex, .nav, .header-actions { flex-direction: column; gap: 8px; }
+      .logo { font-size: 1.5rem; }
+      .hero h1 { font-size: 2rem; }
+      .btn.primary { font-size: 1rem; padding: 12px 24px; }
     }
     @media (max-width: 600px) {
-      .header-flex, .filter-grid { flex-direction: column; gap: 8px; }
-      .hero h1 { font-size: 1.5rem; }
-      .footer { padding: 24px 0; }
+      .header-flex { flex-direction: column; gap: 8px; padding: 8px 0; }
+      .hero { padding: 40px 0 30px 0; border-radius: 0 0 16px 16px; }
+      .hero h1 { font-size: 1.2rem; }
+      .btn.primary { padding: 10px 16px; }
     }
   </style>
 </head>
@@ -198,25 +300,25 @@
     <h3>Naman Battery Trading Co</h3>
     <p>
       <strong>Address:</strong> Naya Bazar, Baraut, Uttar Pradesh<br>
-      <img src="images/phone.svg" alt="Phone" width="18" class="inline-icon">
+      <img src="images/phone.svg" alt="Phone" width="18" class="inline-icon" onerror="this.style.display='none'">
       <a href="tel:8279557998" style="color:#fff;">8279557998</a>
     </p>
     <p>
-      <img src="images/email.svg" alt="Email" width="18" class="inline-icon">
+      <img src="images/email.svg" alt="Email" width="18" class="inline-icon" onerror="this.style.display='none'">
       <a href="mailto:namanshop@gmail.com" style="color:#fff;">namanshop@gmail.com</a>
     </p>
     <div class="social-links">
       <a href="https://wa.me/918279557998" aria-label="WhatsApp" class="social-link">
-        <img src="images/whatsapp.svg" alt="WhatsApp" width="24">
-        <span>WhatsApp</span>
+        <img src="images/whatsapp.svg" alt="WhatsApp" width="24" onerror="this.style.display='none'">
+        WhatsApp
       </a>
       <a href="tel:8279557998" aria-label="Call" class="social-link">
-        <img src="images/phone.svg" alt="Call" width="24">
-        <span>Call</span>
+        <img src="images/phone.svg" alt="Call" width="24" onerror="this.style.display='none'">
+        Call
       </a>
       <a href="https://goo.gl/maps/2kQn6vQw7vQ2" target="_blank" aria-label="Google Maps" class="social-link">
-        <img src="images/map.svg" alt="Map" width="24">
-        <span>Map</span>
+        <img src="images/map.svg" alt="Map" width="24" onerror="this.style.display='none'">
+        Map
       </a>
     </div>
     <div class="footer-hours">
