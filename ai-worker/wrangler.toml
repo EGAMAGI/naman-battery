@@ -1,11 +1,11 @@
-name = "naman-battery-ai"
+name = "ai-worker"
 main = "src/index.js"
 compatibility_date = "2026-01-22"
 
-# Restrict which websites can call your Worker.
-# Your GitHub Pages (likely):
-# ALLOWED_ORIGINS = "https://egamagi.github.io"
-# You can also add your custom domain(s) separated by commas.
+# Runtime configuration (environment variables)
+[vars]
+# Restrict which websites can call your Worker (comma-separated).
+ALLOWED_ORIGINS = "https://naman-battery.pages.dev,https://egamagi.github.io"
 
 # Set secrets (do NOT put keys in this file):
 #   wrangler secret put OPENAI_API_KEY
