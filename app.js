@@ -78,6 +78,12 @@ function initFaqHelper() {
   const render = html => { out.innerHTML = html; };
   render('<span class="muted">Ask a question above to get an instant answer.</span>');
 
+  const getAiEndpoint = () => {
+    const v = typeof window !== "undefined" ? window.NAMAN_AI_ENDPOINT : "";
+    const s = String(v || "").trim();
+    return s && /^https?:\/\//i.test(s) ? s : "";
+  };
+
   const findBest = question => {
     let best = null;
     let bestScore = 0;
@@ -92,6 +98,53 @@ function initFaqHelper() {
     const question = String(input.value || "").trim();
     if (!question) {
       render('<span class="muted">Please type your question.</span>');
+      return;
+    }
+
+    const endpoint = getAiEndpoint();
+    if (endpoint) {
+      render('<span class="muted">Thinking…</span>');
+      askAi(endpoint, question, entries)
+        .then(answer => {
+          if (answer) {
+            render(`
+              <div><strong>Answer</strong></div>
+              <div style="margin-top:6px;">${escapeHtml(answer)}</div>
+              <div class="muted" style="margin-top:8px;">Need human help? Ask on <a href="https://wa.me/918279557998?text=${encodeURIComponent("Hi, I have a question: " + question)}" target="_blank" rel="noopener">WhatsApp</a>.</div>
+            `);
+            return;
+          }
+          // If AI returned nothing, fall back to local matcher.
+          const { best, bestScore } = findBest(question);
+          if (best && bestScore >= 0.25) {
+            render(`
+              <div><strong>${escapeHtml(best.q)}</strong></div>
+              <div style="margin-top:6px;">${escapeHtml(best.a)}</div>
+              <div class="muted" style="margin-top:8px;">Not what you needed? Ask on <a href="https://wa.me/918279557998?text=${encodeURIComponent("Hi, I have a question: " + question)}" target="_blank" rel="noopener">WhatsApp</a>.</div>
+            `);
+            return;
+          }
+          render(`
+            <div><strong>We couldn’t find this in our FAQ.</strong></div>
+            <div class="muted" style="margin-top:6px;">Send your question on <a href="https://wa.me/918279557998?text=${encodeURIComponent("Hi, I have a question: " + question)}" target="_blank" rel="noopener">WhatsApp</a> and we will reply quickly.</div>
+          `);
+        })
+        .catch(() => {
+          // If AI request fails, fall back to local matcher.
+          const { best, bestScore } = findBest(question);
+          if (best && bestScore >= 0.25) {
+            render(`
+              <div><strong>${escapeHtml(best.q)}</strong></div>
+              <div style="margin-top:6px;">${escapeHtml(best.a)}</div>
+              <div class="muted" style="margin-top:8px;">Not what you needed? Ask on <a href="https://wa.me/918279557998?text=${encodeURIComponent("Hi, I have a question: " + question)}" target="_blank" rel="noopener">WhatsApp</a>.</div>
+            `);
+            return;
+          }
+          render(`
+            <div><strong>AI is temporarily unavailable.</strong></div>
+            <div class="muted" style="margin-top:6px;">Send your question on <a href="https://wa.me/918279557998?text=${encodeURIComponent("Hi, I have a question: " + question)}" target="_blank" rel="noopener">WhatsApp</a> and we will reply quickly.</div>
+          `);
+        });
       return;
     }
 
@@ -120,6 +173,27 @@ function initFaqHelper() {
       ask();
     }
   });
+}
+
+async function askAi(endpoint, question, faqEntries) {
+  const controller = new AbortController();
+  const t = setTimeout(() => controller.abort(), 12000);
+  try {
+    const resp = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        question,
+        faq: (faqEntries || []).slice(0, 20),
+      }),
+      signal: controller.signal,
+    });
+    if (!resp.ok) return "";
+    const data = await resp.json();
+    return String(data?.answer || "").trim();
+  } finally {
+    clearTimeout(t);
+  }
 }
 
 function getFallbackProducts() {

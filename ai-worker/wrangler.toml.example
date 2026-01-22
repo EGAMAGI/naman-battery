@@ -1,0 +1,15 @@
+name = "naman-battery-ai"
+main = "src/index.js"
+compatibility_date = "2026-01-22"
+
+# Optional: restrict which websites can call your Worker
+# ALLOWED_ORIGINS = "https://<your-username>.github.io,https://<your-custom-domain>"
+
+# Set secrets (do NOT put keys in this file):
+# wrangler secret put OPENAI_API_KEY
+
+# Optional vars:
+# OPENAI_MODEL = "gpt-4.1-mini"
+# SHOP_NAME = "Naman Battery Trading Co"
+# SHOP_PHONE = "+91 8279557998"
+# SHOP_CITY = "Baraut / Ghaziabad"
