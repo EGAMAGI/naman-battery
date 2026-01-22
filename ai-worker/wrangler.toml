@@ -1,0 +1,17 @@
+name = "naman-battery-ai"
+main = "src/index.js"
+compatibility_date = "2026-01-22"
+
+# Restrict which websites can call your Worker.
+# Your GitHub Pages (likely):
+# ALLOWED_ORIGINS = "https://egamagi.github.io"
+# You can also add your custom domain(s) separated by commas.
+
+# Set secrets (do NOT put keys in this file):
+#   wrangler secret put OPENAI_API_KEY
+
+# Optional vars:
+# OPENAI_MODEL = "gpt-4.1-mini"
+# SHOP_NAME = "Naman Battery Trading Co"
+# SHOP_PHONE = "+91 8279557998"
+# SHOP_CITY = "Baraut / Ghaziabad"
