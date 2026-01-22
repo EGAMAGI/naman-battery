@@ -228,47 +228,7 @@
   </div>
 </footer>
 
-<script>
-  // Product filtering logic
-  document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('searchInput');
-    const brandFilter = document.getElementById('brandFilter');
-    const priceFilter = document.getElementById('priceFilter');
-    const productsGrid = document.getElementById('productsGrid');
-    const productCards = Array.from(productsGrid.getElementsByClassName('product-card'));
-
-    function filterProducts() {
-      const search = searchInput.value.toLowerCase();
-      const brand = brandFilter.value;
-      const price = priceFilter.value;
-
-      productCards.forEach(card => {
-        const cardBrand = card.getAttribute('data-brand');
-        const cardPrice = card.getAttribute('data-price');
-        const cardText = card.textContent.toLowerCase();
-
-        let show = true;
-
-        if (search && !cardText.includes(search)) show = false;
-        if (brand && cardBrand !== brand) show = false;
-        if (price) {
-          if (cardPrice === 'request') show = false;
-          else {
-            const p = parseInt(cardPrice, 10);
-            if (price === 'below15000' && p >= 15000) show = false;
-            if (price === '15000-25000' && (p < 15000 || p > 25000)) show = false;
-            if (price === 'above25000' && p <= 25000) show = false;
-          }
-        }
-        card.style.display = show ? '' : 'none';
-      });
-    }
-
-    searchInput.addEventListener('input', filterProducts);
-    brandFilter.addEventListener('change', filterProducts);
-    priceFilter.addEventListener('change', filterProducts);
-  });
-</script>
+<script src="app.js"></script>
 
 <!-- Floating WhatsApp Button -->
 <a href="https://wa.me/918279557998?text=Hi%2C%20I%20am%20interested%20in%20your%20battery%20products"
