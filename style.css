@@ -21,6 +21,10 @@ body {
 ::-webkit-scrollbar-thumb {
   background: #b3c6f7;
   border-radius: 4px;
+  transition: background 0.3s;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2874f0;
 }
 
 .container {
@@ -38,23 +42,26 @@ body {
   display: inline-block;
   border: none;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.1s;
   box-shadow: 0 2px 8px rgba(40,116,240,0.08);
   font-size: 15px;
+  outline: none;
 }
 
 .btn:active {
-  transform: scale(0.98);
+  transform: scale(0.97);
+  box-shadow: 0 1px 4px rgba(40,116,240,0.10);
 }
 
-.btn:focus {
-  outline: 2px solid #2874f0;
+.btn:focus-visible {
+  outline: 3px solid #ffb300;
   outline-offset: 2px;
 }
 
 .btn:hover {
   background: #2874f0;
   color: #fff;
+  box-shadow: 0 4px 16px rgba(40,116,240,0.13);
 }
 
 .btn.call {
@@ -89,6 +96,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 10;
+  box-shadow: 0 2px 8px rgba(40,116,240,0.10);
 }
 
 .header-flex {
@@ -99,9 +107,10 @@ body {
 }
 
 .logo {
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: 1px;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-shadow: 0 2px 8px rgba(40,116,240,0.10);
 }
 
 /* Headings */
@@ -110,6 +119,7 @@ h1, h2, h3, h4, h5 {
   font-weight: 700;
   color: #222;
   margin-bottom: 8px;
+  letter-spacing: 0.5px;
 }
 
 h1 {
@@ -128,24 +138,30 @@ h3 {
 .hero {
   background: linear-gradient(135deg, #cff0282d, #d88b0f);
   color: #fff;
-  padding: 40px 0;
+  padding: 48px 0 40px 0;
   text-align: center;
+  border-radius: 0 0 24px 24px;
+  box-shadow: 0 4px 24px rgba(216,139,15,0.08);
 }
 
 .hero h1 {
   margin: 0 0 8px;
   color: #fff;
+  text-shadow: 0 2px 8px rgba(216,139,15,0.13);
 }
 
 .hero p {
-  opacity: 0.95;
+  opacity: 0.98;
   color: #fff;
+  font-size: 1.1rem;
 }
 
 /* FILTERS */
 .filters {
   background: #fff;
-  padding: 15px 0;
+  padding: 18px 0;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(40,116,240,0.06);
 }
 
 .filter-grid {
@@ -160,27 +176,37 @@ h3 {
   border-radius: 6px;
   border: 1px solid #ccc;
   font-size: 15px;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.filters input:focus,
+.filters select:focus {
+  border-color: #2874f0;
+  box-shadow: 0 0 0 2px #e3eafc;
+  outline: none;
 }
 
 /* PRODUCTS */
 .products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
+  gap: 24px;
 }
 
 .product-card {
   background: #fff;
-  border-radius: 12px;
-  padding: 15px;
+  border-radius: 16px;
+  padding: 18px;
   text-align: center;
   box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-  transition: transform 0.25s, box-shadow 0.25s;
+  transition: transform 0.25s, box-shadow 0.25s, border 0.2s;
+  border: 1px solid #f0f0f0;
 }
 
-.product-card:hover {
-  transform: translateY(-5px) scale(1.02);
-  box-shadow: 0 12px 24px rgba(40,116,240,0.12);
+.product-card:hover, .product-card:focus-within {
+  transform: translateY(-7px) scale(1.025);
+  box-shadow: 0 12px 28px rgba(40,116,240,0.14);
+  border: 1px solid #2874f0;
 }
 
 .product-card img {
@@ -189,6 +215,9 @@ h3 {
   object-fit: contain;
   display: block;
   margin: 0 auto 10px;
+  border-radius: 8px;
+  background: #f5f7fa;
+  transition: box-shadow 0.2s;
 }
 
 .product-card h3 {
@@ -216,38 +245,50 @@ h3 {
 /* SERVICES */
 .services {
   background: #130a0a;
-  padding: 25px 0;
+  padding: 32px 0;
 }
 
 .services-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 15px;
+  gap: 18px;
   text-align: center;
 }
 
 .services-grid div {
   background: #f5f6fa;
-  padding: 18px;
-  border-radius: 10px;
+  padding: 22px;
+  border-radius: 12px;
   font-weight: 600;
+  box-shadow: 0 2px 8px rgba(40,116,240,0.06);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.services-grid div:hover {
+  box-shadow: 0 6px 18px rgba(40,116,240,0.13);
+  transform: translateY(-3px) scale(1.02);
 }
 
 /* FOOTER */
 .footer {
   background: hwb(60 88% 10%);
   color: #0e0505;
-  padding: 20px 0;
+  padding: 28px 0 20px 0;
   text-align: center;
+  border-radius: 24px 24px 0 0;
+  box-shadow: 0 -2px 8px rgba(40,116,240,0.06);
 }
 
 .footer a {
   color: #de3721;
   text-decoration: none;
+  transition: color 0.2s;
 }
 
-.footer a:hover {
+.footer a:hover,
+.footer a:focus {
   text-decoration: underline;
+  color: #2874f0;
 }
 
 /* MOBILE */
@@ -257,6 +298,7 @@ h3 {
   }
   .hero {
     padding: 20px 0;
+    border-radius: 0 0 12px 12px;
   }
   .container {
     padding: 0 4px;
@@ -287,6 +329,9 @@ h3 {
   h2 {
     font-size: 1.1rem;
   }
+  .location-card iframe {
+    height: 180px;
+  }
 }
 
 .whatsapp-float {
@@ -299,8 +344,13 @@ h3 {
   padding: 14px 16px;
   border-radius: 50%;
   text-decoration: none;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.35);
   z-index: 999;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.whatsapp-float:hover, .whatsapp-float:focus {
+  background: #1ebe57;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.40);
 }
 
 .location-grid {
@@ -311,9 +361,16 @@ h3 {
 
 .location-card {
   background: #fff;
-  padding: 15px;
-  border-radius: 12px;
+  padding: 18px;
+  border-radius: 14px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transition: box-shadow 0.2s, border 0.2s;
+  border: 1px solid #f0f0f0;
+}
+
+.location-card:hover, .location-card:focus-within {
+  box-shadow: 0 12px 28px rgba(40,116,240,0.13);
+  border: 1px solid #2874f0;
 }
 
 .location-card h3 {
@@ -337,8 +394,9 @@ h3 {
   border-radius: 8px;
   text-decoration: none;
   font-weight: 600;
+  transition: background 0.2s;
 }
-.direction-btn:hover {
+.direction-btn:hover, .direction-btn:focus {
   background: #1f5fd1;
 }
 
@@ -346,6 +404,7 @@ h3 {
 .footer-logo {
   display: block;
   margin: 0 auto 1rem;
+  max-width: 120px;
 }
 
 /* Inline Icon Styling */
@@ -364,11 +423,12 @@ h3 {
   display: inline-block;
   text-decoration: none;
   color: #2874f0;
-  transition: color 0.2s;
+  transition: color 0.2s, transform 0.2s;
 }
 
-.social-link:hover {
+.social-link:hover, .social-link:focus {
   color: #1f5fd1;
+  transform: scale(1.08);
 }
 
 .social-link img {

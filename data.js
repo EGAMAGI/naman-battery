@@ -15,6 +15,22 @@ function randomBadge() {
   return badges[randomInt(0, badges.length - 1)];
 }
 
+// Utility: Generate a random warranty period
+function randomWarranty() {
+  const options = [24, 36, 42, 48];
+  return options[randomInt(0, options.length - 1)];
+}
+
+// Utility: Generate a random product description
+function randomDescription(brand, model, ah, category) {
+  return `${brand} ${model} ${ah}Ah ${category} battery with advanced technology and reliable performance.`;
+}
+
+// Utility: Generate a random rating (1-5)
+function randomRating() {
+  return +(Math.random() * 2 + 3).toFixed(1); // 3.0 to 5.0
+}
+
 // Main products array
 const products = [
   {
@@ -27,7 +43,9 @@ const products = [
     price: 11899,
     image: "exide_ipst1500_150ah.jpg",
     stock: 12,
-    warranty_months: 36
+    warranty_months: 36,
+    description: "Exide Inva Plus Tubular battery for long backup and durability.",
+    rating: 4.7
   },
   {
     id: 2,
@@ -39,7 +57,9 @@ const products = [
     price: 19313,
     image: "exide_imst1500.jpg",
     stock: 8,
-    warranty_months: 42
+    warranty_months: 42,
+    description: "Exide Invamaster battery with high efficiency and long life.",
+    rating: 4.5
   },
   {
     id: 3,
@@ -50,7 +70,9 @@ const products = [
     price: 25090,
     image: "exide_imtt1800.jpg",
     stock: 5,
-    warranty_months: 48
+    warranty_months: 48,
+    description: "Exide Invamaster IMTT1800 for superior backup and performance.",
+    rating: 4.6
   },
   {
     id: 4,
@@ -61,7 +83,9 @@ const products = [
     price: 27476,
     image: "exide_imtt2000.jpg",
     stock: 3,
-    warranty_months: 48
+    warranty_months: 48,
+    description: "Exide Invamaster IMTT2000 with advanced tubular technology.",
+    rating: 4.8
   },
   {
     id: 5,
@@ -73,7 +97,9 @@ const products = [
     price: 18140,
     image: "amaron_crcrtt180_180ah.jpg",
     stock: 10,
-    warranty_months: 36
+    warranty_months: 36,
+    description: "Amaron CRTT180 tall tubular battery for reliable power backup.",
+    rating: 4.4
   }
 ];
 
@@ -84,7 +110,9 @@ for (let i = 6; i <= 50; i++) {
   const ah = randomInt(100, 220);
   const model = "Model" + i;
   const badge = randomBadge();
-  const warranty = [24, 36, 42, 48][i % 4];
+  const warranty = randomWarranty();
+  const description = randomDescription(brand, model, ah, category);
+  const rating = randomRating();
 
   products.push({
     id: i,
@@ -101,7 +129,9 @@ for (let i = 6; i <= 50; i++) {
     price: 0, // Price on request
     image: `${brand.toLowerCase()}_${i}.jpg`,
     stock: randomInt(0, 20),
-    warranty_months: warranty
+    warranty_months: warranty,
+    description,
+    rating
   });
 }
 

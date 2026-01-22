@@ -18,21 +18,67 @@
 
   <!-- Favicon -->
   <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+  <style>
+    /* Simple enhancements for demonstration */
+    .header { box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .nav-link:hover, .btn:hover { background: #e0e0e0; transition: background 0.2s; }
+    .hero { background: linear-gradient(90deg, #f5f7fa 0%, #c3cfe2 100%); padding: 60px 0; text-align: center; }
+    .hero h1 { font-size: 2.5rem; margin-bottom: 10px; }
+    .hero p { font-size: 1.2rem; margin-bottom: 20px; }
+    .btn.primary { background: #ffb300; color: #222; border: none; }
+    .btn.primary:hover { background: #ffa000; }
+    .products-grid { display: flex; gap: 24px; flex-wrap: wrap; }
+    .product-card { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); padding: 18px; width: 280px; text-align: center; }
+    .product-card img { width: 100%; height: 140px; object-fit: cover; border-radius: 6px; }
+    .product-card .brand { color: #888; font-size: 0.95em; }
+    .product-card .price { font-weight: bold; color: #388e3c; }
+    .product-card .price.request { color: #d84315; }
+    .btn.full { width: 100%; margin-top: 10px; }
+    .filters { background: #f9f9f9; padding: 18px 0; }
+    .filter-grid { display: flex; gap: 16px; justify-content: center; }
+    .filter-grid input, .filter-grid select { padding: 8px; border-radius: 4px; border: 1px solid #ccc; }
+    .services-grid { display: flex; gap: 24px; justify-content: center; margin: 32px 0; }
+    .location-grid { display: flex; gap: 32px; flex-wrap: wrap; }
+    .location-card { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); padding: 18px; width: 350px; }
+    .direction-btn { background: #1976d2; color: #fff; margin-top: 10px; }
+    .direction-btn:hover { background: #1565c0; }
+    .footer { background: #222; color: #fff; padding: 40px 0; text-align: center; }
+    .footer-logo { margin-bottom: 10px; }
+    .social-links { margin: 16px 0; }
+    .social-link { margin: 0 8px; color: #fff; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
+    .footer-hours { margin: 12px 0; }
+    .whatsapp-float {
+      position: fixed; bottom: 24px; right: 24px; background: #25d366; color: #fff;
+      border-radius: 50%; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.15); z-index: 999;
+      text-decoration: none;
+    }
+    .whatsapp-float:hover { background: #128c7e; }
+    @media (max-width: 900px) {
+      .products-grid, .location-grid, .services-grid { flex-direction: column; align-items: center; }
+      .product-card, .location-card { width: 90%; }
+    }
+    @media (max-width: 600px) {
+      .header-flex, .filter-grid { flex-direction: column; gap: 8px; }
+      .hero h1 { font-size: 1.5rem; }
+      .footer { padding: 24px 0; }
+    }
+  </style>
 </head>
 <body>
 
 <!-- HEADER -->
 <header class="header">
-  <div class="container header-flex">
-    <div class="logo">Naman Battery</div>
-    <nav class="nav">
+  <div class="container header-flex" style="display:flex;justify-content:space-between;align-items:center;gap:16px;">
+    <div class="logo" style="font-weight:bold;font-size:1.3rem;">Naman Battery</div>
+    <nav class="nav" style="display:flex;gap:16px;">
       <a href="#products" class="nav-link">Products</a>
       <a href="#services" class="nav-link">Services</a>
       <a href="#contact" class="nav-link">Contact</a>
     </nav>
-    <div class="header-actions">
-      <a href="tel:8279557998" class="btn call">📞 Call</a>
-      <a href="https://wa.me/918279557998" class="btn whatsapp">💬 WhatsApp</a>
+    <div class="header-actions" style="display:flex;gap:8px;">
+      <a href="tel:8279557998" class="btn call" style="background:#1976d2;color:#fff;padding:8px 14px;border-radius:4px;text-decoration:none;">📞 Call</a>
+      <a href="https://wa.me/918279557998" class="btn whatsapp" style="background:#25d366;color:#fff;padding:8px 14px;border-radius:4px;text-decoration:none;">💬 WhatsApp</a>
     </div>
   </div>
 </header>
@@ -126,8 +172,8 @@
         <p>Naya Bazar, Baraut, Uttar Pradesh</p>
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3486.21809015495!2d77.25415559999998!3d29.099242099999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390c4b919c0fc223%3A0x2043592a7d390ec2!2sNAMAN%20BATTERY%20TRADING%20CO!5e0!3m2!1sen!2sin!4v1767030553254!5m2!1sen!2sin"
-          width="600"
-          height="450"
+          width="100%"
+          height="200"
           style="border:0;"
           allowfullscreen=""
           loading="lazy">
@@ -149,8 +195,8 @@
         <p>KA 250, behind Vishal Mega Mart, Sector 12, Rahul Vihar 2nd, Pratap Vihar, Ghaziabad</p>
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d875.3968713099605!2d77.40842688676565!3d28.642123100558223!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cf111d33c3b49%3A0x3228f1d543a1e262!2sNAMAN%20BATTERY%20TRADING%20CO!5e0!3m2!1sen!2sin!4v1767030802457!5m2!1sen!2sin"
-          width="600"
-          height="450"
+          width="100%"
+          height="200"
           style="border:0;"
           allowfullscreen=""
           loading="lazy">
@@ -177,11 +223,11 @@
     <p>
       <strong>Address:</strong> Naya Bazar, Baraut, Uttar Pradesh<br>
       <img src="images/phone.svg" alt="Phone" width="18" class="inline-icon">
-      <a href="tel:8279557998">8279557998</a>
+      <a href="tel:8279557998" style="color:#fff;">8279557998</a>
     </p>
     <p>
       <img src="images/email.svg" alt="Email" width="18" class="inline-icon">
-      <a href="mailto:namanshop@gmail.com">namanshop@gmail.com</a>
+      <a href="mailto:namanshop@gmail.com" style="color:#fff;">namanshop@gmail.com</a>
     </p>
     <div class="social-links">
       <a href="https://wa.me/918279557998" aria-label="WhatsApp" class="social-link">
@@ -206,12 +252,53 @@
   </div>
 </footer>
 
-<script src="app.js"></script>
+<script>
+  // Product filtering logic
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const brandFilter = document.getElementById('brandFilter');
+    const priceFilter = document.getElementById('priceFilter');
+    const productsGrid = document.getElementById('productsGrid');
+    const productCards = Array.from(productsGrid.getElementsByClassName('product-card'));
+
+    function filterProducts() {
+      const search = searchInput.value.toLowerCase();
+      const brand = brandFilter.value;
+      const price = priceFilter.value;
+
+      productCards.forEach(card => {
+        const cardBrand = card.getAttribute('data-brand');
+        const cardPrice = card.getAttribute('data-price');
+        const cardText = card.textContent.toLowerCase();
+
+        let show = true;
+
+        if (search && !cardText.includes(search)) show = false;
+        if (brand && cardBrand !== brand) show = false;
+        if (price) {
+          if (cardPrice === 'request') show = false;
+          else {
+            const p = parseInt(cardPrice, 10);
+            if (price === 'below15000' && p >= 15000) show = false;
+            if (price === '15000-25000' && (p < 15000 || p > 25000)) show = false;
+            if (price === 'above25000' && p <= 25000) show = false;
+          }
+        }
+        card.style.display = show ? '' : 'none';
+      });
+    }
+
+    searchInput.addEventListener('input', filterProducts);
+    brandFilter.addEventListener('change', filterProducts);
+    priceFilter.addEventListener('change', filterProducts);
+  });
+</script>
 
 <!-- Floating WhatsApp Button -->
 <a href="https://wa.me/918279557998?text=Hi%2C%20I%20am%20interested%20in%20your%20battery%20products"
    class="whatsapp-float"
-   target="_blank">
+   target="_blank"
+   aria-label="Chat on WhatsApp">
   💬
 </a>
 
