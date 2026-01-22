@@ -8,6 +8,10 @@ function normalizeBrand(value) {
   return String(value || "").trim().replace(/\s+/g, " ").toLowerCase();
 }
 
+function normalizeCategory(value) {
+  return String(value || "").trim().replace(/\s+/g, " ").toLowerCase();
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
   initQuoteModal();
@@ -20,12 +24,14 @@ document.addEventListener("DOMContentLoaded", () => {
   loadProducts()
     .then(list => {
       products = list;
+      populateCategoryOptions(products);
       populateBrandOptions(products);
       applyFilters();
     })
     .catch(() => {
       const fallback = getFallbackProducts();
       products = fallback;
+      populateCategoryOptions(products);
       populateBrandOptions(products);
       applyFilters();
     });
@@ -50,15 +56,17 @@ function normalizePrice(raw) {
   return Number.isFinite(num) && num > 0 ? num : null;
 }
 
-function filterList(list, query = "", brand = "", priceBucket = "") {
+function filterList(list, query = "", category = "", brand = "", priceBucket = "") {
   const q = (query || "").trim().toLowerCase();
   return list.filter(p => {
     const name = String(p.name_en || p.name || "").toLowerCase();
     const brandName = String(p.brand || "").trim();
     const brandLower = brandName.toLowerCase();
+    const categoryName = String(p.category || "").trim();
     const priceValue = normalizePrice(p.price);
 
     if (q && !name.includes(q) && !brandLower.includes(q)) return false;
+    if (category && normalizeCategory(categoryName) !== normalizeCategory(category)) return false;
     if (brand && normalizeBrand(brandName) !== normalizeBrand(brand)) return false;
 
     if (priceBucket) {
@@ -162,6 +170,7 @@ let controls = null;
 function initFilters() {
   controls = {
     searchInput: document.getElementById("searchInput"),
+    categoryFilter: document.getElementById("categoryFilter"),
     brandFilter: document.getElementById("brandFilter"),
     priceFilter: document.getElementById("priceFilter"),
     sortFilter: document.getElementById("sortFilter"),
@@ -169,17 +178,54 @@ function initFilters() {
   };
 
   if (controls.searchInput) controls.searchInput.addEventListener("input", applyFilters);
+  if (controls.categoryFilter) controls.categoryFilter.addEventListener("change", applyFilters);
   if (controls.brandFilter) controls.brandFilter.addEventListener("change", applyFilters);
   if (controls.priceFilter) controls.priceFilter.addEventListener("change", applyFilters);
   if (controls.sortFilter) controls.sortFilter.addEventListener("change", applyFilters);
   if (controls.clearFilters) {
     controls.clearFilters.addEventListener("click", () => {
       if (controls.searchInput) controls.searchInput.value = "";
+      if (controls.categoryFilter) controls.categoryFilter.value = "";
       if (controls.brandFilter) controls.brandFilter.value = "";
       if (controls.priceFilter) controls.priceFilter.value = "";
       if (controls.sortFilter) controls.sortFilter.value = "recommended";
       applyFilters();
     });
+  }
+}
+
+function populateCategoryOptions(list) {
+  const select = controls?.categoryFilter || document.getElementById("categoryFilter");
+  if (!select) return;
+
+  const currentValue = select.value || "";
+
+  const unique = new Map();
+  (Array.isArray(list) ? list : []).forEach(p => {
+    const raw = String(p?.category || "").trim();
+    if (!raw) return;
+    const key = normalizeCategory(raw);
+    if (!unique.has(key)) unique.set(key, raw);
+  });
+
+  const categories = Array.from(unique.values()).sort((a, b) => a.localeCompare(b));
+
+  select.innerHTML = "";
+  const optAll = document.createElement("option");
+  optAll.value = "";
+  optAll.textContent = "All Categories";
+  select.appendChild(optAll);
+
+  categories.forEach(c => {
+    const opt = document.createElement("option");
+    opt.value = c;
+    opt.textContent = c.charAt(0).toUpperCase() + c.slice(1);
+    select.appendChild(opt);
+  });
+
+  if (currentValue) {
+    const match = Array.from(select.options).find(o => normalizeCategory(o.value) === normalizeCategory(currentValue));
+    select.value = match ? match.value : "";
   }
 }
 
@@ -222,11 +268,12 @@ function populateBrandOptions(list) {
 
 function applyFilters() {
   const query = controls?.searchInput?.value || "";
+  const category = controls?.categoryFilter?.value || "";
   const brand = controls?.brandFilter?.value || "";
   const priceBucket = controls?.priceFilter?.value || "";
   const sortKey = controls?.sortFilter?.value || "recommended";
 
-  filteredProducts = filterList(products, query, brand, priceBucket);
+  filteredProducts = filterList(products, query, category, brand, priceBucket);
   filteredProducts = sortList(filteredProducts, sortKey);
   renderProducts(filteredProducts);
 }
