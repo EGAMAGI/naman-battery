@@ -15,6 +15,7 @@ function normalizeCategory(value) {
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
   initQuoteModal();
+  initLeadMagnet();
   initBackToTop();
   initFilters();
   initFaqHelper();
@@ -626,6 +627,9 @@ function initQuoteModal() {
   if (openSticky) openSticky.addEventListener("click", open);
   if (openGuide) openGuide.addEventListener("click", open);
 
+  const quickTriggers = Array.from(document.querySelectorAll("[data-open-quote]"));
+  quickTriggers.forEach(el => el.addEventListener("click", open));
+
   modal.addEventListener("click", e => {
     const target = e.target;
     if (target && target.hasAttribute && target.hasAttribute("data-close-modal")) close();
@@ -653,6 +657,69 @@ function initQuoteModal() {
       form.reset();
     });
   }
+}
+
+function initLeadMagnet() {
+  const modal = document.getElementById("leadModal");
+  const form = document.getElementById("leadForm");
+  if (!modal || !form) return;
+
+  const storageKey = "naman_lead_pdf_last_shown";
+  const now = Date.now();
+  const last = Number(localStorage.getItem(storageKey) || 0);
+  const oneDay = 24 * 60 * 60 * 1000;
+
+  const open = () => {
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden", "false");
+    localStorage.setItem(storageKey, String(Date.now()));
+  };
+
+  const close = () => {
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden", "true");
+  };
+
+  modal.addEventListener("click", e => {
+    const target = e.target;
+    if (target && target.hasAttribute && target.hasAttribute("data-close-modal")) close();
+  });
+
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && modal.classList.contains("open")) close();
+  });
+
+  // Show at most once per day.
+  if (!Number.isFinite(last) || now - last > oneDay) {
+    window.setTimeout(() => {
+      if (!modal.classList.contains("open")) open();
+    }, 12000);
+
+    const onScroll = () => {
+      const scrolled = window.scrollY + window.innerHeight;
+      const total = document.documentElement.scrollHeight || 1;
+      if (scrolled / total > 0.45) {
+        window.removeEventListener("scroll", onScroll);
+        if (!modal.classList.contains("open")) open();
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+  }
+
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const fd = new FormData(form);
+    const whatsapp = String(fd.get("whatsapp") || "").trim();
+    const digits = whatsapp.replace(/\D/g, "");
+    if (digits.length < 10) return;
+
+    const text = encodeURIComponent(
+      `Hi! Please send me the FREE PDF: "5 Mistakes That Destroy Your Inverter Battery".\nMy WhatsApp number: ${whatsapp}`
+    );
+    window.open(`https://wa.me/918279557998?text=${text}`, "_blank", "noopener");
+    close();
+    form.reset();
+  });
 }
 
 function initBackToTop() {
