@@ -8,12 +8,14 @@ const CONTACTS = {
   baraut: {
     label: "Baraut",
     phone: "8279557998",
-    whatsapp: "918279557998"
+    whatsapp: "918279557998",
+    googleReviewsUrl: "https://www.google.com/search?q=NAMAN%20BATTERY%20TRADING%20CO"
   },
   ghaziabad: {
     label: "Ghaziabad",
     phone: "9311309910",
-    whatsapp: "919311309910"
+    whatsapp: "919311309910",
+    googleReviewsUrl: "https://www.google.com/search?q=NAMAN%20BATTERY%20TRADING%20CO%20Ghaziabad"
   }
 };
 
@@ -51,6 +53,11 @@ function applyBranchToLinks(branchId) {
       } catch {
         a.setAttribute("href", `https://wa.me/${contact.whatsapp}`);
       }
+    });
+
+  Array.from(document.querySelectorAll("[data-dynamic-google]"))
+    .forEach(a => {
+      if (contact.googleReviewsUrl) a.setAttribute("href", contact.googleReviewsUrl);
     });
 }
 
