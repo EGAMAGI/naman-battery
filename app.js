@@ -608,6 +608,7 @@ function initQuoteModal() {
   const modal = document.getElementById("quoteModal");
   const openBtn = document.getElementById("openQuote");
   const openSticky = document.getElementById("openQuoteSticky");
+  const openGuide = document.getElementById("openGuideQuote");
   const form = document.getElementById("quoteForm");
 
   if (!modal) return;
@@ -623,6 +624,7 @@ function initQuoteModal() {
 
   if (openBtn) openBtn.addEventListener("click", open);
   if (openSticky) openSticky.addEventListener("click", open);
+  if (openGuide) openGuide.addEventListener("click", open);
 
   modal.addEventListener("click", e => {
     const target = e.target;

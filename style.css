@@ -330,6 +330,15 @@ h3 {
   box-shadow: 0 2px 8px rgba(40,116,240,0.06);
 }
 
+/* BUYING GUIDE */
+.guide {
+  padding: 22px 0;
+}
+
+.guide .section-subtitle {
+  max-width: 880px;
+}
+
 .filter-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
