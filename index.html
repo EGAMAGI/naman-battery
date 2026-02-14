@@ -129,8 +129,12 @@
     </nav>
     <div class="header-actions">
       <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">🌙</button>
-      <a href="tel:8279557998" class="btn call">📞 Call</a>
-      <a href="https://wa.me/918279557998" class="btn whatsapp">💬 WhatsApp</a>
+      <select id="branchSelect" class="branch-select" aria-label="Select branch">
+        <option value="baraut">Baraut</option>
+        <option value="ghaziabad">Ghaziabad</option>
+      </select>
+      <a href="tel:8279557998" class="btn call" data-dynamic-tel>📞 Call</a>
+      <a href="https://wa.me/918279557998" class="btn whatsapp" data-dynamic-wa>💬 WhatsApp</a>
     </div>
   </div>
 </header>
@@ -212,7 +216,7 @@
 
     <div class="hero-actions">
       <button class="btn primary" type="button" id="openGuideQuote">Get Free Recommendation</button>
-      <a href="https://wa.me/918279557998?text=Hi%2C%20I%20need%20help%20choosing%20the%20right%20inverter%20battery.%20Please%20do%20a%20free%20load%20calculation." class="btn whatsapp">💬 WhatsApp Now</a>
+      <a href="https://wa.me/918279557998?text=Hi%2C%20I%20need%20help%20choosing%20the%20right%20inverter%20battery.%20Please%20do%20a%20free%20load%20calculation." class="btn whatsapp" data-dynamic-wa>💬 WhatsApp Now</a>
     </div>
   </div>
 </section>
@@ -251,7 +255,7 @@
           <li>Backup planning based on usage</li>
           <li>Warranty support & after‑sales help</li>
         </ul>
-        <a class="btn whatsapp" href="https://wa.me/918279557998?text=Hi%2C%20I%20want%20a%20Solar%20combo%20recommendation.%20Please%20guide%20me%20based%20on%20my%20load%20and%20backup%20needs." target="_blank" rel="noopener">💬 WhatsApp for Solar</a>
+        <a class="btn whatsapp" href="https://wa.me/918279557998?text=Hi%2C%20I%20want%20a%20Solar%20combo%20recommendation.%20Please%20guide%20me%20based%20on%20my%20load%20and%20backup%20needs." target="_blank" rel="noopener" data-dynamic-wa>💬 WhatsApp for Solar</a>
       </div>
     </div>
   </div>
@@ -443,11 +447,11 @@
       <a href="mailto:namanbattery447@gmail.com">namanbattery447@gmail.com</a>
     </p>
     <div class="social-links">
-      <a href="https://wa.me/918279557998" aria-label="WhatsApp" class="social-link">
+      <a href="https://wa.me/918279557998" aria-label="WhatsApp" class="social-link" data-dynamic-wa>
         <img src="images/whatsapp.svg" alt="WhatsApp" width="24" onerror="this.style.display='none'">
         WhatsApp
       </a>
-      <a href="tel:8279557998" aria-label="Call" class="social-link">
+      <a href="tel:8279557998" aria-label="Call" class="social-link" data-dynamic-tel>
         <img src="images/phone.svg" alt="Call" width="24" onerror="this.style.display='none'">
         Call
       </a>
@@ -534,8 +538,8 @@
 
 <!-- Sticky Mobile Actions -->
 <div class="sticky-actions" role="navigation" aria-label="Quick actions">
-  <a class="sticky-btn" href="tel:8279557998">📞 Call</a>
-  <a class="sticky-btn" href="https://wa.me/918279557998" target="_blank" rel="noopener">💬 WhatsApp</a>
+  <a class="sticky-btn" href="tel:8279557998" data-dynamic-tel>📞 Call</a>
+  <a class="sticky-btn" href="https://wa.me/918279557998" target="_blank" rel="noopener" data-dynamic-wa>💬 WhatsApp</a>
   <button class="sticky-btn" type="button" id="openQuoteSticky">🧾 Quote</button>
   <a class="sticky-btn" href="https://www.google.com/maps/dir/?api=1&destination=29.099242075413045,77.25415557511089" target="_blank" rel="noopener">📍 Map</a>
 </div>
@@ -555,7 +559,8 @@
 <a href="https://wa.me/918279557998?text=Hi%2C%20I%20am%20interested%20in%20your%20battery%20products"
    class="whatsapp-float"
    target="_blank"
-   aria-label="Chat on WhatsApp">
+  aria-label="Chat on WhatsApp"
+  data-dynamic-wa>
   💬
 </a>
 

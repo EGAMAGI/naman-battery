@@ -247,6 +247,27 @@ html[data-theme="dark"] body {
   justify-content: center;
 }
 
+.branch-select {
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.10);
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
+  outline: none;
+}
+
+.branch-select:focus-visible {
+  outline: 3px solid #ffb300;
+  outline-offset: 2px;
+}
+
+.branch-select option {
+  color: #111;
+}
+
 /* Headings */
 h1, h2, h3, h4, h5 {
   font-family: 'Roboto', Arial, sans-serif;

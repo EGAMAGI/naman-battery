@@ -4,6 +4,33 @@ const SHEET_URL =
 let products = [];
 let filteredProducts = [];
 
+const CONTACTS = {
+  baraut: {
+    label: "Baraut",
+    phone: "8279557998",
+    whatsapp: "918279557998"
+  },
+  ghaziabad: {
+    label: "Ghaziabad",
+    phone: "",
+    whatsapp: ""
+  }
+};
+
+const BRANCH_STORAGE_KEY = "naman_branch";
+
+function getActiveBranchId() {
+  const saved = String(localStorage.getItem(BRANCH_STORAGE_KEY) || "").trim();
+  if (saved && CONTACTS[saved]) return saved;
+  return "baraut";
+}
+
+function getBranchContact(branchId) {
+  const chosen = CONTACTS[branchId];
+  if (chosen && chosen.phone && chosen.whatsapp) return chosen;
+  return CONTACTS.baraut;
+}
+
 function normalizeBrand(value) {
   return String(value || "").trim().replace(/\s+/g, " ").toLowerCase();
 }
@@ -13,6 +40,7 @@ function normalizeCategory(value) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  initBranchSelector();
   initTheme();
   initQuoteModal();
   initLeadMagnet();
@@ -40,6 +68,51 @@ document.addEventListener("DOMContentLoaded", () => {
       applyFilters();
     });
 });
+
+function initBranchSelector() {
+  const select = document.getElementById("branchSelect");
+  if (!select) return;
+
+  const applyToLinks = branchId => {
+    const contact = getBranchContact(branchId);
+
+    Array.from(document.querySelectorAll("[data-dynamic-tel]"))
+      .forEach(a => { a.setAttribute("href", `tel:${contact.phone}`); });
+
+    Array.from(document.querySelectorAll("[data-dynamic-wa]"))
+      .forEach(a => {
+        const href = a.getAttribute("href") || "";
+        if (!href.startsWith("https://wa.me/")) {
+          a.setAttribute("href", `https://wa.me/${contact.whatsapp}`);
+          return;
+        }
+        try {
+          const url = new URL(href);
+          url.pathname = `/${contact.whatsapp}`;
+          a.setAttribute("href", url.toString());
+        } catch {
+          a.setAttribute("href", `https://wa.me/${contact.whatsapp}`);
+        }
+      });
+  };
+
+  // Allow ?branch=ghaziabad
+  try {
+    const url = new URL(window.location.href);
+    const qp = String(url.searchParams.get("branch") || "").trim();
+    if (qp && CONTACTS[qp]) localStorage.setItem(BRANCH_STORAGE_KEY, qp);
+  } catch {}
+
+  const active = getActiveBranchId();
+  select.value = active;
+  applyToLinks(active);
+
+  select.addEventListener("change", () => {
+    const next = String(select.value || "baraut");
+    localStorage.setItem(BRANCH_STORAGE_KEY, next);
+    applyToLinks(next);
+  });
+}
 
 function initFaqHelper() {
   const input = document.getElementById("faqQuestion");
@@ -649,10 +722,13 @@ function initQuoteModal() {
       const brand = String(fd.get("brand") || "").trim();
       const message = String(fd.get("message") || "").trim();
 
+      const branchId = getActiveBranchId();
+      const contact = getBranchContact(branchId);
+
       const text = encodeURIComponent(
-        `Hi! I need a battery quote.\nName: ${name}\nPhone: ${phone}\nCity: ${city}\nBrand: ${brand}\nRequirement: ${message}`
+        `Hi! I need a battery quote.\nBranch: ${CONTACTS[branchId]?.label || branchId}\nName: ${name}\nPhone: ${phone}\nCity: ${city}\nBrand: ${brand}\nRequirement: ${message}`
       );
-      window.open(`https://wa.me/918279557998?text=${text}`, "_blank", "noopener");
+      window.open(`https://wa.me/${contact.whatsapp}?text=${text}`, "_blank", "noopener");
       close();
       form.reset();
     });
@@ -713,10 +789,13 @@ function initLeadMagnet() {
     const digits = whatsapp.replace(/\D/g, "");
     if (digits.length < 10) return;
 
+    const branchId = getActiveBranchId();
+    const contact = getBranchContact(branchId);
+
     const text = encodeURIComponent(
-      `Hi! Please send me the FREE PDF: "5 Mistakes That Destroy Your Inverter Battery".\nMy WhatsApp number: ${whatsapp}`
+      `Hi! Please send me the FREE PDF: "5 Mistakes That Destroy Your Inverter Battery".\nBranch: ${CONTACTS[branchId]?.label || branchId}\nMy WhatsApp number: ${whatsapp}`
     );
-    window.open(`https://wa.me/918279557998?text=${text}`, "_blank", "noopener");
+    window.open(`https://wa.me/${contact.whatsapp}?text=${text}`, "_blank", "noopener");
     close();
     form.reset();
   });
