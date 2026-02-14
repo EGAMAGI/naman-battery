@@ -12,8 +12,8 @@ const CONTACTS = {
   },
   ghaziabad: {
     label: "Ghaziabad",
-    phone: "",
-    whatsapp: ""
+    phone: "9311309910",
+    whatsapp: "919311309910"
   }
 };
 
