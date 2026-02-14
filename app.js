@@ -31,6 +31,29 @@ function getBranchContact(branchId) {
   return CONTACTS.baraut;
 }
 
+function applyBranchToLinks(branchId) {
+  const contact = getBranchContact(branchId);
+
+  Array.from(document.querySelectorAll("[data-dynamic-tel]"))
+    .forEach(a => { a.setAttribute("href", `tel:${contact.phone}`); });
+
+  Array.from(document.querySelectorAll("[data-dynamic-wa]"))
+    .forEach(a => {
+      const href = a.getAttribute("href") || "";
+      if (!href.startsWith("https://wa.me/")) {
+        a.setAttribute("href", `https://wa.me/${contact.whatsapp}`);
+        return;
+      }
+      try {
+        const url = new URL(href);
+        url.pathname = `/${contact.whatsapp}`;
+        a.setAttribute("href", url.toString());
+      } catch {
+        a.setAttribute("href", `https://wa.me/${contact.whatsapp}`);
+      }
+    });
+}
+
 function normalizeBrand(value) {
   return String(value || "").trim().replace(/\s+/g, " ").toLowerCase();
 }
@@ -73,29 +96,6 @@ function initBranchSelector() {
   const select = document.getElementById("branchSelect");
   if (!select) return;
 
-  const applyToLinks = branchId => {
-    const contact = getBranchContact(branchId);
-
-    Array.from(document.querySelectorAll("[data-dynamic-tel]"))
-      .forEach(a => { a.setAttribute("href", `tel:${contact.phone}`); });
-
-    Array.from(document.querySelectorAll("[data-dynamic-wa]"))
-      .forEach(a => {
-        const href = a.getAttribute("href") || "";
-        if (!href.startsWith("https://wa.me/")) {
-          a.setAttribute("href", `https://wa.me/${contact.whatsapp}`);
-          return;
-        }
-        try {
-          const url = new URL(href);
-          url.pathname = `/${contact.whatsapp}`;
-          a.setAttribute("href", url.toString());
-        } catch {
-          a.setAttribute("href", `https://wa.me/${contact.whatsapp}`);
-        }
-      });
-  };
-
   // Allow ?branch=ghaziabad
   try {
     const url = new URL(window.location.href);
@@ -105,12 +105,12 @@ function initBranchSelector() {
 
   const active = getActiveBranchId();
   select.value = active;
-  applyToLinks(active);
+  applyBranchToLinks(active);
 
   select.addEventListener("change", () => {
     const next = String(select.value || "baraut");
     localStorage.setItem(BRANCH_STORAGE_KEY, next);
-    applyToLinks(next);
+    applyBranchToLinks(next);
   });
 }
 
@@ -152,6 +152,13 @@ function initFaqHelper() {
   const render = html => { out.innerHTML = html; };
   render('<span class="muted">Ask a question above to get an instant answer.</span>');
 
+  const waLink = question => {
+    const branchId = getActiveBranchId();
+    const contact = getBranchContact(branchId);
+    const text = encodeURIComponent("Hi, I have a question: " + String(question || ""));
+    return `https://wa.me/${contact.whatsapp}?text=${text}`;
+  };
+
   const getAiEndpoint = () => {
     const v = typeof window !== "undefined" ? window.NAMAN_AI_ENDPOINT : "";
     const s = String(v || "").trim();
@@ -184,7 +191,7 @@ function initFaqHelper() {
             render(`
               <div><strong>Answer</strong></div>
               <div style="margin-top:6px;">${escapeHtml(answer)}</div>
-              <div class="muted" style="margin-top:8px;">Need human help? Ask on <a href="https://wa.me/918279557998?text=${encodeURIComponent("Hi, I have a question: " + question)}" target="_blank" rel="noopener">WhatsApp</a>.</div>
+              <div class="muted" style="margin-top:8px;">Need human help? Ask on <a href="${waLink(question)}" target="_blank" rel="noopener" data-dynamic-wa>WhatsApp</a>.</div>
             `);
             return;
           }
@@ -194,13 +201,13 @@ function initFaqHelper() {
             render(`
               <div><strong>${escapeHtml(best.q)}</strong></div>
               <div style="margin-top:6px;">${escapeHtml(best.a)}</div>
-              <div class="muted" style="margin-top:8px;">Not what you needed? Ask on <a href="https://wa.me/918279557998?text=${encodeURIComponent("Hi, I have a question: " + question)}" target="_blank" rel="noopener">WhatsApp</a>.</div>
+              <div class="muted" style="margin-top:8px;">Not what you needed? Ask on <a href="${waLink(question)}" target="_blank" rel="noopener" data-dynamic-wa>WhatsApp</a>.</div>
             `);
             return;
           }
           render(`
             <div><strong>We couldn’t find this in our FAQ.</strong></div>
-            <div class="muted" style="margin-top:6px;">Send your question on <a href="https://wa.me/918279557998?text=${encodeURIComponent("Hi, I have a question: " + question)}" target="_blank" rel="noopener">WhatsApp</a> and we will reply quickly.</div>
+            <div class="muted" style="margin-top:6px;">Send your question on <a href="${waLink(question)}" target="_blank" rel="noopener" data-dynamic-wa>WhatsApp</a> and we will reply quickly.</div>
           `);
         })
         .catch(() => {
@@ -210,13 +217,13 @@ function initFaqHelper() {
             render(`
               <div><strong>${escapeHtml(best.q)}</strong></div>
               <div style="margin-top:6px;">${escapeHtml(best.a)}</div>
-              <div class="muted" style="margin-top:8px;">Not what you needed? Ask on <a href="https://wa.me/918279557998?text=${encodeURIComponent("Hi, I have a question: " + question)}" target="_blank" rel="noopener">WhatsApp</a>.</div>
+              <div class="muted" style="margin-top:8px;">Not what you needed? Ask on <a href="${waLink(question)}" target="_blank" rel="noopener" data-dynamic-wa>WhatsApp</a>.</div>
             `);
             return;
           }
           render(`
             <div><strong>AI is temporarily unavailable.</strong></div>
-            <div class="muted" style="margin-top:6px;">Send your question on <a href="https://wa.me/918279557998?text=${encodeURIComponent("Hi, I have a question: " + question)}" target="_blank" rel="noopener">WhatsApp</a> and we will reply quickly.</div>
+            <div class="muted" style="margin-top:6px;">Send your question on <a href="${waLink(question)}" target="_blank" rel="noopener" data-dynamic-wa>WhatsApp</a> and we will reply quickly.</div>
           `);
         });
       return;
@@ -229,14 +236,14 @@ function initFaqHelper() {
       render(`
         <div><strong>${escapeHtml(best.q)}</strong></div>
         <div style="margin-top:6px;">${escapeHtml(best.a)}</div>
-        <div class="muted" style="margin-top:8px;">Not what you needed? Ask on <a href="https://wa.me/918279557998?text=${encodeURIComponent("Hi, I have a question: " + question)}" target="_blank" rel="noopener">WhatsApp</a>.</div>
+        <div class="muted" style="margin-top:8px;">Not what you needed? Ask on <a href="${waLink(question)}" target="_blank" rel="noopener" data-dynamic-wa>WhatsApp</a>.</div>
       `);
       return;
     }
 
     render(`
       <div><strong>We couldn’t find this in our FAQ.</strong></div>
-      <div class="muted" style="margin-top:6px;">Send your question on <a href="https://wa.me/918279557998?text=${encodeURIComponent("Hi, I have a question: " + question)}" target="_blank" rel="noopener">WhatsApp</a> and we will reply quickly.</div>
+      <div class="muted" style="margin-top:6px;">Send your question on <a href="${waLink(question)}" target="_blank" rel="noopener" data-dynamic-wa>WhatsApp</a> and we will reply quickly.</div>
     `);
   };
 
@@ -426,6 +433,8 @@ function renderProducts(list) {
   const fragment = document.createDocumentFragment();
 
   list.forEach(p => {
+    const branchId = getActiveBranchId();
+    const contact = getBranchContact(branchId);
     const priceParts = getPriceParts(p);
     const priceValue = priceParts.effective;
     const offerValue = priceParts.offer;
@@ -445,7 +454,9 @@ function renderProducts(list) {
     card.setAttribute("data-brand", p.brand || "");
     card.setAttribute("data-price", priceValue ? String(priceValue) : "request");
 
-    const waText = encodeURIComponent(`Hi, I want ${p.name_en || "this battery"}. Please share price, warranty, and installation details.`);
+    const waText = encodeURIComponent(
+      `Hi, I want ${p.name_en || "this battery"}. Please share price, warranty, and installation details.\nBranch: ${CONTACTS[branchId]?.label || branchId}`
+    );
 
     let priceHtml = `<p class="price request">Price on Request</p>`;
     if (priceValue) {
@@ -472,13 +483,16 @@ function renderProducts(list) {
       <p class="brand">${escapeHtml(p.brand || "")}${warranty ? ` • ${warranty} mo warranty` : ""}</p>
       ${rating ? `<div class=\"rating\" aria-label=\"Rating\">⭐ ${rating.toFixed(1)}</div>` : ""}
       ${priceHtml}
-      <a class="btn whatsapp full" href="https://wa.me/918279557998?text=${waText}" target="_blank" rel="noopener">Ask on WhatsApp</a>
+      <a class="btn whatsapp full" href="https://wa.me/${contact.whatsapp}?text=${waText}" target="_blank" rel="noopener" data-dynamic-wa>Ask on WhatsApp</a>
     `;
 
     fragment.appendChild(card);
   });
 
   grid.appendChild(fragment);
+
+  // Ensure the correct branch number is applied to newly-created WhatsApp links.
+  applyBranchToLinks(getActiveBranchId());
 }
 
 function escapeHtml(value) {
