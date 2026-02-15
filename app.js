@@ -455,6 +455,12 @@ function renderProducts(list) {
     const hasStock = Number.isFinite(stockNum);
     const inStock = hasStock ? stockNum > 0 : null;
 
+    const rawImageUrl = String(p?.image_url ?? p?.imageUrl ?? "").trim();
+    const hasFullImageUrl = /^https?:\/\//i.test(rawImageUrl);
+    const imageSrc = hasFullImageUrl
+      ? escapeAttr(rawImageUrl)
+      : `images/${escapeAttr(p.image || "")}`;
+
     const card = document.createElement("div");
     card.className = "product-card";
     card.setAttribute("tabindex", "0");
@@ -485,7 +491,7 @@ function renderProducts(list) {
       ${badge ? `<div class=\"badge\">${escapeHtml(badge)}</div>` : ""}
       ${hasOffer ? `<div class=\"badge offer\">Offer</div>` : ""}
       ${hasStock ? `<div class=\"stock-badge ${inStock ? "in" : "out"}\">${inStock ? "In Stock" : "Out of Stock"}</div>` : ""}
-      <img loading="eager" decoding="async" src="images/${escapeAttr(p.image || "")}" alt="${escapeAttr(p.name_en || "Battery")}" onerror="this.onerror=null;this.src='images/logo.png'">
+      <img loading="eager" decoding="async" src="${imageSrc}" alt="${escapeAttr(p.name_en || "Battery")}" onerror="this.onerror=null;this.src='images/logo.png'">
       <h3>${escapeHtml(p.name_en || "")}</h3>
       <p class="brand">${escapeHtml(p.brand || "")}${warranty ? ` • ${warranty} mo warranty` : ""}</p>
       ${rating ? `<div class=\"rating\" aria-label=\"Rating\">⭐ ${rating.toFixed(1)}</div>` : ""}

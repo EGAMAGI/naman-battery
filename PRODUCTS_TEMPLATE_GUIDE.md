@@ -58,3 +58,36 @@ Auto-generate from `products-template.csv`:
 
 Output columns:
 - `id, Categories, AH, brand, Name, name_hi, Regular price, Offer%, sale_price, image`
+
+## 4) Update products via Google Sheet (live website)
+
+The website loads products from a Google Sheet using OpenSheet:
+- In code: `SHEET_URL` in `app.js`
+- Format: `https://opensheet.elk.sh/<SHEET_ID>/<TAB_NAME>`
+
+### How to update
+1. Open your Google Sheet and edit/add rows.
+2. Make sure sharing is enabled:
+	- Google Sheets → **Share** → set to **Anyone with the link: Viewer**
+3. Refresh the website page to see updates.
+
+### Columns to keep in the Sheet
+Recommended columns (used by the site):
+- `name_en` (or `name`)
+- `brand`
+- `category`
+- `price` (number)
+- `sale_price` (optional)
+- `stock` (optional)
+- `warranty_months` (optional)
+- `rating` (optional)
+- `image_url` (recommended: full public URL like `https://.../image.jpg`)
+- `image` (fallback: filename that exists in `/images/`)
+
+## 5) Generate Google catalog CSV directly from your Google Sheet
+
+If you want one single source of truth (Google Sheet) and still produce `google-catalog.csv`, use:
+- `node tools/generate-google-catalog-from-sheet.mjs --sheet "<GOOGLE_SHEET_LINK>" --tab Sheet1 --out google-catalog.csv`
+
+Example (replace with your real link):
+- `node tools/generate-google-catalog-from-sheet.mjs --sheet "https://docs.google.com/spreadsheets/d/<ID>/edit#gid=0" --tab Sheet1 --out google-catalog.csv`
