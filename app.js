@@ -457,9 +457,21 @@ function renderProducts(list) {
 
     const rawImageUrl = String(p?.image_url ?? p?.imageUrl ?? "").trim();
     const hasFullImageUrl = /^https?:\/\//i.test(rawImageUrl);
+    const rawImage = String(p?.image ?? "").trim();
+    const categoryKey = normalizeCategory(p?.category || "");
+
+    // Image rules:
+    // 1) Prefer `image_url` if it's a full URL
+    // 2) Else use local `image` (can include subfolders like `inverter/x.jpg`)
+    // 3) Else try a category default: `images/<category>/default.jpg`
+    // 4) Fallback to logo
     const imageSrc = hasFullImageUrl
       ? escapeAttr(rawImageUrl)
-      : `images/${escapeAttr(p.image || "")}`;
+      : rawImage
+        ? `images/${escapeAttr(rawImage)}`
+        : categoryKey
+          ? `images/${escapeAttr(categoryKey)}/default.jpg`
+          : "images/logo.png";
 
     const card = document.createElement("div");
     card.className = "product-card";

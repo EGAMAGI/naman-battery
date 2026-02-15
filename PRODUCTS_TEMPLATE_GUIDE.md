@@ -82,7 +82,19 @@ Recommended columns (used by the site):
 - `warranty_months` (optional)
 - `rating` (optional)
 - `image_url` (recommended: full public URL like `https://.../image.jpg`)
-- `image` (fallback: filename that exists in `/images/`)
+- `image` (fallback: local file path inside `/images/`)
+
+#### Category-wise image folders (optional)
+You can organize images in subfolders, and write the path in the `image` column.
+
+Examples:
+- `inverter/exide_imst1500_150ah_a.jpg`
+- `solar/exide_solar_blitz_6sbz_150ah.jpg`
+
+If `image` is empty, the site will try to load a category default image:
+- `images/<category>/default.jpg` (example: `images/inverter/default.jpg`)
+
+If that also doesn’t exist, it falls back to `images/logo.png`.
 
 ## 5) Generate Google catalog CSV directly from your Google Sheet
 
