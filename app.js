@@ -351,6 +351,28 @@ function normalizePercent(raw) {
   return Math.min(100, Math.max(0, Math.round(num)));
 }
 
+function computeMrpFromOfferAndPercent(offerPrice, offerPercent) {
+  const offer = normalizePrice(offerPrice);
+  const pct = normalizePercent(offerPercent);
+  if (!offer || !pct) return null;
+  if (pct >= 100) return null;
+  const mrp = offer / (1 - pct / 100);
+  if (!Number.isFinite(mrp) || mrp <= offer) return null;
+  // Round to nearest rupee.
+  return Math.round(mrp);
+}
+
+function computeOfferFromMrpAndPercent(regularPrice, offerPercent) {
+  const mrp = normalizePrice(regularPrice);
+  const pct = normalizePercent(offerPercent);
+  if (!mrp || !pct) return null;
+  if (pct >= 100) return null;
+  const offer = mrp * (1 - pct / 100);
+  if (!Number.isFinite(offer) || offer <= 0 || offer >= mrp) return null;
+  // Round to nearest rupee.
+  return Math.round(offer);
+}
+
 function normalizePrice(raw) {
   if (raw === null || raw === undefined) return null;
 
@@ -385,6 +407,30 @@ function getPriceParts(product) {
 
   let offer = sale;
   let mrpValue = mrp;
+
+  // If sheet provides only (sale_price + Offer%) without any MRP/Regular price, compute MRP.
+  if (!mrpValue) {
+    const computed = computeMrpFromOfferAndPercent(
+      sale ?? price,
+      product?.offer_percent ?? product?.["Offer%"]
+    );
+    if (computed) mrpValue = computed;
+  }
+
+  // If sheet provides only (Regular price + Offer%) and sale_price is empty, compute offer price.
+  if (!offer && mrpValue) {
+    const computedOffer = computeOfferFromMrpAndPercent(
+      mrpValue,
+      product?.offer_percent ?? product?.["Offer%"]
+    );
+    if (computedOffer) offer = computedOffer;
+  }
+
+  // If offer is missing but we computed MRP from percent and have a base price, treat base as offer.
+  if (!offer && mrpValue) {
+    const baseAsOffer = normalizePrice(sale ?? price);
+    if (baseAsOffer && baseAsOffer < mrpValue) offer = baseAsOffer;
+  }
 
   // Common sheet pattern: price=MRP and sale_price=Offer.
   if (offer && !mrpValue && price && price > offer) mrpValue = price;
@@ -722,7 +768,7 @@ function populatePriceOptions(list) {
 
   const currentValue = select.value || "";
   const prices = (Array.isArray(list) ? list : [])
-    .map(p => normalizePrice(p?.price))
+    .map(p => getPriceParts(p).effective)
     .filter(v => typeof v === "number" && Number.isFinite(v) && v > 0)
     .sort((a, b) => a - b);
 
