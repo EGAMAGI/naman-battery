@@ -298,8 +298,18 @@ async function loadProducts() {
 }
 
 function normalizePrice(raw) {
-  if (raw === "request" || raw === "" || raw === null || raw === undefined) return null;
-  const num = Number(raw);
+  if (raw === null || raw === undefined) return null;
+
+  const s = String(raw).trim();
+  if (!s) return null;
+  if (s.toLowerCase() === "request") return null;
+
+  // Accept common Sheet formats like: "16680", "16,680", "₹16,680", "INR 16680".
+  // Extract the first number-like token.
+  const match = s.replace(/,/g, "").match(/-?\d+(?:\.\d+)?/);
+  if (!match) return null;
+
+  const num = Number(match[0]);
   return Number.isFinite(num) && num > 0 ? num : null;
 }
 
