@@ -294,7 +294,61 @@ async function loadProducts() {
   if (!response.ok) throw new Error("Failed to fetch sheet");
   const data = await response.json();
   if (!Array.isArray(data) || !data.length) throw new Error("Empty sheet");
-  return data;
+
+  return data.map(normalizeSheetRow).filter(Boolean);
+}
+
+function isHttpUrl(value) {
+  return /^https?:\/\//i.test(String(value || "").trim());
+}
+
+function pickFirst(row, keys) {
+  for (const k of keys) {
+    const v = row?.[k];
+    if (v !== undefined && v !== null && String(v).trim() !== "") return v;
+  }
+  return "";
+}
+
+function normalizeSheetRow(row) {
+  if (!row || typeof row !== "object") return null;
+
+  // Support both old sheet columns and the Google-catalog-style columns.
+  const name = pickFirst(row, ["name_en", "name", "Name"]);
+  const brand = pickFirst(row, ["brand", "Brand"]);
+  const category = pickFirst(row, ["category", "categories", "Categories"]);
+  const price = pickFirst(row, ["price", "Regular price", "regular_price", "mrp", "mrp_price"]);
+  const salePrice = pickFirst(row, ["sale_price", "offer_price", "Offer price", "offerPrice"]);
+  const offerPercent = pickFirst(row, ["offer_percent", "Offer%", "offerPercent", "discount_percent", "discountPercent"]);
+
+  const rawImageUrl = pickFirst(row, ["image_url", "imageUrl"]);
+  const rawImage = pickFirst(row, ["image"]);
+  const imageUrl = isHttpUrl(rawImageUrl) ? rawImageUrl : (isHttpUrl(rawImage) ? rawImage : "");
+  const image = imageUrl ? "" : rawImage;
+
+  return {
+    ...row,
+    name_en: name,
+    brand,
+    category,
+    price,
+    sale_price: salePrice,
+    offer_percent: offerPercent,
+    image_url: imageUrl || row.image_url || row.imageUrl || "",
+    image,
+  };
+}
+
+function normalizePercent(raw) {
+  if (raw === null || raw === undefined) return null;
+  const s = String(raw).trim();
+  if (!s) return null;
+  const match = s.replace(/,/g, "").match(/-?\d+(?:\.\d+)?/);
+  if (!match) return null;
+  const num = Number(match[0]);
+  if (!Number.isFinite(num)) return null;
+  if (num <= 0) return null;
+  return Math.min(100, Math.max(0, Math.round(num)));
 }
 
 function normalizePrice(raw) {
@@ -314,7 +368,7 @@ function normalizePrice(raw) {
 }
 
 function getPriceParts(product) {
-  const price = normalizePrice(product?.price);
+  const price = normalizePrice(product?.price ?? product?.["Regular price"]);
   const sale = normalizePrice(
     product?.sale_price ?? product?.offer_price ?? product?.salePrice ?? product?.offerPrice
   );
@@ -323,6 +377,7 @@ function getPriceParts(product) {
       product?.mrp_price ??
       product?.regular_price ??
       product?.list_price ??
+      product?.["Regular price"] ??
       product?.mrpPrice ??
       product?.regularPrice ??
       product?.listPrice
@@ -496,7 +551,8 @@ function renderProducts(list) {
     let priceHtml = `<p class="price request">Price on Request</p>`;
     if (priceValue) {
       if (mrpValue && offerValue && mrpValue > offerValue) {
-        const offPct = Math.round(((mrpValue - offerValue) / mrpValue) * 100);
+        const explicitPct = normalizePercent(p?.offer_percent ?? p?.["Offer%"]);
+        const offPct = explicitPct ?? Math.round(((mrpValue - offerValue) / mrpValue) * 100);
         priceHtml = `
           <div class="price-row">
             <span class="price">₹${offerValue.toLocaleString("en-IN")}</span>
