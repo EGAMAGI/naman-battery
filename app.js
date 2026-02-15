@@ -408,21 +408,21 @@ function getPriceParts(product) {
   let offer = sale;
   let mrpValue = mrp;
 
+  const offerPct = normalizePercent(product?.offer_percent ?? product?.["Offer%"]);
+
   // If sheet provides only (sale_price + Offer%) without any MRP/Regular price, compute MRP.
   if (!mrpValue) {
     const computed = computeMrpFromOfferAndPercent(
       sale ?? price,
-      product?.offer_percent ?? product?.["Offer%"]
+      offerPct
     );
     if (computed) mrpValue = computed;
   }
 
-  // If sheet provides only (Regular price + Offer%) and sale_price is empty, compute offer price.
-  if (!offer && mrpValue) {
-    const computedOffer = computeOfferFromMrpAndPercent(
-      mrpValue,
-      product?.offer_percent ?? product?.["Offer%"]
-    );
+  // If Regular price (MRP) + Offer% are present, always compute discounted price from them.
+  // This prevents stale/incorrect `sale_price` values in the sheet from overriding the calculation.
+  if (mrpValue && offerPct) {
+    const computedOffer = computeOfferFromMrpAndPercent(mrpValue, offerPct);
     if (computedOffer) offer = computedOffer;
   }
 
