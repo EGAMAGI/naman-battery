@@ -463,14 +463,14 @@ function renderProducts(list) {
     // Image rules:
     // 1) Prefer `image_url` if it's a full URL
     // 2) Else use local `image` (can include subfolders like `inverter/x.jpg`)
-    // 3) Else try a category default: `images/<category>/default.jpg`
+    // 3) Else try a category default: `images/<category>/default.png`
     // 4) Fallback to logo
     const imageSrc = hasFullImageUrl
       ? escapeAttr(rawImageUrl)
       : rawImage
         ? `images/${escapeAttr(rawImage)}`
         : categoryKey
-          ? `images/${escapeAttr(categoryKey)}/default.jpg`
+          ? `images/${escapeAttr(categoryKey)}/default.png`
           : "images/logo.png";
 
     const card = document.createElement("div");

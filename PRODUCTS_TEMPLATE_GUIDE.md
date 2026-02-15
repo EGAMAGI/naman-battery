@@ -92,7 +92,7 @@ Examples:
 - `solar/exide_solar_blitz_6sbz_150ah.jpg`
 
 If `image` is empty, the site will try to load a category default image:
-- `images/<category>/default.jpg` (example: `images/inverter/default.jpg`)
+- `images/<category>/default.png` (example: `images/inverter/default.png`)
 
 If that also doesn’t exist, it falls back to `images/logo.png`.
 
