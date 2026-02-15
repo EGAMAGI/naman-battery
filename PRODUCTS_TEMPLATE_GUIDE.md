@@ -45,3 +45,16 @@ File: `products-template-woocommerce.csv`
 - Putting `₹` sign in price fields (don’t). Use `15500`, not `₹15500`.
 - Using private Google Drive links for images (won’t work). Images must be publicly accessible.
 - Having commas inside CSV fields without quotes. If you write descriptions with commas, keep them inside quotes.
+
+## 3) Google catalog CSV (for ads / listings)
+
+Template format:
+- `google-catalog-template.csv`
+
+Auto-generate from `products-template.csv`:
+1. Run:
+	- `node tools/generate-google-catalog.mjs products-template.csv google-catalog.csv`
+2. Upload `google-catalog.csv` wherever you need it.
+
+Output columns:
+- `id, Categories, AH, brand, Name, name_hi, Regular price, Offer%, sale_price, image`

@@ -1,0 +1,4 @@
+id,Categories,AH,brand,Name,name_hi,Regular price,Offer%,sale_price,image
+EX-150AH-01,inverter,150,Exide,Exide Inverter Battery 150Ah,,15500,3,14999,https://example.com/images/exide-150ah.jpg
+LUM-150AH-01,inverter,150,Luminous,Luminous Inverter Battery 150Ah,,15200,,,https://example.com/images/luminous-150ah.jpg
+AMR-200AH-01,inverter,200,Amaron,Amaron Inverter Battery 200Ah,,18900,,,https://example.com/images/amaron-200ah.jpg
