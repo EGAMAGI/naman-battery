@@ -580,32 +580,45 @@ function renderProducts(list) {
 
     const raw = rawImageUrl || rawImage;
 
+    const expandCaseVariants = values => {
+      const out = [];
+      (Array.isArray(values) ? values : []).forEach(v => {
+        const s = String(v || "").trim();
+        if (!s) return;
+        out.push(s, s.toLowerCase(), s.toUpperCase());
+      });
+      return uniqueNonEmpty(out);
+    };
+
+    const folderCandidates = expandCaseVariants([
+      categoryRaw,
+      categoryKey,
+      categoryKey ? categoryKey.replaceAll(" ", "") : "",
+      categoryKey ? categoryKey.replaceAll(" ", "-") : "",
+      categoryRaw ? categoryRaw.replaceAll("/", "") : "",
+      categoryRaw ? categoryRaw.replaceAll("/", "").replaceAll(" ", "") : "",
+      categoryRaw ? categoryRaw.replace(/[^a-zA-Z0-9\-_ ]/g, "").trim() : "",
+      categoryRaw ? categoryRaw.replace(/[^a-zA-Z0-9\-_]/g, "").trim() : "",
+    ]);
+
     // If it's already a full URL or an explicit path, use it first.
     if (raw && (/^https?:\/\//i.test(raw) || raw.includes("/") || raw.startsWith("images/") || raw.startsWith("/images/"))) {
       return uniqueNonEmpty([
         toImagePath(raw),
-        categoryKey ? `images/${categoryKey}/default.png` : "",
+        ...folderCandidates.map(folder => `images/${folder}/default.png`),
         "images/logo.png",
       ]);
     }
 
     // If it's just a filename like "EPIQ35L.jpg", try category folder variants first.
     const filename = raw;
-    const folderCandidates = uniqueNonEmpty([
-      categoryRaw,
-      categoryRaw.replaceAll("/", ""),
-      categoryRaw.replaceAll("/", "").replaceAll(" ", ""),
-      categoryRaw.replace(/[^a-zA-Z0-9\-_ ]/g, "").trim(),
-      categoryRaw.replace(/[^a-zA-Z0-9\-_]/g, "").trim(),
-    ]);
-
     const sources = [];
     folderCandidates.forEach(folder => {
       if (!folder || !filename) return;
       sources.push(`images/${folder}/${filename}`);
     });
     if (filename) sources.push(`images/${filename}`);
-    if (categoryKey) sources.push(`images/${categoryKey}/default.png`);
+    sources.push(...folderCandidates.map(folder => `images/${folder}/default.png`));
     sources.push("images/logo.png");
     return uniqueNonEmpty(sources);
   };
