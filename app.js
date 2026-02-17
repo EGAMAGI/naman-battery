@@ -24,7 +24,7 @@ const BRANCH_STORAGE_KEY = "naman_branch";
 function getActiveBranchId() {
   const saved = String(localStorage.getItem(BRANCH_STORAGE_KEY) || "").trim();
   if (saved && CONTACTS[saved]) return saved;
-  return "baraut";
+  return "ghaziabad";
 }
 
 function getBranchContact(branchId) {
