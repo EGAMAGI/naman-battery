@@ -550,6 +550,66 @@ function renderProducts(list) {
 
   const fragment = document.createDocumentFragment();
 
+  const toImagePath = value => {
+    const raw = String(value || "").trim();
+    if (!raw) return "";
+    if (/^https?:\/\//i.test(raw)) return raw;
+    if (raw.startsWith("/images/")) return raw.slice(1);
+    if (raw.startsWith("images/")) return raw;
+    return `images/${raw}`;
+  };
+
+  const uniqueNonEmpty = list => {
+    const out = [];
+    const seen = new Set();
+    (Array.isArray(list) ? list : []).forEach(v => {
+      const s = String(v || "").trim();
+      if (!s) return;
+      if (seen.has(s)) return;
+      seen.add(s);
+      out.push(s);
+    });
+    return out;
+  };
+
+  const buildImageSources = product => {
+    const rawImageUrl = String(product?.image_url ?? product?.imageUrl ?? "").trim();
+    const rawImage = String(product?.image ?? "").trim();
+    const categoryRaw = String(product?.category || "").trim();
+    const categoryKey = normalizeCategory(categoryRaw);
+
+    const raw = rawImageUrl || rawImage;
+
+    // If it's already a full URL or an explicit path, use it first.
+    if (raw && (/^https?:\/\//i.test(raw) || raw.includes("/") || raw.startsWith("images/") || raw.startsWith("/images/"))) {
+      return uniqueNonEmpty([
+        toImagePath(raw),
+        categoryKey ? `images/${categoryKey}/default.png` : "",
+        "images/logo.png",
+      ]);
+    }
+
+    // If it's just a filename like "EPIQ35L.jpg", try category folder variants first.
+    const filename = raw;
+    const folderCandidates = uniqueNonEmpty([
+      categoryRaw,
+      categoryRaw.replaceAll("/", ""),
+      categoryRaw.replaceAll("/", "").replaceAll(" ", ""),
+      categoryRaw.replace(/[^a-zA-Z0-9\-_ ]/g, "").trim(),
+      categoryRaw.replace(/[^a-zA-Z0-9\-_]/g, "").trim(),
+    ]);
+
+    const sources = [];
+    folderCandidates.forEach(folder => {
+      if (!folder || !filename) return;
+      sources.push(`images/${folder}/${filename}`);
+    });
+    if (filename) sources.push(`images/${filename}`);
+    if (categoryKey) sources.push(`images/${categoryKey}/default.png`);
+    sources.push("images/logo.png");
+    return uniqueNonEmpty(sources);
+  };
+
   list.forEach(p => {
     const branchId = getActiveBranchId();
     const contact = getBranchContact(branchId);
@@ -566,29 +626,7 @@ function renderProducts(list) {
     const hasStock = Number.isFinite(stockNum);
     const inStock = hasStock ? stockNum > 0 : null;
 
-    const rawImageUrl = String(p?.image_url ?? p?.imageUrl ?? "").trim();
-    const rawImage = String(p?.image ?? "").trim();
-    const categoryKey = normalizeCategory(p?.category || "");
-
-    // Image rules (supports Google Sheet values):
-    // 1) Full URL in `image_url` or `image`
-    // 2) Local path (examples):
-    //    - `CARSUV/EPIQ35L.jpg`
-    //    - `images/CARSUV/EPIQ35L.jpg`
-    //    - `/images/CARSUV/EPIQ35L.jpg`
-    // 3) Else try category default: `images/<category>/default.png`
-    // 4) Fallback to logo
-    const raw = rawImageUrl || rawImage;
-    const isHttp = /^https?:\/\//i.test(raw);
-    const imageSrc = isHttp
-      ? escapeAttr(raw)
-      : raw
-        ? (raw.startsWith("/images/") || raw.startsWith("images/")
-          ? escapeAttr(raw.startsWith("/") ? raw.slice(1) : raw)
-          : `images/${escapeAttr(raw)}`)
-        : categoryKey
-          ? `images/${escapeAttr(categoryKey)}/default.png`
-          : "images/logo.png";
+    const imageSources = buildImageSources(p);
 
     const card = document.createElement("div");
     card.className = "product-card";
@@ -621,13 +659,22 @@ function renderProducts(list) {
       ${badge ? `<div class=\"badge\">${escapeHtml(badge)}</div>` : ""}
       ${hasOffer ? `<div class=\"badge offer\">Offer</div>` : ""}
       ${hasStock ? `<div class=\"stock-badge ${inStock ? "in" : "out"}\">${inStock ? "In Stock" : "Out of Stock"}</div>` : ""}
-      <img loading="eager" decoding="async" src="${imageSrc}" alt="${escapeAttr(p.name_en || "Battery")}" onerror="this.onerror=null;this.src='images/logo.png'">
+      <img loading="eager" decoding="async" src="${escapeAttr(imageSources[0] || "images/logo.png")}" alt="${escapeAttr(p.name_en || "Battery")}">
       <h3>${escapeHtml(p.name_en || "")}</h3>
       <p class="brand">${escapeHtml(p.brand || "")}${warranty ? ` • ${warranty} mo warranty` : ""}</p>
       ${rating ? `<div class=\"rating\" aria-label=\"Rating\">⭐ ${rating.toFixed(1)}</div>` : ""}
       ${priceHtml}
       <a class="btn whatsapp full" href="https://wa.me/${contact.whatsapp}?text=${waText}" target="_blank" rel="noopener" data-dynamic-wa>Ask on WhatsApp</a>
     `;
+
+    const img = card.querySelector("img");
+    if (img && Array.isArray(imageSources) && imageSources.length > 1) {
+      let idx = 0;
+      img.addEventListener("error", () => {
+        idx += 1;
+        if (idx < imageSources.length) img.src = imageSources[idx];
+      });
+    }
 
     fragment.appendChild(card);
   });
