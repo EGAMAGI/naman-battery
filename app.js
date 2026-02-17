@@ -48,6 +48,13 @@ function getActiveBranchId() {
   return "ghaziabad";
 }
 
+function getSelectedBranchId() {
+  const select = document.getElementById("branchSelect");
+  const v = String(select?.value || "").trim();
+  if (v && CONTACTS[v]) return v;
+  return getActiveBranchId();
+}
+
 function getBranchContact(branchId) {
   const chosen = CONTACTS[branchId];
   if (chosen && chosen.phone && chosen.whatsapp) return chosen;
@@ -293,7 +300,7 @@ function initFaqHelper() {
   render('<span class="muted">Ask a question above to get an instant answer.</span>');
 
   const waLink = question => {
-    const branchId = getActiveBranchId();
+    const branchId = getSelectedBranchId();
     const contact = getBranchContact(branchId);
     const text = encodeURIComponent("Hi, I have a question: " + String(question || ""));
     return `https://wa.me/${contact.whatsapp}?text=${text}`;
@@ -757,7 +764,7 @@ function renderProducts(list) {
   };
 
   list.forEach(p => {
-    const branchId = getActiveBranchId();
+    const branchId = getSelectedBranchId();
     const contact = getBranchContact(branchId);
     const priceParts = getPriceParts(p);
     const priceValue = priceParts.effective;
@@ -780,9 +787,7 @@ function renderProducts(list) {
     card.setAttribute("data-brand", p.brand || "");
     card.setAttribute("data-price", priceValue ? String(priceValue) : "request");
 
-    const waText = encodeURIComponent(
-      `Hi, I want ${p.name_en || "this battery"}. Please share price, warranty, and installation details.\nBranch: ${CONTACTS[branchId]?.label || branchId}`
-    );
+    const waTemplate = `Hi, I want ${p.name_en || "this battery"}. Please share price, warranty, and installation details.\nBranch: {{branch}}`;
 
     let priceHtml = `<p class="price request">Price on Request</p>`;
     if (priceValue) {
@@ -810,7 +815,7 @@ function renderProducts(list) {
       <p class="brand">${escapeHtml(p.brand || "")}${warranty ? ` • ${warranty} mo warranty` : ""}</p>
       ${rating ? `<div class=\"rating\" aria-label=\"Rating\">⭐ ${rating.toFixed(1)}</div>` : ""}
       ${priceHtml}
-      <a class="btn whatsapp full" href="https://wa.me/${contact.whatsapp}?text=${waText}" target="_blank" rel="noopener" data-dynamic-wa>Ask on WhatsApp</a>
+      <a class="btn whatsapp full" href="https://wa.me/${contact.whatsapp}" data-wa-text-template="${escapeAttr(waTemplate)}" target="_blank" rel="noopener" data-dynamic-wa>Ask on WhatsApp</a>
     `;
 
     const img = card.querySelector("img");
@@ -828,7 +833,7 @@ function renderProducts(list) {
   grid.appendChild(fragment);
 
   // Ensure the correct branch number is applied to newly-created WhatsApp links.
-  applyBranchToLinks(getActiveBranchId());
+  applyBranchToLinks(getSelectedBranchId());
 }
 
 function escapeHtml(value) {
@@ -1074,7 +1079,7 @@ function initQuoteModal() {
       const brand = String(fd.get("brand") || "").trim();
       const message = String(fd.get("message") || "").trim();
 
-      const branchId = getActiveBranchId();
+      const branchId = getSelectedBranchId();
       const contact = getBranchContact(branchId);
 
       const text = encodeURIComponent(
@@ -1141,7 +1146,7 @@ function initLeadMagnet() {
     const digits = whatsapp.replace(/\D/g, "");
     if (digits.length < 10) return;
 
-    const branchId = getActiveBranchId();
+    const branchId = getSelectedBranchId();
     const contact = getBranchContact(branchId);
 
     const text = encodeURIComponent(
