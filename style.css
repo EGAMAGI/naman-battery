@@ -694,9 +694,42 @@ html[data-theme="dark"] .offers-only {
   padding: 18px;
   text-align: center;
   position: relative;
+  isolation: isolate;
+  overflow: hidden;
   box-shadow: 0 6px 18px rgba(0,0,0,0.08);
   transition: transform 0.25s, box-shadow 0.25s, border 0.2s;
   border: 1px solid #f0f0f0;
+}
+
+/* Subtle brand watermark behind product cards */
+.product-card:not(.skeleton)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(180px 120px at 50% 120px, rgba(40,116,240,0.08), transparent 70%),
+    url("images/logo.png");
+  background-repeat: no-repeat;
+  background-position: center 120px;
+  background-size: 160px auto;
+  opacity: 0.10;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.product-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.product-card .badge,
+.product-card .stock-badge {
+  z-index: 2;
+}
+
+html[data-theme="dark"] .product-card:not(.skeleton)::before {
+  opacity: 0.08;
+  filter: brightness(1.1) saturate(0.9);
 }
 
 html[data-theme="dark"] .product-card,
