@@ -97,6 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initLeadMagnet();
   initBackToTop();
   initFilters();
+  initProductQuickTabs();
   initFaqHelper();
 
   const grid = document.getElementById("productsGrid") || document.querySelector(".products-grid");
@@ -119,6 +120,89 @@ document.addEventListener("DOMContentLoaded", () => {
       applyFilters();
     });
 });
+
+let productQuickTabs = null;
+
+function initProductQuickTabs() {
+  const root = document.getElementById("productQuickTabs");
+  if (!root) return;
+
+  productQuickTabs = { root };
+
+  const normalizeKey = value => normalizeCategory(String(value || "")).replaceAll("-", " ");
+
+  const setCategoryFromKey = key => {
+    const select = controls?.categoryFilter || document.getElementById("categoryFilter");
+    if (!select) return;
+
+    const desired = String(key ?? "").trim();
+    if (!desired) {
+      select.value = "";
+      return;
+    }
+
+    const target = normalizeKey(desired);
+    const options = Array.from(select.options || []);
+    const match = options.find(o => {
+      const v = normalizeKey(o.value);
+      return v === target || v.includes(target) || target.includes(v);
+    });
+    select.value = match ? match.value : desired;
+  };
+
+  const sync = () => {
+    const currentCategory = normalizeKey(controls?.categoryFilter?.value || "");
+    const currentSort = String(controls?.sortFilter?.value || "recommended");
+    const currentOffers = Boolean(controls?.offersOnly?.checked);
+
+    root.querySelectorAll("button[data-quick]").forEach(btn => {
+      const quickCategory = String(btn.dataset.quickCategory || "").trim();
+      const quickSort = String(btn.dataset.quickSort || "").trim();
+      const quickOffersRaw = btn.dataset.quickOffers;
+      const quickOffers = quickOffersRaw === undefined ? null : quickOffersRaw === "1";
+
+      let active = true;
+
+      if (quickCategory !== "") {
+        const target = normalizeKey(quickCategory);
+        active = active && Boolean(currentCategory) && (currentCategory === target || currentCategory.includes(target) || target.includes(currentCategory));
+      } else if (btn.hasAttribute("data-quick-category")) {
+        active = active && !currentCategory;
+      }
+
+      if (quickSort) active = active && currentSort === quickSort;
+      if (quickOffers !== null) active = active && currentOffers === quickOffers;
+
+      btn.classList.toggle("active", active);
+      btn.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+  };
+
+  productQuickTabs.sync = sync;
+
+  root.addEventListener("click", e => {
+    const btn = e.target?.closest?.("button[data-quick]");
+    if (!btn) return;
+
+    const quickCategory = String(btn.dataset.quickCategory || "").trim();
+    const quickSort = String(btn.dataset.quickSort || "").trim();
+    const quickOffersRaw = btn.dataset.quickOffers;
+
+    if (btn.hasAttribute("data-quick-category")) setCategoryFromKey(quickCategory);
+    if (quickSort && controls?.sortFilter) controls.sortFilter.value = quickSort;
+    if (quickOffersRaw !== undefined && controls?.offersOnly) controls.offersOnly.checked = quickOffersRaw === "1";
+
+    applyFilters();
+
+    try {
+      const productsSection = document.getElementById("products");
+      if (productsSection) productsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    } catch {}
+  });
+
+  // Initial state
+  sync();
+}
 
 function initBranchSelector() {
   const select = document.getElementById("branchSelect");
@@ -916,6 +1000,8 @@ function applyFilters() {
   filteredProducts = filterList(products, query, category, brand, priceBucket, offersOnly);
   filteredProducts = sortList(filteredProducts, sortKey);
   renderProducts(filteredProducts);
+
+  if (productQuickTabs?.sync) productQuickTabs.sync();
 }
 
 function initQuoteModal() {
