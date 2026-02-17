@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f3f4f6"/>
+      <stop offset="1" stop-color="#e9edf5"/>
+    </linearGradient>
+    <filter id="grain" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.5  0 0 0 0 0.55  0 0 0 0 0.65  0 0 0 0.08 0"/>
+      <feBlend mode="multiply" in2="SourceGraphic"/>
+    </filter>
+    <style>
+      .sketch { fill: none; stroke: rgba(17, 24, 39, 0.30); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+      .sketch2 { fill: none; stroke: rgba(17, 24, 39, 0.18); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+      .accent { fill: none; stroke: rgba(34, 197, 94, 0.30); stroke-width: 3; stroke-linecap: round; }
+      .accent2 { fill: rgba(34, 197, 94, 0.14); }
+      .blue2 { fill: rgba(59, 130, 246, 0.10); }
+    </style>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#paper)"/>
+  <g filter="url(#grain)">
+    <rect width="1600" height="900" fill="transparent"/>
+  </g>
+
+  <!-- Horizon lines / hills -->
+  <path class="sketch" d="M0 560 C 160 520, 280 600, 420 560 C 540 520, 620 610, 760 575 C 920 535, 1040 595, 1200 560 C 1350 530, 1480 600, 1600 565"/>
+  <path class="sketch2" d="M0 605 C 180 585, 270 645, 430 615 C 590 585, 690 660, 840 625 C 1020 585, 1110 655, 1260 622 C 1410 590, 1510 640, 1600 625"/>
+
+  <!-- Road -->
+  <path class="sketch2" d="M760 900 C 760 830, 770 760, 810 690 C 880 580, 990 520, 1180 505"/>
+  <path class="sketch2" d="M820 900 C 820 830, 840 760, 900 700 C 980 610, 1080 560, 1210 545"/>
+
+  <!-- Simple cars -->
+  <g>
+    <path class="sketch" d="M520 705 C 545 682, 585 682, 610 705 L 628 735 C 632 742, 628 752, 620 755 L 510 755 C 502 752, 498 742, 502 735 Z"/>
+    <circle cx="530" cy="758" r="10" class="sketch"/>
+    <circle cx="600" cy="758" r="10" class="sketch"/>
+    <path class="sketch2" d="M545 705 L 585 705"/>
+  </g>
+  <g>
+    <path class="sketch" d="M915 655 C 938 636, 973 636, 996 655 L 1010 677 C 1015 685, 1011 695, 1002 698 L 905 698 C 896 695, 892 685, 897 677 Z"/>
+    <circle cx="920" cy="700" r="9" class="sketch"/>
+    <circle cx="990" cy="700" r="9" class="sketch"/>
+    <path class="sketch2" d="M935 655 L 970 655"/>
+  </g>
+
+  <!-- Trees (simple doodles) -->
+  <g>
+    <path class="sketch2" d="M260 560 L 260 520"/>
+    <circle cx="260" cy="510" r="16" class="sketch2"/>
+    <path class="sketch2" d="M320 585 L 320 545"/>
+    <circle cx="320" cy="535" r="14" class="sketch2"/>
+    <path class="sketch2" d="M1160 560 L 1160 520"/>
+    <circle cx="1160" cy="510" r="16" class="sketch2"/>
+    <path class="sketch2" d="M1320 605 L 1320 565"/>
+    <circle cx="1320" cy="555" r="14" class="sketch2"/>
+  </g>
+
+  <!-- Accent swooshes -->
+  <path class="accent" d="M980 290 C 1090 250, 1220 250, 1340 290"/>
+  <path class="accent" d="M980 320 C 1105 285, 1230 285, 1340 320"/>
+
+  <!-- Soft blobs -->
+  <circle cx="1260" cy="240" r="140" class="blue2"/>
+  <circle cx="1385" cy="330" r="100" class="accent2"/>
+  <circle cx="250" cy="250" r="160" class="accent2"/>
+</svg>
