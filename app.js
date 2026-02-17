@@ -24,7 +24,7 @@ const BRANCH_STORAGE_KEY = "naman_branch";
 function getActiveBranchId() {
   const saved = String(localStorage.getItem(BRANCH_STORAGE_KEY) || "").trim();
   if (saved && CONTACTS[saved]) return saved;
-  return "ghaziabad";
+  return "baraut";
 }
 
 function getBranchContact(branchId) {
@@ -41,6 +41,13 @@ function applyBranchToLinks(branchId) {
 
   Array.from(document.querySelectorAll("[data-dynamic-wa]"))
     .forEach(a => {
+      const template = String(a.getAttribute("data-wa-text-template") || "").trim();
+      if (template) {
+        const text = template.replaceAll("{{branch}}", contact.label);
+        a.setAttribute("href", `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(text)}`);
+        return;
+      }
+
       const href = a.getAttribute("href") || "";
       if (!href.startsWith("https://wa.me/")) {
         a.setAttribute("href", `https://wa.me/${contact.whatsapp}`);
@@ -59,6 +66,20 @@ function applyBranchToLinks(branchId) {
     .forEach(a => {
       if (contact.googleReviewsUrl) a.setAttribute("href", contact.googleReviewsUrl);
     });
+}
+
+function applyBranchToHero(branchId) {
+  const contact = getBranchContact(branchId);
+  const kicker = document.getElementById("heroKicker");
+  const headline = document.getElementById("heroHeadline");
+  const subline = document.getElementById("heroSubline");
+
+  if (kicker) kicker.textContent = `📍 ${contact.label}`;
+  if (headline) headline.textContent = `Power Backup Installed Within 2 Hours in ${contact.label}`;
+  if (subline) {
+    subline.textContent =
+      "Never sit in power cut again.\nGet Genuine Exide, Amaron & Luminous Inverter Batteries with Fast Installation.";
+  }
 }
 
 function normalizeBrand(value) {
@@ -113,11 +134,13 @@ function initBranchSelector() {
   const active = getActiveBranchId();
   select.value = active;
   applyBranchToLinks(active);
+  applyBranchToHero(active);
 
   select.addEventListener("change", () => {
     const next = String(select.value || "baraut");
     localStorage.setItem(BRANCH_STORAGE_KEY, next);
     applyBranchToLinks(next);
+    applyBranchToHero(next);
   });
 }
 
