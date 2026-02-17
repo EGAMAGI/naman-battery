@@ -567,19 +567,25 @@ function renderProducts(list) {
     const inStock = hasStock ? stockNum > 0 : null;
 
     const rawImageUrl = String(p?.image_url ?? p?.imageUrl ?? "").trim();
-    const hasFullImageUrl = /^https?:\/\//i.test(rawImageUrl);
     const rawImage = String(p?.image ?? "").trim();
     const categoryKey = normalizeCategory(p?.category || "");
 
-    // Image rules:
-    // 1) Prefer `image_url` if it's a full URL
-    // 2) Else use local `image` (can include subfolders like `inverter/x.jpg`)
-    // 3) Else try a category default: `images/<category>/default.png`
+    // Image rules (supports Google Sheet values):
+    // 1) Full URL in `image_url` or `image`
+    // 2) Local path (examples):
+    //    - `CARSUV/EPIQ35L.jpg`
+    //    - `images/CARSUV/EPIQ35L.jpg`
+    //    - `/images/CARSUV/EPIQ35L.jpg`
+    // 3) Else try category default: `images/<category>/default.png`
     // 4) Fallback to logo
-    const imageSrc = hasFullImageUrl
-      ? escapeAttr(rawImageUrl)
-      : rawImage
-        ? `images/${escapeAttr(rawImage)}`
+    const raw = rawImageUrl || rawImage;
+    const isHttp = /^https?:\/\//i.test(raw);
+    const imageSrc = isHttp
+      ? escapeAttr(raw)
+      : raw
+        ? (raw.startsWith("/images/") || raw.startsWith("images/")
+          ? escapeAttr(raw.startsWith("/") ? raw.slice(1) : raw)
+          : `images/${escapeAttr(raw)}`)
         : categoryKey
           ? `images/${escapeAttr(categoryKey)}/default.png`
           : "images/logo.png";
