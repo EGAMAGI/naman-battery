@@ -1487,13 +1487,6 @@ html[data-theme="dark"] .back-to-top {
 
 /* MOBILE */
 @media (max-width: 600px) {
-  .hero h1 {
-    font-size: 22px;
-  }
-  .hero {
-    padding: 20px 0;
-    border-radius: 0 0 12px 12px;
-  }
   .container {
     padding: 0 4px;
   }

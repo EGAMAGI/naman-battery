@@ -4,18 +4,39 @@ const SHEET_URL =
 let products = [];
 let filteredProducts = [];
 
+const ASSET_BASE = (() => {
+  try {
+    const b = typeof window !== "undefined" ? window.NAMAN_ASSET_BASE : "";
+    if (typeof b !== "string") return "";
+    return b;
+  } catch {
+    return "";
+  }
+})();
+
+function assetPath(path) {
+  const raw = String(path || "");
+  if (!raw) return raw;
+  if (/^https?:\/\//i.test(raw)) return raw;
+  if (raw.startsWith("/")) return raw;
+  if (!ASSET_BASE) return raw;
+  return `${ASSET_BASE}${raw}`;
+}
+
 const CONTACTS = {
   baraut: {
     label: "Baraut",
     phone: "8279557998",
     whatsapp: "918279557998",
-    googleReviewsUrl: "https://www.google.com/search?q=NAMAN%20BATTERY%20TRADING%20CO"
+    googleReviewsUrl: "https://www.google.com/search?q=NAMAN%20BATTERY%20TRADING%20CO",
+    mapDirectionsUrl: "https://www.google.com/maps/dir/?api=1&destination=29.099242075413045,77.25415557511089"
   },
   ghaziabad: {
     label: "Ghaziabad",
     phone: "9311309910",
     whatsapp: "919311309910",
-    googleReviewsUrl: "https://www.google.com/search?q=NAMAN%20BATTERY%20TRADING%20CO%20Ghaziabad"
+    googleReviewsUrl: "https://www.google.com/search?q=NAMAN%20BATTERY%20TRADING%20CO%20Ghaziabad",
+    mapDirectionsUrl: "https://www.google.com/maps/dir/?api=1&destination=28.642020798478733,77.40831246957059"
   }
 };
 
@@ -24,7 +45,7 @@ const BRANCH_STORAGE_KEY = "naman_branch";
 function getActiveBranchId() {
   const saved = String(localStorage.getItem(BRANCH_STORAGE_KEY) || "").trim();
   if (saved && CONTACTS[saved]) return saved;
-  return "baraut";
+  return "ghaziabad";
 }
 
 function getBranchContact(branchId) {
@@ -65,6 +86,11 @@ function applyBranchToLinks(branchId) {
   Array.from(document.querySelectorAll("[data-dynamic-google]"))
     .forEach(a => {
       if (contact.googleReviewsUrl) a.setAttribute("href", contact.googleReviewsUrl);
+    });
+
+  Array.from(document.querySelectorAll("[data-dynamic-map]"))
+    .forEach(a => {
+      if (contact.mapDirectionsUrl) a.setAttribute("href", contact.mapDirectionsUrl);
     });
 }
 
@@ -661,9 +687,9 @@ function renderProducts(list) {
     const raw = String(value || "").trim();
     if (!raw) return "";
     if (/^https?:\/\//i.test(raw)) return raw;
-    if (raw.startsWith("/images/")) return raw.slice(1);
-    if (raw.startsWith("images/")) return raw;
-    return `images/${raw}`;
+    if (raw.startsWith("/")) return raw;
+    if (raw.startsWith("images/")) return assetPath(raw);
+    return assetPath(`images/${raw}`);
   };
 
   const uniqueNonEmpty = list => {
@@ -712,8 +738,8 @@ function renderProducts(list) {
     if (raw && (/^https?:\/\//i.test(raw) || raw.includes("/") || raw.startsWith("images/") || raw.startsWith("/images/"))) {
       return uniqueNonEmpty([
         toImagePath(raw),
-        ...folderCandidates.map(folder => `images/${folder}/default.png`),
-        "images/logo.png",
+        ...folderCandidates.map(folder => assetPath(`images/${folder}/default.png`)),
+        assetPath("images/logo.png"),
       ]);
     }
 
@@ -722,11 +748,11 @@ function renderProducts(list) {
     const sources = [];
     folderCandidates.forEach(folder => {
       if (!folder || !filename) return;
-      sources.push(`images/${folder}/${filename}`);
+      sources.push(assetPath(`images/${folder}/${filename}`));
     });
-    if (filename) sources.push(`images/${filename}`);
-    sources.push(...folderCandidates.map(folder => `images/${folder}/default.png`));
-    sources.push("images/logo.png");
+    if (filename) sources.push(assetPath(`images/${filename}`));
+    sources.push(...folderCandidates.map(folder => assetPath(`images/${folder}/default.png`)));
+    sources.push(assetPath("images/logo.png"));
     return uniqueNonEmpty(sources);
   };
 
@@ -779,7 +805,7 @@ function renderProducts(list) {
       ${badge ? `<div class=\"badge\">${escapeHtml(badge)}</div>` : ""}
       ${hasOffer ? `<div class=\"badge offer\">Offer</div>` : ""}
       ${hasStock ? `<div class=\"stock-badge ${inStock ? "in" : "out"}\">${inStock ? "In Stock" : "Out of Stock"}</div>` : ""}
-      <img loading="eager" decoding="async" src="${escapeAttr(imageSources[0] || "images/logo.png")}" alt="${escapeAttr(p.name_en || "Battery")}">
+      <img loading="eager" decoding="async" src="${escapeAttr(imageSources[0] || assetPath("images/logo.png"))}" alt="${escapeAttr(p.name_en || "Battery")}">
       <h3>${escapeHtml(p.name_en || "")}</h3>
       <p class="brand">${escapeHtml(p.brand || "")}${warranty ? ` • ${warranty} mo warranty` : ""}</p>
       ${rating ? `<div class=\"rating\" aria-label=\"Rating\">⭐ ${rating.toFixed(1)}</div>` : ""}

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://naman-battery.pages.dev/sitemap.xml
