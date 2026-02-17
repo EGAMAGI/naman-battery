@@ -174,7 +174,15 @@
     <div class="hero-visual" aria-hidden="true">
       <div class="hero-card">
         <div class="hero-card-media">
-          <img src="images/hero-product.jpg" alt="Inverter Battery" loading="eager" decoding="async" onerror="this.onerror=null; this.src='images/Inverter%20Battery/FEI0-IT500.jpg'">
+          <!-- HERO PRODUCT IMAGE (replace images/hero-product.jpg anytime) -->
+          <img
+            id="heroProductImg"
+            src="images/hero-product.jpg"
+            alt="Inverter Battery"
+            loading="eager"
+            decoding="async"
+            onerror="if(this.dataset.fallback==='1'){this.onerror=null;this.src='images/logo.png';return;} this.dataset.fallback='1'; this.src='images/Inverter%20Battery/FEI0-IT500.jpg';"
+          >
         </div>
         <div class="hero-card-body">
           <div class="hero-card-badges" aria-label="Quick service badges">
