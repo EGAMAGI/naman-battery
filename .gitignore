@@ -1,2 +1,6 @@
 # Generated locally from the live Google Sheet
 google-catalog.from-sheet.csv
+
+# Browser "Save page" artifacts
+*_files/
+*.download
